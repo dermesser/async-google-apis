@@ -296,6 +296,7 @@ impl {service}Service {{
     let reqb = reqb.header("Content-Length", data.len());
     let body = hyper::Body::from(data);''')
             else:
+                parts.append('''    let reqb = reqb.header("Content-Type", "application/json");''')
                 parts.append('''    println!("Request: {}", serde_json::to_string(req)?);''')
                 if in_type != '()':
                     parts.append('''    let body = hyper::Body::from(serde_json::to_string(req)?);''')

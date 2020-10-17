@@ -71,9 +71,8 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
     println!("{:?}", params);
     params.file_id = resp.id.clone().unwrap();
     params.include_permissions_for_view = Some("published".to_string());
-    let mut file = resp;
+    let mut file = drive::File::default();
     file.name = Some("profilepic.jpg".to_string());
-    file.original_filename = Some("profilepic.jpg".to_string());
     let update_resp = cl.update(&params, &file).await;
     println!("{:?}", update_resp);
 
