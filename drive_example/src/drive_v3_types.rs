@@ -165,7 +165,7 @@ pub struct Change {
     #[serde(rename = "teamDriveId")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub team_drive_id: Option<String>,
-    /// The time of this change (RFC 3339 date-time).
+    /// DateTime: The time of this change (RFC 3339 date-time).
     #[serde(rename = "time")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub time: Option<DateTime<Utc>>,
@@ -264,7 +264,7 @@ pub struct Comment {
     #[serde(rename = "content")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub content: Option<String>,
-    /// The time at which the comment was created (RFC 3339 date-time).
+    /// DateTime: The time at which the comment was created (RFC 3339 date-time).
     #[serde(rename = "createdTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created_time: Option<DateTime<Utc>>,
@@ -284,7 +284,7 @@ pub struct Comment {
     #[serde(rename = "kind")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub kind: Option<String>,
-    /// The last time the comment or any of its replies was modified (RFC 3339 date-time).
+    /// DateTime: The last time the comment or any of its replies was modified (RFC 3339 date-time).
     #[serde(rename = "modifiedTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_time: Option<DateTime<Utc>>,
@@ -331,7 +331,7 @@ pub struct ContentRestriction {
     #[serde(rename = "restrictingUser")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub restricting_user: Option<User>,
-    /// The time at which the content restriction was set (formatted RFC 3339 timestamp). Only populated if readOnly is true.
+    /// DateTime: The time at which the content restriction was set (formatted RFC 3339 timestamp). Only populated if readOnly is true.
     #[serde(rename = "restrictionTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub restriction_time: Option<DateTime<Utc>>,
@@ -475,7 +475,7 @@ pub struct Drive {
     #[serde(rename = "colorRgb")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub color_rgb: Option<String>,
-    /// The time at which the shared drive was created (RFC 3339 date-time).
+    /// DateTime: The time at which the shared drive was created (RFC 3339 date-time).
     #[serde(rename = "createdTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created_time: Option<DateTime<Utc>>,
@@ -839,7 +839,7 @@ pub struct File {
     #[serde(rename = "copyRequiresWriterPermission")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub copy_requires_writer_permission: Option<bool>,
-    /// The time at which the file was created (RFC 3339 date-time).
+    /// DateTime: The time at which the file was created (RFC 3339 date-time).
     #[serde(rename = "createdTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created_time: Option<DateTime<Utc>>,
@@ -918,11 +918,11 @@ pub struct File {
     #[serde(rename = "modifiedByMe")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_by_me: Option<bool>,
-    /// The last time the file was modified by the user (RFC 3339 date-time).
+    /// DateTime: The last time the file was modified by the user (RFC 3339 date-time).
     #[serde(rename = "modifiedByMeTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_by_me_time: Option<DateTime<Utc>>,
-    /// The last time the file was modified by anyone (RFC 3339 date-time). Note that setting modifiedTime will also update modifiedByMeTime for the user.
+    /// DateTime: The last time the file was modified by anyone (RFC 3339 date-time). Note that setting modifiedTime will also update modifiedByMeTime for the user.
     #[serde(rename = "modifiedTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_time: Option<DateTime<Utc>>,
@@ -966,7 +966,7 @@ pub struct File {
     #[serde(rename = "shared")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub shared: Option<bool>,
-    /// The time at which the file was shared with the user, if applicable (RFC 3339 date-time).
+    /// DateTime: The time at which the file was shared with the user, if applicable (RFC 3339 date-time).
     #[serde(rename = "sharedWithMeTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub shared_with_me_time: Option<DateTime<Utc>>,
@@ -1005,7 +1005,7 @@ pub struct File {
     #[serde(rename = "trashed")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub trashed: Option<bool>,
-    /// The time that the item was trashed (RFC 3339 date-time). Only populated for items in shared drives.
+    /// DateTime: The time that the item was trashed (RFC 3339 date-time). Only populated for items in shared drives.
     #[serde(rename = "trashedTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub trashed_time: Option<DateTime<Utc>>,
@@ -1024,7 +1024,7 @@ pub struct File {
     #[serde(rename = "viewedByMe")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub viewed_by_me: Option<bool>,
-    /// The last time the file was viewed by the user (RFC 3339 date-time).
+    /// DateTime: The last time the file was viewed by the user (RFC 3339 date-time).
     #[serde(rename = "viewedByMeTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub viewed_by_me_time: Option<DateTime<Utc>>,
@@ -1144,7 +1144,7 @@ pub struct Permission {
     #[serde(rename = "emailAddress")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email_address: Option<String>,
-    /// The time at which this permission will expire (RFC 3339 date-time). Expiration times have the following restrictions:   - They can only be set on user and group permissions  - The time must be in the future  - The time cannot be more than a year in the future
+    /// DateTime: The time at which this permission will expire (RFC 3339 date-time). Expiration times have the following restrictions:   - They can only be set on user and group permissions  - The time must be in the future  - The time cannot be more than a year in the future
     #[serde(rename = "expirationTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub expiration_time: Option<DateTime<Utc>>,
@@ -1211,7 +1211,7 @@ pub struct Reply {
     #[serde(rename = "content")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub content: Option<String>,
-    /// The time at which the reply was created (RFC 3339 date-time).
+    /// DateTime: The time at which the reply was created (RFC 3339 date-time).
     #[serde(rename = "createdTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created_time: Option<DateTime<Utc>>,
@@ -1231,7 +1231,7 @@ pub struct Reply {
     #[serde(rename = "kind")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub kind: Option<String>,
-    /// The last time the reply was modified (RFC 3339 date-time).
+    /// DateTime: The last time the reply was modified (RFC 3339 date-time).
     #[serde(rename = "modifiedTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_time: Option<DateTime<Utc>>,
@@ -1282,7 +1282,7 @@ pub struct Revision {
     #[serde(rename = "mimeType")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mime_type: Option<String>,
-    /// The last time the revision was modified (RFC 3339 date-time).
+    /// DateTime: The last time the revision was modified (RFC 3339 date-time).
     #[serde(rename = "modifiedTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_time: Option<DateTime<Utc>>,
@@ -1478,7 +1478,7 @@ pub struct TeamDrive {
     #[serde(rename = "colorRgb")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub color_rgb: Option<String>,
-    /// The time at which the Team Drive was created (RFC 3339 date-time).
+    /// DateTime: The time at which the Team Drive was created (RFC 3339 date-time).
     #[serde(rename = "createdTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created_time: Option<DateTime<Utc>>,

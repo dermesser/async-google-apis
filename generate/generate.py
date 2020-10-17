@@ -107,49 +107,62 @@ def parse_schema_types(name, schema, optional=True):
                 else:
                     typ = field
                 return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs
+
         if schema['type'] == 'array':
             typ, substructs = parse_schema_types(name, schema['items'], optional=False)
             if type(typ) is tuple:
                 typ = typ[0]
             return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs
+
         if schema['type'] == 'string':
+
+            def build(intt, typ='String'):
+                return (optionalize(typ, optional), intt + ': ' + schema.get('description', '')), structs
+
             if 'format' in schema:
                 if schema['format'] == 'int64':
-                    return (optionalize('String', optional), 'i64: ' + schema.get('description', '')), structs
+                    return build('i64')
                 if schema['format'] == 'int32':
-                    return (optionalize('String', optional), 'i32: ' + schema.get('description', '')), structs
+                    return build('i32')
                 if schema['format'] == 'uint64':
-                    return (optionalize('String', optional), 'u64: ' + schema.get('description', '')), structs
+                    return build('u64')
                 if schema['format'] == 'uint32':
-                    return (optionalize('String', optional), 'u32: ' + schema.get('description', '')), structs
+                    return build('u32')
                 if schema['format'] == 'double':
-                    return (optionalize('String', optional), 'f64: ' + schema.get('description', '')), structs
+                    return build('f64')
                 if schema['format'] == 'float':
-                    return (optionalize('String', optional), 'f32: ' + schema.get('description', '')), structs
+                    return build('f32')
                 if schema['format'] == 'date-time':
-                    return (optionalize('DateTime<Utc>', optional), schema.get('description', '')), structs
+                    return build('DateTime', typ='DateTime<Utc>')
             return (optionalize('String', optional), schema.get('description', '')), structs
+
         if schema['type'] == 'boolean':
             return (optionalize('bool', optional), schema.get('description', '')), structs
+
         if schema['type'] in ('number', 'integer'):
+
+            def build(intt):
+                return (optionalize(intt, optional), schema.get('description', '')), structs
+
             if schema['format'] == 'float':
-                return (optionalize('f32', optional), schema.get('description', '')), structs
+                return build('f32')
             if schema['format'] == 'double':
-                return (optionalize('f64', optional), schema.get('description', '')), structs
+                return build('f64')
             if schema['format'] == 'int32':
-                return (optionalize('i32', optional), schema.get('description', '')), structs
+                return build('i32')
             if schema['format'] == 'int64':
-                return (optionalize('i64', optional), schema.get('description', '')), structs
+                return build('i64')
             if schema['format'] == 'uint32':
-                return (optionalize('u32', optional), schema.get('description', '')), structs
+                return build('u32')
             if schema['format'] == 'uint64':
-                return (optionalize('u64', optional), schema.get('description', '')), structs
+                return build('u64')
+
         if schema['type'] == 'any':
             return (optionalize('String', optional), 'ANY data: ' + schema.get('description', '')), structs
-        raise Exception('unimplemented!', name, schema)
+
+        raise Exception('unimplemented schema type!', name, schema)
     except KeyError as e:
-        print(name, schema)
-        print(e)
+        print('KeyError while processing:', name, schema)
         raise e
 
 
