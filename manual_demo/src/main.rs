@@ -56,6 +56,32 @@ async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
     println!("{:?}", about);
 }
 
+async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
+    let mut cl = drive::FilesService::new(cl, auth);
+
+    let data = hyper::body::Bytes::from(fs::read(&f).unwrap());
+    let mut params = drive::FilesCreateParams::default();
+    params.include_permissions_for_view = Some("published".to_string());
+
+    let resp = cl.create_upload(&params, data).await.unwrap();
+
+    println!("{:?}", resp);
+
+    let mut params = drive::FilesUpdateParams::default();
+    println!("{:?}", params);
+    params.file_id = resp.id.clone().unwrap();
+    params.include_permissions_for_view = Some("published".to_string());
+    let mut file = resp;
+    file.name = Some("profilepic.jpg".to_string());
+    file.original_filename = Some("profilepic.jpg".to_string());
+    let update_resp = cl.update(&params, &file).await;
+    println!("{:?}", update_resp);
+
+    let mut params = drive::FilesGetParams::default();
+    params.file_id = file.id.clone().unwrap();
+    println!("{:?}", cl.get(&params, &()).await.unwrap());
+}
+
 async fn get_about(cl: &mut TlsClient, auth: &mut Authenticator) {
     let baseurl = "https://www.googleapis.com/drive/v3/";
     let path = "about";
@@ -87,10 +113,11 @@ async fn main() {
     let mut cl = https_client();
 
     //get_about(&mut cl, &mut auth).await;
-    upload_file(&mut cl, &mut auth, Path::new("pp.jpg")).await;
+    //upload_file(&mut cl, &mut auth, Path::new("pp.jpg")).await;
+    new_upload_file(cl, auth, Path::new("pp.jpg")).await;
 
-    match auth.token(scopes).await {
-        Ok(token) => println!("The token is {:?}", token),
-        Err(e) => println!("error: {:?}", e),
-    }
+    //match auth.token(scopes).await {
+    //    Ok(token) => println!("The token is {:?}", token),
+    //    Err(e) => println!("error: {:?}", e),
+    //}
 }
