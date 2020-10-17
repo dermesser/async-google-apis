@@ -22,12 +22,14 @@ def replace_keywords(name):
 
 
 def capitalize_first(name):
+    if len(name) == 0:
+        return name
     return name[0].upper() + name[1:]
 
 
 def snake_case(name):
     def r(c):
-        if c.islower():
+        if not c.isupper():
             return c
         return '_' + c.lower()
 
@@ -144,16 +146,18 @@ def scalar_type(jsont):
     raise Exception('unknown scalar type:', jsont)
 
 
-def generate_parameter_types(resources):
+def generate_parameter_types(resources, super_name=''):
     """Generate parameter structs from the resources list.
 
     Returns a list of source code strings.
     """
-    structs = []
+    frags = []
+    print('processing:', resources.keys())
     for resourcename, resource in resources.items():
-        for methodname, method in resource['methods'].items():
-            print("processed:", resourcename, methodname)
-            struct = {'name': capitalize_first(resourcename) + capitalize_first(methodname) + 'Params', 'fields': []}
+        for methodname, method in resource.get('methods', {}).items():
+            param_type_name = capitalize_first(super_name)+capitalize_first(resourcename) + capitalize_first(methodname) + 'Params'
+            print("processed:", resourcename, methodname, param_type_name)
+            struct = {'name': param_type_name, 'fields': []}
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
@@ -167,8 +171,11 @@ def generate_parameter_types(resources):
                         'attr':
                         '#[serde(rename = "{}")]'.format(paramname),
                     })
-            structs.append(struct)
-    return [chevron.render(ResourceStructTmpl, s) for s in structs]
+            frags.append(chevron.render(ResourceStructTmpl, struct))
+        # Generate parameter types for subresources.
+        frags.extend(
+                generate_parameter_types(resource.get('resources', {}), super_name=resourcename))
+    return frags
 
 
 def resolve_parameters(string, paramsname='params', suffix=''):
@@ -188,13 +195,15 @@ def generate_service(resource, methods, discdoc):
     Returns a rendered string with source code.
     """
     service = capitalize_first(resource)
-
-    parts = []
-
     method_fragments = []
+    subresource_fragments = []
 
     # Generate individual methods.
-    for methodname, method in methods['methods'].items():
+    for subresname, subresource in methods.get('resources', {}).items():
+        #subresource_fragments.extend(generate_parameter_types({service+capitalize_first(subresname): subresource}))
+        subresource_fragments.append(generate_service(service+capitalize_first(subresname), subresource, discdoc))
+
+    for methodname, method in methods.get('methods', {}).items():
         params_name = service + capitalize_first(methodname) + 'Params'
         parameters = {p: snake_case(p) for p, pp in method.get('parameters', {}).items() if 'required' not in pp}
         required_parameters = {p: snake_case(p) for p, pp in method.get('parameters', {}).items() if 'required' in pp}
@@ -210,7 +219,7 @@ def generate_service(resource, methods, discdoc):
 
         formatted_path, required_params = resolve_parameters(method['path'])
         data_normal = {
-            'name': methodname,
+            'name': snake_case(methodname),
             'param_type': params_name,
             'in_type': in_type,
             'out_type': out_type,
@@ -253,7 +262,7 @@ def generate_service(resource, methods, discdoc):
         'methods': [{
             'text': t
         } for t in method_fragments]
-    })
+    }) + '\n'.join(subresource_fragments)
 
 
 def generate_structs(discdoc):
@@ -278,6 +287,8 @@ def generate_structs(discdoc):
             for field in s['fields']:
                 if field.get('comment', None):
                     field['comment'] = field['comment'].replace('\n', ' ')
+            if not s['name']:
+                print('WARN', s)
             f.write(chevron.render(ResourceStructTmpl, s))
         for pt in parameter_types:
             f.write(pt)

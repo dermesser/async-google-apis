@@ -1,14 +1,15 @@
 // A manual client for a Google API (e.g. Drive), to test what makes sense and what doesn't.
 
 mod drive_v3_types;
+mod storage_v1_types;
 
 use drive_v3_types as drive;
 
-use yup_oauth2::InstalledFlowAuthenticator;
-use std::string::String;
-use std::str::FromStr;
-use std::path::Path;
 use std::fs;
+use std::path::Path;
+use std::str::FromStr;
+use std::string::String;
+use yup_oauth2::InstalledFlowAuthenticator;
 
 use hyper::Uri;
 use hyper_rustls::HttpsConnector;
@@ -25,19 +26,26 @@ fn https_client() -> TlsClient {
 
 struct FilesService {
     client: TlsClient,
-    authenticator: Authenticator
+    authenticator: Authenticator,
 }
 
 impl FilesService {
-    fn create(&mut self, parameters: drive::FilesCreateParams, file: drive::File, data: &hyper::body::Bytes) -> hyper::Result<drive::File> {
-
+    fn create(
+        &mut self,
+        parameters: drive::FilesCreateParams,
+        file: drive::File,
+        data: &hyper::body::Bytes,
+    ) -> hyper::Result<drive::File> {
         unimplemented!()
     }
 }
 
 async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
     let posturl = "https://www.googleapis.com/upload/drive/v3/files?uploadType=media";
-    let tok = auth.token(&["https://www.googleapis.com/auth/drive.file"]).await.unwrap();
+    let tok = auth
+        .token(&["https://www.googleapis.com/auth/drive.file"])
+        .await
+        .unwrap();
     let authtok = format!("&oauth_token={}&fields=*", tok.as_str());
 
     let file = fs::OpenOptions::new().read(true).open(f).unwrap();
@@ -45,8 +53,10 @@ async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
 
     let bytes = hyper::body::Bytes::from(fs::read(&f).unwrap());
     let body = hyper::Body::from(bytes);
-    let req = hyper::Request::post(posturl.to_string()+&authtok).header("Content-Length", format!("{}", len))
-        .body(body).unwrap();
+    let req = hyper::Request::post(posturl.to_string() + &authtok)
+        .header("Content-Length", format!("{}", len))
+        .body(body)
+        .unwrap();
     let resp = cl.request(req).await.unwrap();
 
     let body = resp.into_body();
@@ -86,10 +96,16 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
 async fn get_about(cl: &mut TlsClient, auth: &mut Authenticator) {
     let baseurl = "https://www.googleapis.com/drive/v3/";
     let path = "about";
-    let tok = auth.token(&["https://www.googleapis.com/auth/drive.file"]).await.unwrap();
+    let tok = auth
+        .token(&["https://www.googleapis.com/auth/drive.file"])
+        .await
+        .unwrap();
     let authtok = format!("?oauth_token={}&fields=*", tok.as_str());
 
-    let resp = cl.get(Uri::from_str(&(String::from(baseurl)+path+&authtok)).unwrap()).await.unwrap();
+    let resp = cl
+        .get(Uri::from_str(&(String::from(baseurl) + path + &authtok)).unwrap())
+        .await
+        .unwrap();
     let body = resp.into_body();
     let body = hyper::body::to_bytes(body).await.unwrap();
     let dec = String::from_utf8(body.to_vec()).unwrap();
@@ -103,11 +119,14 @@ async fn main() {
         .await
         .expect("client secret couldn't be read.");
 
-    let mut auth = InstalledFlowAuthenticator::builder(sec, yup_oauth2::InstalledFlowReturnMethod::HTTPRedirect)
-        .persist_tokens_to_disk("tokencache.json")
-        .build()
-        .await
-        .expect("installed flow authenticator!");
+    let mut auth = InstalledFlowAuthenticator::builder(
+        sec,
+        yup_oauth2::InstalledFlowReturnMethod::HTTPRedirect,
+    )
+    .persist_tokens_to_disk("tokencache.json")
+    .build()
+    .await
+    .expect("installed flow authenticator!");
 
     let scopes = &["https://www.googleapis.com/auth/drive.file"];
 
