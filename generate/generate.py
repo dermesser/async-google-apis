@@ -152,6 +152,7 @@ def parse_schema_types(name, schema, optional=True):
         print(e)
         raise e
 
+
 def generate_params_structs(resources, super_name=''):
     """Generate parameter structs from the resources list.
 
@@ -169,13 +170,10 @@ def generate_params_structs(resources, super_name=''):
                 for paramname, param in method['parameters'].items():
                     (typ, desc), substructs = parse_schema_types('', param, optional=False)
                     struct['fields'].append({
-                        'name':
-                        snake_case(paramname),
-                        'typ':
-                        optionalize(typ, not param.get('required', False)),
+                        'name': snake_case(paramname),
+                        'typ': optionalize(typ, not param.get('required', False)),
                         'comment': desc,
-                        'attr':
-                        '#[serde(rename = "{}")]'.format(paramname),
+                        'attr': '#[serde(rename = "{}")]'.format(paramname),
                     })
             frags.append(chevron.render(ResourceStructTmpl, struct))
         # Generate parameter types for subresources.
