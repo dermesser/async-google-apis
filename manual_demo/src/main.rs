@@ -23,6 +23,18 @@ fn https_client() -> TlsClient {
     cl
 }
 
+struct FilesService {
+    client: TlsClient,
+    authenticator: Authenticator
+}
+
+impl FilesService {
+    fn create(&mut self, parameters: drive::FilesCreateParams, file: drive::File, data: &hyper::body::Bytes) -> hyper::Result<drive::File> {
+
+        unimplemented!()
+    }
+}
+
 async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
     let posturl = "https://www.googleapis.com/upload/drive/v3/files?uploadType=media";
     let tok = auth.token(&["https://www.googleapis.com/auth/drive.file"]).await.unwrap();
@@ -31,7 +43,8 @@ async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
     let file = fs::OpenOptions::new().read(true).open(f).unwrap();
     let len = file.metadata().unwrap().len();
 
-    let body = hyper::Body::from(fs::read(&f).unwrap());
+    let bytes = hyper::body::Bytes::from(fs::read(&f).unwrap());
+    let body = hyper::Body::from(bytes);
     let req = hyper::Request::post(posturl.to_string()+&authtok).header("Content-Length", format!("{}", len))
         .body(body).unwrap();
     let resp = cl.request(req).await.unwrap();

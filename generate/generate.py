@@ -3,6 +3,7 @@
 import argparse
 import chevron
 import json
+import re
 import requests
 
 from os import path
@@ -134,11 +135,60 @@ def type_of_property(name, prop, optional=True):
         print(e)
         raise e
 
+def resolve_parameters(string, paramsname='params', suffix='.unwrap()'):
+    """Returns a Rust syntax for formatting the given string with API
+    parameters, and a list of (snake-case) API parameters that are used. """
+    pat = re.compile('\{(\w+)\}')
+    params = re.findall(pat, string)
+    snakeparams = [snake_case(p) for p in params]
+    format_params = ','.join(['{}={}.{}{}'.format(p, paramsname, sp, suffix) for (p, sp) in zip(params, snakeparams)])
+    return 'format!("{}", {})'.format(string, format_params), snakeparams
+
+def generate_service(resource, methods, discdoc):
+    service = capitalize_first(resource)
+
+    parts = []
+    parts.append('pub struct {}Service {{'.format(service))
+    parts.append('  client: TlsClient,')
+    parts.append('  authenticator: Authenticator,')
+    parts.append('}')
+    parts.append('')
+
+    parts.append('impl {}Service {{'.format(service))
+
+    for methodname, method in methods['methods'].items():
+        params_name = service+capitalize_first(methodname)+'Params'
+        in_type = method['request']['$ref'] if 'request' in method else '()'
+        out_type = method['response']['$ref'] if 'response' in method else '()'
+        is_upload = 'mediaUpload' in method
+
+        if is_upload:
+            parts.append('  fn {}(&mut self, params: {}, req: {}) -> Result<{}> {{'.format(
+                snake_case(methodname), params_name, in_type, out_type))
+        else:
+            parts.append('  fn {}(&mut self, params: {}, req: {}, data: &hyper::body::Bytes) -> Result<{}> {{'.format(
+                snake_case(methodname), params_name, in_type, out_type))
+
+        formatted_path, required_params = resolve_parameters(method['path'])
+        for rp in required_params:
+            parts.append('    if params.{}.is_none() {{'.format(rp))
+            parts.append('      return Err(Error::new(ApiError::InputDataError("Parameter {} is missing!".to_string())));'.format(rp))
+            parts.append('    }')
+        parts.append('    let relpath = {};'.format(formatted_path))
+        parts.append('    unimplemented!()')
+        parts.append('  }')
+
+    parts.append('}')
+    parts.append('')
+
+    return '\n'.join(parts)
+
 
 def generate_structs(discdoc):
     schemas = discdoc['schemas']
     resources = discdoc['resources']
     structs = []
+    services = []
     for name, desc in schemas.items():
         typ, substructs = type_of_property(name, desc)
         structs.extend(substructs)
@@ -156,17 +206,42 @@ def generate_structs(discdoc):
                     '{}{}Params'.format(capitalize_first(name), capitalize_first(methodname)), typ)
                 structs.extend(substructs)
 
+    for resource, methods in resources.items():
+        services.append(generate_service(resource, methods, discdoc))
+
     modname = (discdoc['id'] + '_types').replace(':', '_')
     with open(path.join('gen', modname + '.rs'), 'w') as f:
         f.writelines([
-            'use serde::{Deserialize, Serialize};\n', 'use chrono::{DateTime, Utc};\n',
-            'use std::collections::HashMap;\n'
+            'use serde::{Deserialize, Serialize};\n',
+            'use chrono::{DateTime, Utc};\n',
+            'use anyhow::{Error, Result};\n',
+            'use std::collections::HashMap;\n',
+            '''
+type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
+type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
+type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
+
+#[derive(Debug, Clone)]
+pub enum ApiError {
+  InputDataError(String),
+}
+
+impl std::error::Error for ApiError {}
+impl std::fmt::Display for ApiError {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    std::fmt::Debug::fmt(self, f)
+  }
+}
+''',
         ])
         for s in structs:
             for field in s['fields']:
                 if field.get('comment', None):
                     field['comment'] = field['comment'].replace('\n', ' ')
             f.write(chevron.render(ResourceStructTmpl, s))
+        for s in services:
+            f.write(s)
+            f.write('\n')
 
 
 def fetch_discovery_base(url, apis):
