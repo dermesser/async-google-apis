@@ -77,7 +77,7 @@ async fn main() {
     } else {
         // By default, list root directory.
         let mut p = drive::FilesListParams::default();
-        p.q = Some("'root'+in+parents".to_string());
+        p.q = Some("'root' in parents".to_string());
         let resp = cl.list(&p).await.expect("listing your Drive failed!");
         if let Some(files) = resp.files {
             for f in files {

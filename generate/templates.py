@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use anyhow::{Error, Result};
 use std::collections::HashMap;
+use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
 
 pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
 pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
@@ -89,11 +90,13 @@ pub async fn {{{name}}}(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     {{#params}}
     if let Some(ref val) = &params.{{{snake_param}}} {
-        url_params.push_str(&format!("&{{{param}}}={}", val));
+        url_params.push_str(&format!("&{{{param}}}={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     {{/params}}
     {{#required_params}}
-    url_params.push_str(&format!("&{{{param}}}={}", params.{{{snake_param}}}));
+    url_params.push_str(&format!("&{{{param}}}={}",
+        percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
     {{/required_params}}
 
     let full_uri = path + &url_params;
@@ -138,11 +141,13 @@ pub async fn {{{name}}}_upload(
 
     {{#params}}
     if let Some(ref val) = &params.{{{snake_param}}} {
-        url_params.push_str(&format!("&{{{param}}}={}", val));
+        url_params.push_str(&format!("&{{{param}}}={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     {{/params}}
     {{#required_params}}
-    url_params.push_str(&format!("&{{{param}}}={}", params.{{{snake_param}}}));
+    url_params.push_str(&format!("&{{{param}}}={}",
+        percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
     {{/required_params}}
 
     let full_uri = path + &url_params;

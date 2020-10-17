@@ -107,6 +107,7 @@ dependencies = [
  "chrono",
  "hyper",
  "hyper-rustls",
+ "percent-encoding",
  "serde",
  "serde_json",
  "tokio",

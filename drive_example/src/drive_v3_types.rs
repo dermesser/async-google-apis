@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use anyhow::{Error, Result};
 use std::collections::HashMap;
+use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
 
 pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
 pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
@@ -2381,16 +2382,20 @@ pub async fn get_start_page_token(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}", val));
+        url_params.push_str(&format!("&driveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}", val));
+        url_params.push_str(&format!("&teamDriveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -2432,42 +2437,55 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}", val));
+        url_params.push_str(&format!("&driveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_corpus_removals {
-        url_params.push_str(&format!("&includeCorpusRemovals={}", val));
+        url_params.push_str(&format!("&includeCorpusRemovals={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_items_from_all_drives {
-        url_params.push_str(&format!("&includeItemsFromAllDrives={}", val));
+        url_params.push_str(&format!("&includeItemsFromAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_removed {
-        url_params.push_str(&format!("&includeRemoved={}", val));
+        url_params.push_str(&format!("&includeRemoved={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_team_drive_items {
-        url_params.push_str(&format!("&includeTeamDriveItems={}", val));
+        url_params.push_str(&format!("&includeTeamDriveItems={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.restrict_to_my_drive {
-        url_params.push_str(&format!("&restrictToMyDrive={}", val));
+        url_params.push_str(&format!("&restrictToMyDrive={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.spaces {
-        url_params.push_str(&format!("&spaces={}", val));
+        url_params.push_str(&format!("&spaces={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}", val));
+        url_params.push_str(&format!("&teamDriveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
-    url_params.push_str(&format!("&pageToken={}", params.page_token));
+    url_params.push_str(&format!("&pageToken={}",
+        percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()
@@ -2508,42 +2526,55 @@ pub async fn watch(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}", val));
+        url_params.push_str(&format!("&driveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_corpus_removals {
-        url_params.push_str(&format!("&includeCorpusRemovals={}", val));
+        url_params.push_str(&format!("&includeCorpusRemovals={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_items_from_all_drives {
-        url_params.push_str(&format!("&includeItemsFromAllDrives={}", val));
+        url_params.push_str(&format!("&includeItemsFromAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_removed {
-        url_params.push_str(&format!("&includeRemoved={}", val));
+        url_params.push_str(&format!("&includeRemoved={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_team_drive_items {
-        url_params.push_str(&format!("&includeTeamDriveItems={}", val));
+        url_params.push_str(&format!("&includeTeamDriveItems={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.restrict_to_my_drive {
-        url_params.push_str(&format!("&restrictToMyDrive={}", val));
+        url_params.push_str(&format!("&restrictToMyDrive={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.spaces {
-        url_params.push_str(&format!("&spaces={}", val));
+        url_params.push_str(&format!("&spaces={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}", val));
+        url_params.push_str(&format!("&teamDriveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
-    url_params.push_str(&format!("&pageToken={}", params.page_token));
+    url_params.push_str(&format!("&pageToken={}",
+        percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()
@@ -2744,7 +2775,8 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}", val));
+        url_params.push_str(&format!("&includeDeleted={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -2782,16 +2814,20 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}", val));
+        url_params.push_str(&format!("&includeDeleted={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.start_modified_time {
-        url_params.push_str(&format!("&startModifiedTime={}", val));
+        url_params.push_str(&format!("&startModifiedTime={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -2886,7 +2922,8 @@ pub async fn create(
     }
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    url_params.push_str(&format!("&requestId={}", params.request_id));
+    url_params.push_str(&format!("&requestId={}",
+        percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()
@@ -2960,7 +2997,8 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3030,16 +3068,20 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.q {
-        url_params.push_str(&format!("&q={}", val));
+        url_params.push_str(&format!("&q={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3108,7 +3150,8 @@ pub async fn update(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3173,25 +3216,32 @@ pub async fn copy(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ignore_default_visibility {
-        url_params.push_str(&format!("&ignoreDefaultVisibility={}", val));
+        url_params.push_str(&format!("&ignoreDefaultVisibility={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}", val));
+        url_params.push_str(&format!("&keepRevisionForever={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}", val));
+        url_params.push_str(&format!("&ocrLanguage={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3234,28 +3284,36 @@ pub async fn create(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ignore_default_visibility {
-        url_params.push_str(&format!("&ignoreDefaultVisibility={}", val));
+        url_params.push_str(&format!("&ignoreDefaultVisibility={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}", val));
+        url_params.push_str(&format!("&keepRevisionForever={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}", val));
+        url_params.push_str(&format!("&ocrLanguage={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}", val));
+        url_params.push_str(&format!("&useContentAsIndexableText={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3291,28 +3349,36 @@ pub async fn create_upload(
     let mut url_params = format!("?uploadType=media&oauth_token={token}&fields=*", token=tok.as_str());
 
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ignore_default_visibility {
-        url_params.push_str(&format!("&ignoreDefaultVisibility={}", val));
+        url_params.push_str(&format!("&ignoreDefaultVisibility={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}", val));
+        url_params.push_str(&format!("&keepRevisionForever={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}", val));
+        url_params.push_str(&format!("&ocrLanguage={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}", val));
+        url_params.push_str(&format!("&useContentAsIndexableText={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3349,13 +3415,16 @@ pub async fn delete(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3391,7 +3460,8 @@ pub async fn empty_trash(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3428,7 +3498,8 @@ pub async fn export(
     }
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    url_params.push_str(&format!("&mimeType={}", params.mime_type));
+    url_params.push_str(&format!("&mimeType={}",
+        percent_encode(format!("{}", params.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()
@@ -3465,10 +3536,12 @@ pub async fn generate_ids(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.count {
-        url_params.push_str(&format!("&count={}", val));
+        url_params.push_str(&format!("&count={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.space {
-        url_params.push_str(&format!("&space={}", val));
+        url_params.push_str(&format!("&space={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3510,16 +3583,20 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.acknowledge_abuse {
-        url_params.push_str(&format!("&acknowledgeAbuse={}", val));
+        url_params.push_str(&format!("&acknowledgeAbuse={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3561,50 +3638,63 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.corpora {
-        url_params.push_str(&format!("&corpora={}", val));
+        url_params.push_str(&format!("&corpora={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.corpus {
-        url_params.push_str(&format!("&corpus={}", val));
+        url_params.push_str(&format!("&corpus={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}", val));
+        url_params.push_str(&format!("&driveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_items_from_all_drives {
-        url_params.push_str(&format!("&includeItemsFromAllDrives={}", val));
+        url_params.push_str(&format!("&includeItemsFromAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_team_drive_items {
-        url_params.push_str(&format!("&includeTeamDriveItems={}", val));
+        url_params.push_str(&format!("&includeTeamDriveItems={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.order_by {
-        url_params.push_str(&format!("&orderBy={}", val));
+        url_params.push_str(&format!("&orderBy={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.q {
-        url_params.push_str(&format!("&q={}", val));
+        url_params.push_str(&format!("&q={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.spaces {
-        url_params.push_str(&format!("&spaces={}", val));
+        url_params.push_str(&format!("&spaces={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}", val));
+        url_params.push_str(&format!("&teamDriveId={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
-    println!("{}", full_uri);
     let reqb = hyper::Request::builder()
         .uri(full_uri)
         .method("GET")
@@ -3641,31 +3731,40 @@ pub async fn update(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.add_parents {
-        url_params.push_str(&format!("&addParents={}", val));
+        url_params.push_str(&format!("&addParents={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}", val));
+        url_params.push_str(&format!("&keepRevisionForever={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}", val));
+        url_params.push_str(&format!("&ocrLanguage={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.remove_parents {
-        url_params.push_str(&format!("&removeParents={}", val));
+        url_params.push_str(&format!("&removeParents={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}", val));
+        url_params.push_str(&format!("&useContentAsIndexableText={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3701,31 +3800,40 @@ pub async fn update_upload(
     let mut url_params = format!("?uploadType=media&oauth_token={token}&fields=*", token=tok.as_str());
 
     if let Some(ref val) = &params.add_parents {
-        url_params.push_str(&format!("&addParents={}", val));
+        url_params.push_str(&format!("&addParents={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}", val));
+        url_params.push_str(&format!("&keepRevisionForever={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}", val));
+        url_params.push_str(&format!("&ocrLanguage={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.remove_parents {
-        url_params.push_str(&format!("&removeParents={}", val));
+        url_params.push_str(&format!("&removeParents={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}", val));
+        url_params.push_str(&format!("&useContentAsIndexableText={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3766,16 +3874,20 @@ pub async fn watch(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.acknowledge_abuse {
-        url_params.push_str(&format!("&acknowledgeAbuse={}", val));
+        url_params.push_str(&format!("&acknowledgeAbuse={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3838,28 +3950,36 @@ pub async fn create(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.email_message {
-        url_params.push_str(&format!("&emailMessage={}", val));
+        url_params.push_str(&format!("&emailMessage={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}", val));
+        url_params.push_str(&format!("&enforceSingleParent={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.move_to_new_owners_root {
-        url_params.push_str(&format!("&moveToNewOwnersRoot={}", val));
+        url_params.push_str(&format!("&moveToNewOwnersRoot={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.send_notification_email {
-        url_params.push_str(&format!("&sendNotificationEmail={}", val));
+        url_params.push_str(&format!("&sendNotificationEmail={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.transfer_ownership {
-        url_params.push_str(&format!("&transferOwnership={}", val));
+        url_params.push_str(&format!("&transferOwnership={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3901,13 +4021,16 @@ pub async fn delete(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3948,13 +4071,16 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -3995,22 +4121,28 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}", val));
+        url_params.push_str(&format!("&includePermissionsForView={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4047,19 +4179,24 @@ pub async fn update(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.remove_expiration {
-        url_params.push_str(&format!("&removeExpiration={}", val));
+        url_params.push_str(&format!("&removeExpiration={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}", val));
+        url_params.push_str(&format!("&supportsAllDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}", val));
+        url_params.push_str(&format!("&supportsTeamDrives={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.transfer_ownership {
-        url_params.push_str(&format!("&transferOwnership={}", val));
+        url_params.push_str(&format!("&transferOwnership={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4196,7 +4333,8 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}", val));
+        url_params.push_str(&format!("&includeDeleted={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4234,13 +4372,16 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}", val));
+        url_params.push_str(&format!("&includeDeleted={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4377,7 +4518,8 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.acknowledge_abuse {
-        url_params.push_str(&format!("&acknowledgeAbuse={}", val));
+        url_params.push_str(&format!("&acknowledgeAbuse={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4419,10 +4561,12 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4518,7 +4662,8 @@ pub async fn create(
     }
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    url_params.push_str(&format!("&requestId={}", params.request_id));
+    url_params.push_str(&format!("&requestId={}",
+        percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()
@@ -4592,7 +4737,8 @@ pub async fn get(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4629,16 +4775,20 @@ pub async fn list(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}", val));
+        url_params.push_str(&format!("&pageSize={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}", val));
+        url_params.push_str(&format!("&pageToken={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.q {
-        url_params.push_str(&format!("&q={}", val));
+        url_params.push_str(&format!("&q={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
@@ -4674,7 +4824,8 @@ pub async fn update(
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}", val));
+        url_params.push_str(&format!("&useDomainAdminAccess={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
 
     let full_uri = path + &url_params;
