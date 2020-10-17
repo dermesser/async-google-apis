@@ -90,7 +90,7 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
 
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
-    println!("{:?}", cl.get(&params, &()).await.unwrap());
+    println!("{:?}", cl.get(&params).await.unwrap());
 }
 
 async fn get_about(cl: &mut TlsClient, auth: &mut Authenticator) {

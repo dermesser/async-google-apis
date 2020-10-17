@@ -70,7 +70,7 @@ impl {{{service}}}Service {
 
 # Takes:
 # name, description, param_type, in_type, out_type
-# base_path, rel_path_expr
+# base_path, rel_path_expr, scopes (string repr. of rust string array),
 # params: [{param, snake_param}]
 # http_method
 NormalMethodTmpl = '''
@@ -80,6 +80,11 @@ pub async fn {{{name}}}(
 
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
+    let mut scopes = &self.scopes;
+    if scopes.is_empty() {
+        scopes = &vec![{{#scopes}}"{{{scope}}}".to_string(),
+        {{/scopes}}];
+    }
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
     {{#params}}
@@ -96,13 +101,17 @@ pub async fn {{{name}}}(
         .uri(full_uri)
         .method("{{{http_method}}}")
         .header("Content-Type", "application/json");
+
+    let body = hyper::Body::from("");
+    {{#in_type}}
     let mut body_str = serde_json::to_string(req)?;
     if body_str == "null" {
         body_str.clear();
     }
     let body = hyper::Body::from(body_str);
-    let req = reqb.body(body)?;
-    let resp = self.client.request(req).await?;
+    {{/in_type}}
+    let request = reqb.body(body)?;
+    let resp = self.client.request(request).await?;
     if !resp.status().is_success() {
         return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
     }
@@ -142,8 +151,8 @@ pub async fn {{{name}}}_upload(
         .method("{{{http_method}}}")
         .header("Content-Length", data.len());
     let body = hyper::Body::from(data);
-    let req = reqb.body(body)?;
-    let resp = self.client.request(req).await?;
+    let request = reqb.body(body)?;
+    let resp = self.client.request(request).await?;
     if !resp.status().is_success() {
         return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
     }
