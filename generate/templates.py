@@ -29,7 +29,7 @@ ResourceStructTmpl = '''
 pub struct {{{name}}} {
 {{#fields}}
     {{#comment}}
-    // {{{comment}}}
+    /// {{{comment}}}
     {{/comment}}
     {{#attr}}
     {{{attr}}}
@@ -69,12 +69,14 @@ impl {{{service}}}Service {
 '''
 
 # Takes:
-# name, param_type, in_type, out_type
+# name, description, param_type, in_type, out_type
 # base_path, rel_path_expr
 # params: [{param, snake_param}]
 # http_method
-NormalMethodTmpl = '''pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}{{{#in_type}}}, req: &{{{in_type}}}{{{/in_type}}}) -> Result<{{{out_type}}}> {
+NormalMethodTmpl = '''
+/// {{{description}}}
+pub async fn {{{name}}}(
+    &mut self, params: &{{{param_type}}}{{#in_type}}, req: &{{{in_type}}}{{/in_type}}) -> Result<{{{out_type}}}> {
 
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
@@ -116,7 +118,9 @@ NormalMethodTmpl = '''pub async fn {{{name}}}(
 # base_path, rel_path_expr
 # params: [{param, snake_param}]
 # http_method
-UploadMethodTmpl = '''pub async fn {{{name}}}_upload(
+UploadMethodTmpl = '''
+/// {{{description}}}
+pub async fn {{{name}}}_upload(
     &mut self, params: &{{{param_type}}}, data: hyper::body::Bytes) -> Result<{{out_type}}> {
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;

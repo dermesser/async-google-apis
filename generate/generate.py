@@ -155,7 +155,8 @@ def generate_parameter_types(resources, super_name=''):
     print('processing:', resources.keys())
     for resourcename, resource in resources.items():
         for methodname, method in resource.get('methods', {}).items():
-            param_type_name = capitalize_first(super_name)+capitalize_first(resourcename) + capitalize_first(methodname) + 'Params'
+            param_type_name = capitalize_first(super_name) + capitalize_first(resourcename) + capitalize_first(
+                methodname) + 'Params'
             print("processed:", resourcename, methodname, param_type_name)
             struct = {'name': param_type_name, 'fields': []}
             # Build struct dict for rendering.
@@ -173,8 +174,7 @@ def generate_parameter_types(resources, super_name=''):
                     })
             frags.append(chevron.render(ResourceStructTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(
-                generate_parameter_types(resource.get('resources', {}), super_name=resourcename))
+        frags.extend(generate_parameter_types(resource.get('resources', {}), super_name=resourcename))
     return frags
 
 
@@ -198,15 +198,26 @@ def generate_service(resource, methods, discdoc):
     method_fragments = []
     subresource_fragments = []
 
-    # Generate individual methods.
+    # Generate methods for subresources.
     for subresname, subresource in methods.get('resources', {}).items():
-        #subresource_fragments.extend(generate_parameter_types({service+capitalize_first(subresname): subresource}))
-        subresource_fragments.append(generate_service(service+capitalize_first(subresname), subresource, discdoc))
+        subresource_fragments.append(generate_service(service + capitalize_first(subresname), subresource, discdoc))
 
     for methodname, method in methods.get('methods', {}).items():
-        params_name = service + capitalize_first(methodname) + 'Params'
-        parameters = {p: snake_case(p) for p, pp in method.get('parameters', {}).items() if 'required' not in pp}
-        required_parameters = {p: snake_case(p) for p, pp in method.get('parameters', {}).items() if 'required' in pp}
+        # Goal: Instantiate the templates for upload and non-upload methods.
+
+        # e.g. FilesGetParams
+        params_type_name = service + capitalize_first(methodname) + 'Params'
+        # All parameters that are optional (as URL parameters)
+        parameters = {
+            p: snake_case(p)
+            for p, pp in method.get('parameters', {}).items() if ('required' not in pp and pp['location'] != 'path')
+        }
+        # All required parameters not represented in the path.
+        required_parameters = {
+            p: snake_case(p)
+            for p, pp in method.get('parameters', {}).items() if ('required' in pp and pp['location'] != 'path')
+        }
+        # Types of the function
         in_type = method['request']['$ref'] if 'request' in method else '()'
         out_type = method['response']['$ref'] if 'response' in method else '()'
         is_upload = 'mediaUpload' in method
@@ -220,7 +231,7 @@ def generate_service(resource, methods, discdoc):
         formatted_path, required_params = resolve_parameters(method['path'])
         data_normal = {
             'name': snake_case(methodname),
-            'param_type': params_name,
+            'param_type': params_type_name,
             'in_type': in_type,
             'out_type': out_type,
             'base_path': discdoc['baseUrl'],
@@ -233,15 +244,17 @@ def generate_service(resource, methods, discdoc):
                 'param': p,
                 'snake_param': sp
             } for (p, sp) in required_parameters.items()],
+            'description': method.get('description', ''),
             'http_method': http_method
         }
+        if in_type == '()':
+            data_normal.pop('in_type')
         method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
         if is_upload:
             data_upload = {
                 'name': snake_case(methodname),
-                'param_type': params_name,
-                'in_type': in_type,
+                'param_type': params_type_name,
                 'out_type': out_type,
                 'base_path': discdoc['rootUrl'],
                 'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
@@ -253,7 +266,8 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
-                'http_method': http_method
+                'description': method.get('description', ''),
+                'http_method': http_method,
             }
             method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
 
