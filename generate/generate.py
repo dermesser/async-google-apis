@@ -20,16 +20,20 @@ pub struct {{name}} {
 }
 '''
 
+
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
+
 def replace_keywords(name):
     return {
-            'type': ('typ', 'type'),
+        'type': ('typ', 'type'),
     }.get(name, name)
+
 
 def capitalize_first(name):
     return name[0].upper() + name[1:]
+
 
 def snake_case(name):
     def r(c):
@@ -66,8 +70,10 @@ def type_of_property(name, prop, optional=True):
                 typ = name
                 struct = {'name': name, 'fields': []}
                 for pn, pp in prop['properties'].items():
-                    subtyp, substructs = type_of_property(
-                        name + capitalize_first(pn), pp, optional=True)
+                    subtyp, substructs = type_of_property(name +
+                                                          capitalize_first(pn),
+                                                          pp,
+                                                          optional=True)
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -91,7 +97,9 @@ def type_of_property(name, prop, optional=True):
                     })
                     structs.extend(substructs)
                 structs.append(struct)
-                return (optionalize(typ, optional), prop.get('description', '')), structs
+                return (optionalize(typ,
+                                    optional), prop.get('description',
+                                                        '')), structs
             if 'additionalProperties' in prop:
                 field, substructs = type_of_property(
                     name, prop['additionalProperties'], optional=False)
@@ -100,41 +108,65 @@ def type_of_property(name, prop, optional=True):
                     typ = field[0]
                 else:
                     typ = field
-                return (optionalize('HashMap<String,'+typ+'>', optional), prop.get('description', '')), structs
+                return (optionalize('HashMap<String,' + typ + '>',
+                                    optional), prop.get('description',
+                                                        '')), structs
         if prop['type'] == 'array':
-            typ, substructs = type_of_property(name, prop['items'], optional=False)
+            typ, substructs = type_of_property(name,
+                                               prop['items'],
+                                               optional=False)
             if type(typ) is tuple:
                 typ = typ[0]
-            return (optionalize('Vec<'+typ+'>', optional), prop.get('description', '')), structs + substructs
+            return (optionalize('Vec<' + typ + '>',
+                                optional), prop.get('description',
+                                                    '')), structs + substructs
         if prop['type'] == 'string':
             if 'format' in prop:
                 if prop['format'] == 'int64':
-                    return (optionalize('String', optional), 'i64: ' + prop.get('description', '')), structs
+                    return (optionalize('String', optional),
+                            'i64: ' + prop.get('description', '')), structs
                 if prop['format'] == 'int32':
-                    return (optionalize('String', optional), 'i32: ' + prop.get('description', '')), structs
+                    return (optionalize('String', optional),
+                            'i32: ' + prop.get('description', '')), structs
                 if prop['format'] == 'double':
-                    return (optionalize('String', optional), 'f64: ' + prop.get('description', '')), structs
+                    return (optionalize('String', optional),
+                            'f64: ' + prop.get('description', '')), structs
                 if prop['format'] == 'float':
-                    return (optionalize('String', optional), 'f32: ' + prop.get('description', '')), structs
+                    return (optionalize('String', optional),
+                            'f32: ' + prop.get('description', '')), structs
                 if prop['format'] == 'date-time':
-                    return (optionalize('DateTime<Utc>', optional),  prop.get('description', '')), structs
-            return (optionalize('String', optional), prop.get('description', '')), structs
+                    return (optionalize('DateTime<Utc>',
+                                        optional), prop.get('description',
+                                                            '')), structs
+            return (optionalize('String',
+                                optional), prop.get('description',
+                                                    '')), structs
         if prop['type'] == 'boolean':
-            return (optionalize('bool', optional), prop.get('description', '')), structs
+            return (optionalize('bool', optional), prop.get('description',
+                                                            '')), structs
         if prop['type'] in ('number', 'integer'):
             if prop['format'] == 'float':
-                return (optionalize('f32', optional),  prop.get('description', '')), structs
+                return (optionalize('f32',
+                                    optional), prop.get('description',
+                                                        '')), structs
             if prop['format'] == 'double':
-                return (optionalize('f64', optional), prop.get('description', '')), structs
+                return (optionalize('f64',
+                                    optional), prop.get('description',
+                                                        '')), structs
             if prop['format'] == 'int32':
-                return (optionalize('i32', optional), prop.get('description', '')), structs
+                return (optionalize('i32',
+                                    optional), prop.get('description',
+                                                        '')), structs
             if prop['format'] == 'int64':
-                return (optionalize('i64', optional), prop.get('description', '')), structs
+                return (optionalize('i64',
+                                    optional), prop.get('description',
+                                                        '')), structs
         raise Exception('unimplemented!', name, prop)
     except KeyError as e:
         print(name, prop)
         print(e)
         raise e
+
 
 def generate_structs(discdoc):
     schemas = discdoc['schemas']
@@ -146,11 +178,18 @@ def generate_structs(discdoc):
     for name, res in resources.items():
         for methodname, method in res['methods'].items():
             if 'parameters' not in method:
-                structs.append({'name': '{}{}Params'.format(capitalize_first(name) , capitalize_first(methodname)), 'fields': []})
+                structs.append({
+                    'name':
+                    '{}{}Params'.format(capitalize_first(name),
+                                        capitalize_first(methodname)),
+                    'fields': []
+                })
             else:
                 params = method['parameters']
                 typ = {'type': 'object', 'properties': params}
-                typ, substructs = type_of_property('{}{}Params'.format(capitalize_first(name), capitalize_first(methodname)), typ)
+                typ, substructs = type_of_property(
+                    '{}{}Params'.format(capitalize_first(name),
+                                        capitalize_first(methodname)), typ)
                 structs.extend(substructs)
 
     modname = (discdoc['id'] + '_types').replace(':', '_')
@@ -159,7 +198,7 @@ def generate_structs(discdoc):
             'use serde::{Deserialize, Serialize};\n',
             'use chrono::{DateTime, Utc};\n',
             'use std::collections::HashMap;\n'
-            ])
+        ])
         for s in structs:
             for field in s['fields']:
                 if field.get('comment', None):
