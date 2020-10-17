@@ -10,6 +10,7 @@ from os import path
 
 from templates import *
 
+
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
@@ -197,22 +198,43 @@ def generate_service(resource, methods, discdoc):
         http_method = method['httpMethod']
 
         formatted_path, required_params = resolve_parameters(method['path'])
-        data_normal = {'name': methodname, 'param_type': params_name, 'in_type': in_type, 'out_type': out_type,
-                'base_path': discdoc['baseUrl'], 'rel_path_expr': formatted_path,
-                'params': [{'param': p, 'snake_param': sp} for (p, sp) in parameters.items()],
-                'http_method': http_method}
+        data_normal = {
+            'name': methodname,
+            'param_type': params_name,
+            'in_type': in_type,
+            'out_type': out_type,
+            'base_path': discdoc['baseUrl'],
+            'rel_path_expr': formatted_path,
+            'params': [{
+                'param': p,
+                'snake_param': sp
+            } for (p, sp) in parameters.items()],
+            'http_method': http_method
+        }
         method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
         if is_upload:
-            data_upload = {'name': snake_case(methodname), 'param_type': params_name, 'in_type': in_type, 'out_type': out_type,
-                    'base_path': discdoc['rootUrl'], 'rel_path_expr': '"'+upload_path.lstrip('/')+'"',
-                    'params': [{'param': p, 'snake_param': sp} for (p, sp) in parameters.items()],
-                    'http_method': http_method}
+            data_upload = {
+                'name': snake_case(methodname),
+                'param_type': params_name,
+                'in_type': in_type,
+                'out_type': out_type,
+                'base_path': discdoc['rootUrl'],
+                'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
+                'params': [{
+                    'param': p,
+                    'snake_param': sp
+                } for (p, sp) in parameters.items()],
+                'http_method': http_method
+            }
             method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
 
-    return chevron.render(ServiceImplementationTmpl,
-            {'service': service,
-             'methods': [{'text': t} for t in method_fragments]})
+    return chevron.render(ServiceImplementationTmpl, {
+        'service': service,
+        'methods': [{
+            'text': t
+        } for t in method_fragments]
+    })
 
 
 def generate_structs(discdoc):

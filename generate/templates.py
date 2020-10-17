@@ -1,4 +1,3 @@
-
 # General imports and error type.
 RustHeader = '''
 use serde::{Deserialize, Serialize};
