@@ -1590,7 +1590,7 @@ pub struct ChangesListParams {
     pub include_team_drive_items: Option<bool>,
     /// The maximum number of changes to return per page.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response or to the response from the getStartPageToken method.
     #[serde(rename = "pageToken")]
     pub page_token: String,
@@ -1633,7 +1633,7 @@ pub struct ChangesWatchParams {
     pub include_team_drive_items: Option<bool>,
     /// The maximum number of changes to return per page.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response or to the response from the getStartPageToken method.
     #[serde(rename = "pageToken")]
     pub page_token: String,
@@ -1698,7 +1698,7 @@ pub struct CommentsListParams {
     pub include_deleted: Option<bool>,
     /// The maximum number of comments to return per page.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -1752,7 +1752,7 @@ pub struct DrivesHideParams {
 pub struct DrivesListParams {
     /// Maximum number of shared drives to return.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// Page token for shared drives.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -1874,7 +1874,7 @@ pub struct FilesExportParams {
 pub struct FilesGenerateIdsParams {
     /// The number of IDs to return.
     #[serde(rename = "count")]
-    pub count: Option<i64>,
+    pub count: Option<i32>,
     /// The space in which the IDs can be used to create new files. Supported values are 'drive' and 'appDataFolder'.
     #[serde(rename = "space")]
     pub space: Option<String>,
@@ -1924,7 +1924,7 @@ pub struct FilesListParams {
     pub order_by: Option<String>,
     /// The maximum number of files to return per page. Partial or empty result pages are possible even before the end of the files list has been reached.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -2077,7 +2077,7 @@ pub struct PermissionsListParams {
     pub include_permissions_for_view: Option<String>,
     /// The maximum number of permissions to return per page. When not set for files in a shared drive, at most 100 results will be returned. When not set for files that are not in a shared drive, the entire list will be returned.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -2169,7 +2169,7 @@ pub struct RepliesListParams {
     pub include_deleted: Option<bool>,
     /// The maximum number of replies to return per page.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -2218,7 +2218,7 @@ pub struct RevisionsListParams {
     pub file_id: String,
     /// The maximum number of revisions to return per page.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// The token for continuing a previous list request on the next page. This should be set to the value of 'nextPageToken' from the previous response.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -2262,7 +2262,7 @@ pub struct TeamdrivesGetParams {
 pub struct TeamdrivesListParams {
     /// Maximum number of Team Drives to return.
     #[serde(rename = "pageSize")]
-    pub page_size: Option<i64>,
+    pub page_size: Option<i32>,
     /// Page token for Team Drives.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,

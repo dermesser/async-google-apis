@@ -36,7 +36,7 @@ def snake_case(name):
     return ''.join([r(c) for c in name])
 
 
-def generate_resource_structs(name, schema, optional=True):
+def parse_schema_types(name, schema, optional=True):
     """Translate a JSON schema type into Rust types, recursively.
 
     This function takes a schema entry from the `schemas` section of a Discovery document,
@@ -47,12 +47,13 @@ def generate_resource_structs(name, schema, optional=True):
         schema: A JSON object from a discovery document representing a type.
 
     Returns:
-        type (string|tuple), structs (list of dicts)
+        (tuple, [dict])
 
-        where type is a string representing a Rust type, or a tuple where the first element is a Rust type
-        and the second element is a comment detailing the use of the field.
-        The list of dicts returned as structs are any structs that need to be separately implemented and that
-        the generated struct (if it was a struct) depends on.
+        where type is a tuple where the first element is a Rust type and the
+        second element is a comment detailing the use of the field. The list of
+        dicts returned as second element are any structs that need to be separately
+        implemented and that the generated struct (if it was a struct) depends
+        on. The dict contains elements as expected by templates.ResourceStructTmpl.
     """
     typ = ''
     comment = ''
@@ -70,7 +71,7 @@ def generate_resource_structs(name, schema, optional=True):
                 typ = name
                 struct = {'name': name, 'fields': []}
                 for pn, pp in schema['properties'].items():
-                    subtyp, substructs = generate_resource_structs(name + capitalize_first(pn), pp, optional=True)
+                    subtyp, substructs = parse_schema_types(name + capitalize_first(pn), pp, optional=True)
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -99,7 +100,7 @@ def generate_resource_structs(name, schema, optional=True):
                 return (optionalize(typ, optional), schema.get('description', '')), structs
 
             if 'additionalProperties' in schema:
-                field, substructs = generate_resource_structs(name, schema['additionalProperties'], optional=False)
+                field, substructs = parse_schema_types(name, schema['additionalProperties'], optional=False)
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
@@ -107,7 +108,7 @@ def generate_resource_structs(name, schema, optional=True):
                     typ = field
                 return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs
         if schema['type'] == 'array':
-            typ, substructs = generate_resource_structs(name, schema['items'], optional=False)
+            typ, substructs = parse_schema_types(name, schema['items'], optional=False)
             if type(typ) is tuple:
                 typ = typ[0]
             return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs
@@ -117,6 +118,10 @@ def generate_resource_structs(name, schema, optional=True):
                     return (optionalize('String', optional), 'i64: ' + schema.get('description', '')), structs
                 if schema['format'] == 'int32':
                     return (optionalize('String', optional), 'i32: ' + schema.get('description', '')), structs
+                if schema['format'] == 'uint64':
+                    return (optionalize('String', optional), 'u64: ' + schema.get('description', '')), structs
+                if schema['format'] == 'uint32':
+                    return (optionalize('String', optional), 'u32: ' + schema.get('description', '')), structs
                 if schema['format'] == 'double':
                     return (optionalize('String', optional), 'f64: ' + schema.get('description', '')), structs
                 if schema['format'] == 'float':
@@ -135,6 +140,10 @@ def generate_resource_structs(name, schema, optional=True):
                 return (optionalize('i32', optional), schema.get('description', '')), structs
             if schema['format'] == 'int64':
                 return (optionalize('i64', optional), schema.get('description', '')), structs
+            if schema['format'] == 'uint32':
+                return (optionalize('u32', optional), schema.get('description', '')), structs
+            if schema['format'] == 'uint64':
+                return (optionalize('u64', optional), schema.get('description', '')), structs
         if schema['type'] == 'any':
             return (optionalize('String', optional), 'ANY data: ' + schema.get('description', '')), structs
         raise Exception('unimplemented!', name, schema)
@@ -142,18 +151,6 @@ def generate_resource_structs(name, schema, optional=True):
         print(name, schema)
         print(e)
         raise e
-
-
-def scalar_type(jsont):
-    """Translate a scalar json type (for parameters) into Rust."""
-    if jsont == 'boolean':
-        return 'bool'
-    elif jsont == 'string':
-        return 'String'
-    elif jsont == 'integer':
-        return 'i64'
-    raise Exception('unknown scalar type:', jsont)
-
 
 def generate_params_structs(resources, super_name=''):
     """Generate parameter structs from the resources list.
@@ -170,13 +167,13 @@ def generate_params_structs(resources, super_name=''):
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
+                    (typ, desc), substructs = parse_schema_types('', param, optional=False)
                     struct['fields'].append({
                         'name':
                         snake_case(paramname),
                         'typ':
-                        optionalize(scalar_type(param['type']), not param.get('required', False)),
-                        'comment':
-                        param.get('description', ''),
+                        optionalize(typ, not param.get('required', False)),
+                        'comment': desc,
                         'attr':
                         '#[serde(rename = "{}")]'.format(paramname),
                     })
@@ -338,7 +335,7 @@ def generate_all(discdoc):
 
     # Generate resource types
     for name, desc in schemas.items():
-        typ, substructs = generate_resource_structs(name, desc)
+        typ, substructs = parse_schema_types(name, desc)
         structs.extend(substructs)
 
     # Assemble everything into a file.
