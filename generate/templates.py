@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use anyhow::{Error, Result};
 use std::collections::HashMap;
+use tokio::stream::{Stream, StreamExt};
 use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
 
 pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
@@ -165,5 +166,63 @@ pub async fn {{{name}}}_upload(
     let bodystr = String::from_utf8(resp_body.to_vec())?;
     let decoded = serde_json::from_str(&bodystr)?;
     Ok(decoded)
+  }
+'''
+
+# Takes:
+# name, param_type, in_type, out_type
+# base_path, rel_path_expr
+# params: [{param, snake_param}]
+# http_method
+DownloadMethodTmpl = '''
+/// {{{description}}}
+pub async fn {{{name}}}(
+    &mut self, params: &{{{param_type}}}, {{#in_type}}{{{in_type}}},{{/in_type}} dst: &mut std::io::Write) -> Result<{{out_type}}> {
+
+    let rel_path = {{{rel_path_expr}}};
+    let path = "{{{base_path}}}".to_string() + &rel_path;
+    let mut scopes = &self.scopes;
+    if scopes.is_empty() {
+        scopes = &vec![{{#scopes}}"{{{scope}}}".to_string(),
+        {{/scopes}}];
+    }
+    let tok = self.authenticator.token(&self.scopes).await?;
+    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    {{#params}}
+    if let Some(ref val) = &params.{{{snake_param}}} {
+        url_params.push_str(&format!("&{{{param}}}={}",
+            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    {{/params}}
+    {{#required_params}}
+    url_params.push_str(&format!("&{{{param}}}={}",
+        percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    {{/required_params}}
+
+    let full_uri = path + &url_params;
+    let reqb = hyper::Request::builder()
+        .uri(full_uri)
+        .method("{{{http_method}}}")
+        .header("Content-Type", "application/json");
+
+    let body = hyper::Body::from("");
+    {{#in_type}}
+    let mut body_str = serde_json::to_string(req)?;
+    if body_str == "null" {
+        body_str.clear();
+    }
+    let body = hyper::Body::from(body_str);
+    {{/in_type}}
+    let request = reqb.body(body)?;
+    let resp = self.client.request(request).await?;
+    if !resp.status().is_success() {
+        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
+    }
+    let resp_body = resp.into_body();
+    let write_result = resp_body.map(move |chunk| { dst.write(chunk?.as_ref()); Ok(()) }).collect::<Vec<Result<()>>>().await;
+    if let Some(e) = write_result.into_iter().find(|r| r.is_err()) {
+        return e;
+    }
+    Ok(())
   }
 '''

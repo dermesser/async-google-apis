@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use anyhow::{Error, Result};
 use std::collections::HashMap;
+use tokio::stream::{Stream, StreamExt};
 use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
 
 pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
@@ -3485,9 +3486,9 @@ pub async fn empty_trash(
   
 /// Exports a Google Doc to the requested MIME type and returns the exported content. Please note that the exported content is limited to 10MB.
 pub async fn export(
-    &mut self, params: &FilesExportParams) -> Result<()> {
+    &mut self, params: &FilesExportParams,  dst: &mut std::io::Write) -> Result<()> {
 
-    let rel_path = format!("files/{fileId}/export", fileId=params.file_id);
+    let rel_path = format!("files/trash", );
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let mut scopes = &self.scopes;
     if scopes.is_empty() {
@@ -3513,10 +3514,12 @@ pub async fn export(
     if !resp.status().is_success() {
         return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
     }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let bodystr = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&bodystr)?;
-    Ok(decoded)
+    let resp_body = resp.into_body();
+    let write_result = resp_body.map(move |chunk| { dst.write(chunk?.as_ref()); Ok(()) }).collect::<Vec<Result<()>>>().await;
+    if let Some(e) = write_result.into_iter().find(|r| r.is_err()) {
+        return e;
+    }
+    Ok(())
   }
 
   

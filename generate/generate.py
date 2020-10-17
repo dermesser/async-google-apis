@@ -228,7 +228,10 @@ def generate_service(resource, methods, discdoc):
         # Types of the function
         in_type = method['request']['$ref'] if 'request' in method else '()'
         out_type = method['response']['$ref'] if 'response' in method else '()'
+
+        is_download = method.get('supportsMediaDownload', False) and not method.get('useMediaDownloadService', False)
         is_upload = 'mediaUpload' in method
+
         media_upload = method.get('mediaUpload', None)
         if media_upload and 'simple' in media_upload['protocols']:
             upload_path = media_upload['protocols']['simple']['path']
@@ -236,39 +239,14 @@ def generate_service(resource, methods, discdoc):
             upload_path = ''
         http_method = method['httpMethod']
 
-        formatted_path, required_params = resolve_parameters(method['path'])
-        data_normal = {
-            'name': snake_case(methodname),
-            'param_type': params_type_name,
-            'in_type': in_type,
-            'out_type': out_type,
-            'base_path': discdoc['baseUrl'],
-            'rel_path_expr': formatted_path,
-            'params': [{
-                'param': p,
-                'snake_param': sp
-            } for (p, sp) in parameters.items()],
-            'required_params': [{
-                'param': p,
-                'snake_param': sp
-            } for (p, sp) in required_parameters.items()],
-            'scopes': [{
-                'scope': s
-            } for s in method['scopes']],
-            'description': method.get('description', ''),
-            'http_method': http_method
-        }
-        if in_type == '()':
-            data_normal.pop('in_type')
-        method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
-
-        if is_upload:
-            data_upload = {
+        if is_download:
+            data_download = {
                 'name': snake_case(methodname),
                 'param_type': params_type_name,
+                'in_type': in_type,
                 'out_type': out_type,
-                'base_path': discdoc['rootUrl'],
-                'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
+                'base_path': discdoc['baseUrl'],
+                'rel_path_expr': formatted_path,
                 'params': [{
                     'param': p,
                     'snake_param': sp
@@ -281,9 +259,61 @@ def generate_service(resource, methods, discdoc):
                     'scope': s
                 } for s in method['scopes']],
                 'description': method.get('description', ''),
-                'http_method': http_method,
+                'http_method': http_method
             }
-            method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
+            if in_type == '()':
+                data_download.pop('in_type')
+            method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
+
+        else:
+            formatted_path, required_params = resolve_parameters(method['path'])
+            data_normal = {
+                'name': snake_case(methodname),
+                'param_type': params_type_name,
+                'in_type': in_type,
+                'out_type': out_type,
+                'base_path': discdoc['baseUrl'],
+                'rel_path_expr': formatted_path,
+                'params': [{
+                    'param': p,
+                    'snake_param': sp
+                } for (p, sp) in parameters.items()],
+                'required_params': [{
+                    'param': p,
+                    'snake_param': sp
+                } for (p, sp) in required_parameters.items()],
+                'scopes': [{
+                    'scope': s
+                } for s in method['scopes']],
+                'description': method.get('description', ''),
+                'http_method': http_method
+            }
+            if in_type == '()':
+                data_normal.pop('in_type')
+            method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
+
+            if is_upload:
+                data_upload = {
+                    'name': snake_case(methodname),
+                    'param_type': params_type_name,
+                    'out_type': out_type,
+                    'base_path': discdoc['rootUrl'],
+                    'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
+                    'params': [{
+                        'param': p,
+                        'snake_param': sp
+                    } for (p, sp) in parameters.items()],
+                    'required_params': [{
+                        'param': p,
+                        'snake_param': sp
+                    } for (p, sp) in required_parameters.items()],
+                    'scopes': [{
+                        'scope': s
+                    } for s in method['scopes']],
+                    'description': method.get('description', ''),
+                    'http_method': http_method,
+                }
+                method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
 
     return chevron.render(ServiceImplementationTmpl, {
         'service': service,
