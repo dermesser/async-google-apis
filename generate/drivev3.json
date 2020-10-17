@@ -2299,6 +2299,7 @@ drive:v3
         },
         "teamDriveThemes": {
           "description": "Deprecated - use driveThemes instead.",
+          // [ { backgroundImageLink: ..., colorRgb: ..., ...} ]
           "items": {
             "properties": {
               "backgroundImageLink": {
