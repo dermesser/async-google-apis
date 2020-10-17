@@ -8,7 +8,7 @@ import requests
 from os import path
 
 ResourceStructTmpl = '''
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct {{name}} {
 {{#fields}}
     {{#comment}}
@@ -19,6 +19,9 @@ pub struct {{name}} {
 {{/fields}}
 }
 '''
+
+def optionalize(name, optional=True):
+    return 'Option<{}>'.format(name) if optional else name
 
 def replace_keywords(name):
     return {
@@ -37,7 +40,7 @@ def snake_case(name):
     return ''.join([r(c) for c in name])
 
 
-def type_of_property(name, prop):
+def type_of_property(name, prop, optional=True):
     """Translate a JSON schema type into Rust types.
 
     Arguments:
@@ -57,14 +60,14 @@ def type_of_property(name, prop):
     structs = []
     try:
         if '$ref' in prop:
-            return prop['$ref'], structs
+            return optionalize(prop['$ref'], optional), structs
         if 'type' in prop and prop['type'] == 'object':
             if 'properties' in prop:
                 typ = name
                 struct = {'name': name, 'fields': []}
                 for pn, pp in prop['properties'].items():
                     subtyp, substructs = type_of_property(
-                        name + capitalize_first(pn), pp)
+                        name + capitalize_first(pn), pp, optional=True)
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -88,59 +91,67 @@ def type_of_property(name, prop):
                     })
                     structs.extend(substructs)
                 structs.append(struct)
-                return typ, structs
+                return (optionalize(typ, optional), prop.get('description', '')), structs
             if 'additionalProperties' in prop:
                 field, substructs = type_of_property(
-                    name, prop['additionalProperties'])
+                    name, prop['additionalProperties'], optional=False)
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
                 else:
                     typ = field
-                print(typ)
-                return 'HashMap<String,' + typ + '>', structs
+                return (optionalize('HashMap<String,'+typ+'>', optional), prop.get('description', '')), structs
         if prop['type'] == 'array':
-            typ, substructs = type_of_property(name, prop['items'])
+            typ, substructs = type_of_property(name, prop['items'], optional=False)
             if type(typ) is tuple:
                 typ = typ[0]
-            return 'Vec<' + typ + '>', structs + substructs
+            return (optionalize('Vec<'+typ+'>', optional), prop.get('description', '')), structs + substructs
         if prop['type'] == 'string':
             if 'format' in prop:
                 if prop['format'] == 'int64':
-                    return ('String', 'i64'), structs
+                    return (optionalize('String', optional), 'i64: ' + prop.get('description', '')), structs
                 if prop['format'] == 'int32':
-                    return ('String', 'i32'), structs
+                    return (optionalize('String', optional), 'i32: ' + prop.get('description', '')), structs
                 if prop['format'] == 'double':
-                    return ('String', 'f64'), structs
+                    return (optionalize('String', optional), 'f64: ' + prop.get('description', '')), structs
                 if prop['format'] == 'float':
-                    return ('String', 'f32'), structs
+                    return (optionalize('String', optional), 'f32: ' + prop.get('description', '')), structs
                 if prop['format'] == 'date-time':
-                    return 'DateTime<Utc>', structs
-            return 'String', structs
+                    return (optionalize('DateTime<Utc>', optional),  prop.get('description', '')), structs
+            return (optionalize('String', optional), prop.get('description', '')), structs
         if prop['type'] == 'boolean':
-            return 'bool', structs
+            return (optionalize('bool', optional), prop.get('description', '')), structs
         if prop['type'] in ('number', 'integer'):
             if prop['format'] == 'float':
-                return 'f32', structs
+                return (optionalize('f32', optional),  prop.get('description', '')), structs
             if prop['format'] == 'double':
-                return 'f64', structs
+                return (optionalize('f64', optional), prop.get('description', '')), structs
             if prop['format'] == 'int32':
-                return 'i32', structs
+                return (optionalize('i32', optional), prop.get('description', '')), structs
             if prop['format'] == 'int64':
-                return 'i64', structs
+                return (optionalize('i64', optional), prop.get('description', '')), structs
         raise Exception('unimplemented!', name, prop)
     except KeyError as e:
         print(name, prop)
         print(e)
         raise e
 
-
 def generate_structs(discdoc):
     schemas = discdoc['schemas']
+    resources = discdoc['resources']
     structs = []
     for name, desc in schemas.items():
         typ, substructs = type_of_property(name, desc)
         structs.extend(substructs)
+    for name, res in resources.items():
+        for methodname, method in res['methods'].items():
+            if 'parameters' not in method:
+                structs.append({'name': '{}{}Params'.format(capitalize_first(name) , capitalize_first(methodname)), 'fields': []})
+            else:
+                params = method['parameters']
+                typ = {'type': 'object', 'properties': params}
+                typ, substructs = type_of_property('{}{}Params'.format(capitalize_first(name), capitalize_first(methodname)), typ)
+                structs.extend(substructs)
 
     modname = (discdoc['id'] + '_types').replace(':', '_')
     with open(path.join('gen', modname + '.rs'), 'w') as f:
@@ -150,6 +161,9 @@ def generate_structs(discdoc):
             'use std::collections::HashMap;\n'
             ])
         for s in structs:
+            for field in s['fields']:
+                if field.get('comment', None):
+                    field['comment'] = field['comment'].replace('\n', ' ')
             f.write(chevron.render(ResourceStructTmpl, s))
 
 
