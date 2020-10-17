@@ -399,6 +399,7 @@ dependencies = [
 name = "manual_demo"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "hyper",
  "hyper-rustls",
  "serde",

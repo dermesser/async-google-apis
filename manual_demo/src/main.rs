@@ -1,5 +1,9 @@
 // A manual client for a Google API (e.g. Drive), to test what makes sense and what doesn't.
 
+mod drive_v3_types;
+
+use drive_v3_types as drive;
+
 use yup_oauth2::InstalledFlowAuthenticator;
 use std::string::String;
 use std::str::FromStr;

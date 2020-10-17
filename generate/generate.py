@@ -20,10 +20,13 @@ pub struct {{name}} {
 }
 '''
 
+def replace_keywords(name):
+    return {
+            'type': ('typ', 'type'),
+    }.get(name, name)
 
 def capitalize_first(name):
     return name[0].upper() + name[1:]
-
 
 def snake_case(name):
     def r(c):
@@ -35,6 +38,20 @@ def snake_case(name):
 
 
 def type_of_property(name, prop):
+    """Translate a JSON schema type into Rust types.
+
+    Arguments:
+        name: Name of the property. If the property is an object with fixed fields, generate a struct with this name.
+        prop: A JSON object from a discovery document representing a type.
+
+    Returns:
+        type (string|tuple), structs (list of dicts)
+
+        where type is a string representing a Rust type, or a tuple where the first element is a Rust type
+        and the second element is a comment detailing the use of the field.
+        The list of dicts returned as structs are any structs that need to be separately implemented and that
+        the generated struct (if it was a struct) depends on.
+    """
     typ = ''
     comment = ''
     structs = []
@@ -52,11 +69,18 @@ def type_of_property(name, prop):
                         subtyp, comment = subtyp
                     else:
                         comment = None
+                    cleaned_pn = replace_keywords(pn)
+                    if type(cleaned_pn) is tuple:
+                        jsonname = cleaned_pn[1]
+                        cleaned_pn = snake_case(cleaned_pn[0])
+                    else:
+                        jsonname = pn
+                        cleaned_pn = snake_case(cleaned_pn)
                     struct['fields'].append({
                         'name':
-                        snake_case(pn),
+                        cleaned_pn,
                         'attr':
-                        '#[serde(rename = "{}")]'.format(pn),
+                        '#[serde(rename = "{}")]'.format(jsonname),
                         'typ':
                         subtyp,
                         'comment':
@@ -91,7 +115,7 @@ def type_of_property(name, prop):
                 if prop['format'] == 'float':
                     return ('String', 'f32'), structs
                 if prop['format'] == 'date-time':
-                    return 'Time', structs
+                    return 'DateTime<Utc>', structs
             return 'String', structs
         if prop['type'] == 'boolean':
             return 'bool', structs
@@ -120,7 +144,11 @@ def generate_structs(discdoc):
 
     modname = (discdoc['id'] + '_types').replace(':', '_')
     with open(path.join('gen', modname + '.rs'), 'w') as f:
-        f.write('use serde::{Deserialize, Serialize};')
+        f.writelines([
+            'use serde::{Deserialize, Serialize};\n',
+            'use chrono::{DateTime, Utc};\n',
+            'use std::collections::HashMap;\n'
+            ])
         for s in structs:
             f.write(chevron.render(ResourceStructTmpl, s))
 
