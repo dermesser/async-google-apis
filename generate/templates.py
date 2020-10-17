@@ -61,9 +61,9 @@ impl {{{service}}}Service {
     self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
   }
 
-{{#methods}}
+  {{#methods}}
   {{{text}}}
-{{/methods}}
+  {{/methods}}
 
 }
 '''
@@ -80,7 +80,6 @@ NormalMethodTmpl = '''pub async fn {{{name}}}(
     let path = "{{{base_path}}}".to_string() + &rel_path;
     let tok = self.authenticator.token(&self.scopes).await?;
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-
     {{#params}}
     if let Some(ref val) = &params.{{{snake_param}}} {
         url_params.push_str(&format!("&{{{param}}}={}", val));
@@ -106,7 +105,7 @@ NormalMethodTmpl = '''pub async fn {{{name}}}(
     let bodystr = String::from_utf8(resp_body.to_vec())?;
     let decoded = serde_json::from_str(&bodystr)?;
     Ok(decoded)
-}
+  }
 '''
 
 # Takes:
@@ -142,5 +141,5 @@ UploadMethodTmpl = '''pub async fn {{{name}}}_upload(
     let bodystr = String::from_utf8(resp_body.to_vec())?;
     let decoded = serde_json::from_str(&bodystr)?;
     Ok(decoded)
-}
+  }
 '''

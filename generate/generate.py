@@ -124,6 +124,8 @@ def type_of_property(name, prop, optional=True):
                 return (optionalize('i32', optional), prop.get('description', '')), structs
             if prop['format'] == 'int64':
                 return (optionalize('i64', optional), prop.get('description', '')), structs
+        if prop['type'] == 'any':
+            return (optionalize('String', optional), 'ANY data: ' + prop.get('description', '')), structs
         raise Exception('unimplemented!', name, prop)
     except KeyError as e:
         print(name, prop)
@@ -143,11 +145,14 @@ def scalar_type(jsont):
 
 
 def generate_parameter_types(resources):
-    """Generate parameter structs from the resources list."""
+    """Generate parameter structs from the resources list.
+
+    Returns a list of source code strings.
+    """
     structs = []
     for resourcename, resource in resources.items():
         for methodname, method in resource['methods'].items():
-            print(resourcename, methodname)
+            print("processed:", resourcename, methodname)
             struct = {'name': capitalize_first(resourcename) + capitalize_first(methodname) + 'Params', 'fields': []}
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
@@ -162,7 +167,7 @@ def generate_parameter_types(resources):
                         '#[serde(rename = "{}")]'.format(paramname),
                     })
             structs.append(struct)
-    return structs
+    return [chevron.render(ResourceStructTmpl, s) for s in structs]
 
 
 def resolve_parameters(string, paramsname='params', suffix=''):
@@ -176,7 +181,10 @@ def resolve_parameters(string, paramsname='params', suffix=''):
 
 
 def generate_service(resource, methods, discdoc):
-    """Generate the code for all methods in a resource."""
+    """Generate the code for all methods in a resource.
+
+    Returns a rendered string with source code.
+    """
     service = capitalize_first(resource)
 
     parts = []
@@ -242,15 +250,15 @@ def generate_structs(discdoc):
     resources = discdoc['resources']
     structs = []
     services = []
-    for name, desc in schemas.items():
-        typ, substructs = type_of_property(name, desc)
-        structs.extend(substructs)
-
     # Generate parameter types.
-    structs.extend(generate_parameter_types(resources))
+    parameter_types = generate_parameter_types(resources)
 
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
+
+    for name, desc in schemas.items():
+        typ, substructs = type_of_property(name, desc)
+        structs.extend(substructs)
 
     modname = (discdoc['id'] + '_types').replace(':', '_')
     with open(path.join('gen', modname + '.rs'), 'w') as f:
@@ -260,6 +268,8 @@ def generate_structs(discdoc):
                 if field.get('comment', None):
                     field['comment'] = field['comment'].replace('\n', ' ')
             f.write(chevron.render(ResourceStructTmpl, s))
+        for pt in parameter_types:
+            f.write(pt)
         for s in services:
             f.write(s)
 
@@ -286,11 +296,9 @@ def main():
                    help='Base Discovery document.')
     p.add_argument('--only_apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
     args = p.parse_args()
-    print(args.only_apis)
     docs = fetch_discovery_base(args.discovery_base, args.only_apis)
     for doc in docs:
         discdoc = fetch_discovery_doc(doc)
-        #print(json.dumps(discdoc, sort_keys=True, indent=2))
         generate_structs(discdoc)
 
 
