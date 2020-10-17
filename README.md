@@ -42,7 +42,6 @@ doc comments.
 * Don't always fetch all fields. Currently, the parameter `&fields=*` is sent
 with every request, which guarantees a full response, but not the best
 performance.
-* Support media download
 * Multipart uploads are not yet supported. As a crutch, uploadable API endpoints
 are defined using two methods: `method()` and `method_upload()`, where
 `method_upload()` only uploads data, and `method()` only works with metadata.
