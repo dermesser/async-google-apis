@@ -85,6 +85,9 @@ NormalMethodTmpl = '''pub async fn {{{name}}}(
         url_params.push_str(&format!("&{{{param}}}={}", val));
     }
     {{/params}}
+    {{#required_params}}
+    url_params.push_str(&format!("&{{{param}}}={}", params.{{{snake_param}}}));
+    {{/required_params}}
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()
@@ -125,6 +128,9 @@ UploadMethodTmpl = '''pub async fn {{{name}}}_upload(
         url_params.push_str(&format!("&{{{param}}}={}", val));
     }
     {{/params}}
+    {{#required_params}}
+    url_params.push_str(&format!("&{{{param}}}={}", params.{{{snake_param}}}));
+    {{/required_params}}
 
     let full_uri = path + &url_params;
     let reqb = hyper::Request::builder()

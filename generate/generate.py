@@ -154,6 +154,7 @@ def generate_parameter_types(resources):
         for methodname, method in resource['methods'].items():
             print("processed:", resourcename, methodname)
             struct = {'name': capitalize_first(resourcename) + capitalize_first(methodname) + 'Params', 'fields': []}
+            # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
                     struct['fields'].append({
@@ -177,6 +178,7 @@ def resolve_parameters(string, paramsname='params', suffix=''):
     params = re.findall(pat, string)
     snakeparams = [snake_case(p) for p in params]
     format_params = ','.join(['{}={}.{}{}'.format(p, paramsname, sp, suffix) for (p, sp) in zip(params, snakeparams)])
+    # Some required parameters are in the URL. This rust syntax formats the relative URL part appropriately.
     return 'format!("{}", {})'.format(string, format_params), snakeparams
 
 
@@ -195,6 +197,7 @@ def generate_service(resource, methods, discdoc):
     for methodname, method in methods['methods'].items():
         params_name = service + capitalize_first(methodname) + 'Params'
         parameters = {p: snake_case(p) for p, pp in method.get('parameters', {}).items() if 'required' not in pp}
+        required_parameters = {p: snake_case(p) for p, pp in method.get('parameters', {}).items() if 'required' in pp}
         in_type = method['request']['$ref'] if 'request' in method else '()'
         out_type = method['response']['$ref'] if 'response' in method else '()'
         is_upload = 'mediaUpload' in method
@@ -217,6 +220,10 @@ def generate_service(resource, methods, discdoc):
                 'param': p,
                 'snake_param': sp
             } for (p, sp) in parameters.items()],
+            'required_params': [{
+                'param': p,
+                'snake_param': sp
+            } for (p, sp) in required_parameters.items()],
             'http_method': http_method
         }
         method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
@@ -233,6 +240,10 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in parameters.items()],
+                'required_params': [{
+                    'param': p,
+                    'snake_param': sp
+                } for (p, sp) in required_parameters.items()],
                 'http_method': http_method
             }
             method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
