@@ -5,9 +5,9 @@ use chrono::{DateTime, Utc};
 use anyhow::{Error, Result};
 use std::collections::HashMap;
 
-type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
-type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
-type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
+pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
+pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
+pub type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
 
 #[derive(Debug, Clone)]
 pub enum ApiError {
