@@ -20,15 +20,19 @@ pub struct {{name}} {
 }
 '''
 
+
 def capitalize_first(name):
     return name[0].upper() + name[1:]
+
 
 def snake_case(name):
     def r(c):
         if c.islower():
             return c
-        return '_'+c.lower()
+        return '_' + c.lower()
+
     return ''.join([r(c) for c in name])
+
 
 def type_of_property(name, prop):
     typ = ''
@@ -42,18 +46,28 @@ def type_of_property(name, prop):
                 typ = name
                 struct = {'name': name, 'fields': []}
                 for pn, pp in prop['properties'].items():
-                    subtyp, substructs = type_of_property(name+capitalize_first(pn), pp)
+                    subtyp, substructs = type_of_property(
+                        name + capitalize_first(pn), pp)
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
                         comment = None
-                    struct['fields'].append({'name': snake_case(pn), 'attr': '#[serde(rename = "{}")]'.format(pn),
-                        'typ': subtyp, 'comment': comment})
+                    struct['fields'].append({
+                        'name':
+                        snake_case(pn),
+                        'attr':
+                        '#[serde(rename = "{}")]'.format(pn),
+                        'typ':
+                        subtyp,
+                        'comment':
+                        comment
+                    })
                     structs.extend(substructs)
                 structs.append(struct)
                 return typ, structs
             if 'additionalProperties' in prop:
-                field, substructs = type_of_property(name, prop['additionalProperties'])
+                field, substructs = type_of_property(
+                    name, prop['additionalProperties'])
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
@@ -65,7 +79,7 @@ def type_of_property(name, prop):
             typ, substructs = type_of_property(name, prop['items'])
             if type(typ) is tuple:
                 typ = typ[0]
-            return 'Vec<' + typ + '>', structs+substructs
+            return 'Vec<' + typ + '>', structs + substructs
         if prop['type'] == 'string':
             if 'format' in prop:
                 if prop['format'] == 'int64':
@@ -96,6 +110,7 @@ def type_of_property(name, prop):
         print(e)
         raise e
 
+
 def generate_structs(discdoc):
     schemas = discdoc['schemas']
     structs = []
@@ -103,8 +118,8 @@ def generate_structs(discdoc):
         typ, substructs = type_of_property(name, desc)
         structs.extend(substructs)
 
-    modname = (discdoc['id']+'_types').replace(':', '_')
-    with open(path.join('gen', modname+'.rs'), 'w') as f:
+    modname = (discdoc['id'] + '_types').replace(':', '_')
+    with open(path.join('gen', modname + '.rs'), 'w') as f:
         f.write('use serde::{Deserialize, Serialize};')
         for s in structs:
             f.write(chevron.render(ResourceStructTmpl, s))
@@ -119,14 +134,21 @@ def fetch_discovery_base(url, apis):
     doc = json.loads(requests.get(url).text)
     return [it for it in doc['items'] if it['id'] in apis]
 
+
 def fetch_discovery_doc(api_doc):
     url = api_doc['discoveryRestUrl']
     return json.loads(requests.get(url).text)
 
+
 def main():
-    p = argparse.ArgumentParser(description='Generate Rust code for asynchronous REST Google APIs.')
-    p.add_argument('--discovery_base', default='https://www.googleapis.com/discovery/v1/apis', help='Base Discovery document.')
-    p.add_argument('--only_apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
+    p = argparse.ArgumentParser(
+        description='Generate Rust code for asynchronous REST Google APIs.')
+    p.add_argument('--discovery_base',
+                   default='https://www.googleapis.com/discovery/v1/apis',
+                   help='Base Discovery document.')
+    p.add_argument('--only_apis',
+                   default='drive:v3',
+                   help='Only process APIs with these IDs (comma-separated)')
     args = p.parse_args()
     print(args.only_apis)
     docs = fetch_discovery_base(args.discovery_base, args.only_apis)
