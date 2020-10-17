@@ -1,3 +1,11 @@
+//! List your Google Drive root folder, or upload a file there.
+//!
+//! When run with no arguments, a very detailed listing of all objects in your root folder is
+//! printed.
+//!
+//! When you specify a file name as command line argument, the given file is uploaded to your
+//! Google Drive.
+
 mod drive_v3_types;
 use drive_v3_types as drive;
 
@@ -18,10 +26,10 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     let data = hyper::body::Bytes::from(fs::read(&f)?);
     let mut params = drive::FilesCreateParams::default();
     params.include_permissions_for_view = Some("published".to_string());
+    println!("{:?}", params);
 
     // Upload data using the upload version of create(). We obtain a `File` object.
     let resp = cl.create_upload(&params, data).await?;
-
     println!("{:?}", resp);
 
     // Copy ID from response.
@@ -43,8 +51,10 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     // Now get the file and check that it is correct.
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
+
     let get_file = cl.get(&params).await?;
     println!("{:?}", get_file);
+
     assert!(get_file.name == Some(fname.to_string()));
     Ok(())
 }
@@ -78,7 +88,9 @@ async fn main() {
         // By default, list root directory.
         let mut p = drive::FilesListParams::default();
         p.q = Some("'root' in parents".to_string());
+
         let resp = cl.list(&p).await.expect("listing your Drive failed!");
+
         if let Some(files) = resp.files {
             for f in files {
                 println!(
