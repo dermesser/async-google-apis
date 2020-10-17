@@ -243,7 +243,9 @@ def generate_service(resource, methods, discdoc):
                 'param': p,
                 'snake_param': sp
             } for (p, sp) in required_parameters.items()],
-            'scopes': [{'scope': s} for s in method['scopes']],
+            'scopes': [{
+                'scope': s
+            } for s in method['scopes']],
             'description': method.get('description', ''),
             'http_method': http_method
         }
@@ -266,7 +268,9 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
-                'scopes': [{'scope': s} for s in method['scopes']],
+                'scopes': [{
+                    'scope': s
+                } for s in method['scopes']],
                 'description': method.get('description', ''),
                 'http_method': http_method,
             }
