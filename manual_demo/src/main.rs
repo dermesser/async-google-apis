@@ -67,9 +67,11 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
 
     println!("{:?}", resp);
 
+    let file_id = resp.id.unwrap();
+
     let mut params = drive::FilesUpdateParams::default();
     println!("{:?}", params);
-    params.file_id = resp.id.clone().unwrap();
+    params.file_id = file_id.clone();
     params.include_permissions_for_view = Some("published".to_string());
     let mut file = drive::File::default();
     file.name = Some("profilepic.jpg".to_string());
@@ -77,7 +79,7 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
     println!("{:?}", update_resp);
 
     let mut params = drive::FilesGetParams::default();
-    params.file_id = file.id.clone().unwrap();
+    params.file_id = file_id.clone();
     println!("{:?}", cl.get(&params, &()).await.unwrap());
 }
 

@@ -8,47 +8,7 @@ import requests
 
 from os import path
 
-# General imports and error type.
-RustHeader = '''
-use serde::{Deserialize, Serialize};
-use chrono::{DateTime, Utc};
-use anyhow::{Error, Result};
-use std::collections::HashMap;
-
-type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
-type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
-type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
-
-#[derive(Debug, Clone)]
-pub enum ApiError {
-  InputDataError(String),
-  HTTPError(hyper::StatusCode),
-}
-
-impl std::error::Error for ApiError {}
-impl std::fmt::Display for ApiError {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    std::fmt::Debug::fmt(self, f)
-  }
-}
-'''
-
-# A struct for parameters or input/output API types.
-ResourceStructTmpl = '''
-#[derive(Serialize, Deserialize, Debug, Clone, Default)]
-pub struct {{name}} {
-{{#fields}}
-    {{#comment}}
-    // {{comment}}
-    {{/comment}}
-    {{#attr}}
-    {{{attr}}}
-    {{/attr}}
-    pub {{name}}: {{{typ}}},
-{{/fields}}
-}
-'''
-
+from templates import *
 
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
@@ -219,27 +179,8 @@ def generate_service(resource, methods, discdoc):
     service = capitalize_first(resource)
 
     parts = []
-    parts.append('''
-pub struct {}Service {{
-  client: TlsClient,
-  authenticator: Authenticator,
-  scopes: Vec<String>,
-}}
-'''.format(service))
 
-    parts.append('''
-impl {service}Service {{
-  /// Create a new {service}Service object.
-  pub fn new(client: TlsClient, auth: Authenticator) -> {service}Service {{
-    {service}Service {{ client: client, authenticator: auth, scopes: vec![] }}
-  }}
-
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {{
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }}
-'''.format(service=service))
+    method_fragments = []
 
     # Generate individual methods.
     for methodname, method in methods['methods'].items():
@@ -255,70 +196,23 @@ impl {service}Service {{
             upload_path = ''
         http_method = method['httpMethod']
 
-        # TODO: Incorporate parameters into query!
-        for is_upload in set([False, is_upload]):
-            # TODO: Support multipart upload properly
-            if is_upload:
-                parts.append(
-                    '  pub async fn {}_upload(&mut self, params: &{}, data: hyper::body::Bytes) -> Result<{}> {{'.
-                    format(snake_case(methodname), params_name, out_type))
-            else:
-                parts.append('  pub async fn {}(&mut self, params: &{}, req: &{}) -> Result<{}> {{'.format(
-                    snake_case(methodname), params_name, in_type, out_type))
+        formatted_path, required_params = resolve_parameters(method['path'])
+        data_normal = {'name': methodname, 'param_type': params_name, 'in_type': in_type, 'out_type': out_type,
+                'base_path': discdoc['baseUrl'], 'rel_path_expr': formatted_path,
+                'params': [{'param': p, 'snake_param': sp} for (p, sp) in parameters.items()],
+                'http_method': http_method}
+        method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
-            # Check parameters and format API path.
-            formatted_path, required_params = resolve_parameters(method['path'])
-            parts.append('    let relpath = {};'.format('"' + upload_path.lstrip('/') +
-                                                        '"' if is_upload else formatted_path))
-            parts.append('    let path = "{}".to_string() + &relpath;'.format(
-                discdoc['rootUrl'] if is_upload else discdoc['baseUrl']))
-            parts.append('    let tok = self.authenticator.token(&self.scopes).await?;')
+        if is_upload:
+            data_upload = {'name': snake_case(methodname), 'param_type': params_name, 'in_type': in_type, 'out_type': out_type,
+                    'base_path': discdoc['rootUrl'], 'rel_path_expr': '"'+upload_path.lstrip('/')+'"',
+                    'params': [{'param': p, 'snake_param': sp} for (p, sp) in parameters.items()],
+                    'http_method': http_method}
+            method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
 
-            if is_upload:
-                parts.append(
-                    '    let mut url_params = format!("?uploadType=media&oauth_token={token}&fields=*", token=tok.as_str());'
-                )
-            else:
-                parts.append('    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());')
-
-            for p, snakeparam in parameters.items():
-                parts.append('''
-    if let Some(ref val) = &params.{snake} {{
-        url_params.push_str(&format!("&{p}={{}}", val));
-    }}'''.format(p=p, snake=snakeparam))
-
-            parts.append('''
-    let full_uri = path+&url_params;
-    println!("To: {{}}", full_uri);
-    let reqb = hyper::Request::builder().uri(full_uri).method("{method}");'''.format(method=http_method))
-            if is_upload:
-                parts.append('''
-    let reqb = reqb.header("Content-Length", data.len());
-    let body = hyper::Body::from(data);''')
-            else:
-                parts.append('''    let reqb = reqb.header("Content-Type", "application/json");''')
-                parts.append('''    println!("Request: {}", serde_json::to_string(req)?);''')
-                if in_type != '()':
-                    parts.append('''    let body = hyper::Body::from(serde_json::to_string(req)?);''')
-                else:
-                    parts.append('''    let body = hyper::Body::from("");''')
-
-            parts.append('''    let req = reqb.body(body)?;
-    let resp = self.client.request(req).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let bodystr = String::from_utf8(resp_body.to_vec())?;
-    println!("Response: {}", bodystr);
-    let decoded = serde_json::from_str(&bodystr)?;
-    Ok(decoded)
-  }''')
-
-    parts.append('}')
-    parts.append('')
-
-    return '\n'.join(parts)
+    return chevron.render(ServiceImplementationTmpl,
+            {'service': service,
+             'methods': [{'text': t} for t in method_fragments]})
 
 
 def generate_structs(discdoc):
@@ -346,7 +240,6 @@ def generate_structs(discdoc):
             f.write(chevron.render(ResourceStructTmpl, s))
         for s in services:
             f.write(s)
-            f.write('\n')
 
 
 def fetch_discovery_base(url, apis):
