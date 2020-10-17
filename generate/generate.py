@@ -152,7 +152,6 @@ def generate_parameter_types(resources, super_name=''):
     Returns a list of source code strings.
     """
     frags = []
-    print('processing:', resources.keys())
     for resourcename, resource in resources.items():
         for methodname, method in resource.get('methods', {}).items():
             param_type_name = capitalize_first(super_name) + capitalize_first(resourcename) + capitalize_first(
@@ -334,7 +333,7 @@ def main():
                    help='Base Discovery document.')
     p.add_argument('--only_apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
     args = p.parse_args()
-    docs = fetch_discovery_base(args.discovery_base, args.only_apis)
+    docs = fetch_discovery_base(args.discovery_base, args.only_apis.split(','))
     for doc in docs:
         discdoc = fetch_discovery_doc(doc)
         generate_structs(discdoc)
