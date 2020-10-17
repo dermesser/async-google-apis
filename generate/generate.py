@@ -36,12 +36,15 @@ def snake_case(name):
     return ''.join([r(c) for c in name])
 
 
-def type_of_property(name, prop, optional=True):
-    """Translate a JSON schema type into Rust types.
+def generate_resource_structs(name, schema, optional=True):
+    """Translate a JSON schema type into Rust types, recursively.
+
+    This function takes a schema entry from the `schemas` section of a Discovery document,
+    and generates all Rust structs needed to represent the schema, recursively.
 
     Arguments:
         name: Name of the property. If the property is an object with fixed fields, generate a struct with this name.
-        prop: A JSON object from a discovery document representing a type.
+        schema: A JSON object from a discovery document representing a type.
 
     Returns:
         type (string|tuple), structs (list of dicts)
@@ -55,14 +58,19 @@ def type_of_property(name, prop, optional=True):
     comment = ''
     structs = []
     try:
-        if '$ref' in prop:
-            return optionalize(prop['$ref'], optional), structs
-        if 'type' in prop and prop['type'] == 'object':
-            if 'properties' in prop:
+        if '$ref' in schema:
+            # We just assume that there is already a type generated for the reference.
+            return optionalize(schema['$ref'], optional), structs
+        if 'type' in schema and schema['type'] == 'object':
+            # There are two types of objects: those with `properties` are translated into a Rust struct,
+            # and those with `additionalProperties` into a HashMap<String, ...>.
+
+            # Structs are represented as dicts that can be used to render the ResourceStructTmpl.
+            if 'properties' in schema:
                 typ = name
                 struct = {'name': name, 'fields': []}
-                for pn, pp in prop['properties'].items():
-                    subtyp, substructs = type_of_property(name + capitalize_first(pn), pp, optional=True)
+                for pn, pp in schema['properties'].items():
+                    subtyp, substructs = generate_resource_structs(name + capitalize_first(pn), pp, optional=True)
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -88,49 +96,50 @@ def type_of_property(name, prop, optional=True):
                     })
                     structs.extend(substructs)
                 structs.append(struct)
-                return (optionalize(typ, optional), prop.get('description', '')), structs
-            if 'additionalProperties' in prop:
-                field, substructs = type_of_property(name, prop['additionalProperties'], optional=False)
+                return (optionalize(typ, optional), schema.get('description', '')), structs
+
+            if 'additionalProperties' in schema:
+                field, substructs = generate_resource_structs(name, schema['additionalProperties'], optional=False)
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
                 else:
                     typ = field
-                return (optionalize('HashMap<String,' + typ + '>', optional), prop.get('description', '')), structs
-        if prop['type'] == 'array':
-            typ, substructs = type_of_property(name, prop['items'], optional=False)
+                return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs
+        if schema['type'] == 'array':
+            typ, substructs = generate_resource_structs(name, schema['items'], optional=False)
             if type(typ) is tuple:
                 typ = typ[0]
-            return (optionalize('Vec<' + typ + '>', optional), prop.get('description', '')), structs + substructs
-        if prop['type'] == 'string':
-            if 'format' in prop:
-                if prop['format'] == 'int64':
-                    return (optionalize('String', optional), 'i64: ' + prop.get('description', '')), structs
-                if prop['format'] == 'int32':
-                    return (optionalize('String', optional), 'i32: ' + prop.get('description', '')), structs
-                if prop['format'] == 'double':
-                    return (optionalize('String', optional), 'f64: ' + prop.get('description', '')), structs
-                if prop['format'] == 'float':
-                    return (optionalize('String', optional), 'f32: ' + prop.get('description', '')), structs
-                if prop['format'] == 'date-time':
-                    return (optionalize('DateTime<Utc>', optional), prop.get('description', '')), structs
-            return (optionalize('String', optional), prop.get('description', '')), structs
-        if prop['type'] == 'boolean':
-            return (optionalize('bool', optional), prop.get('description', '')), structs
-        if prop['type'] in ('number', 'integer'):
-            if prop['format'] == 'float':
-                return (optionalize('f32', optional), prop.get('description', '')), structs
-            if prop['format'] == 'double':
-                return (optionalize('f64', optional), prop.get('description', '')), structs
-            if prop['format'] == 'int32':
-                return (optionalize('i32', optional), prop.get('description', '')), structs
-            if prop['format'] == 'int64':
-                return (optionalize('i64', optional), prop.get('description', '')), structs
-        if prop['type'] == 'any':
-            return (optionalize('String', optional), 'ANY data: ' + prop.get('description', '')), structs
-        raise Exception('unimplemented!', name, prop)
+            return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs
+        if schema['type'] == 'string':
+            if 'format' in schema:
+                if schema['format'] == 'int64':
+                    return (optionalize('String', optional), 'i64: ' + schema.get('description', '')), structs
+                if schema['format'] == 'int32':
+                    return (optionalize('String', optional), 'i32: ' + schema.get('description', '')), structs
+                if schema['format'] == 'double':
+                    return (optionalize('String', optional), 'f64: ' + schema.get('description', '')), structs
+                if schema['format'] == 'float':
+                    return (optionalize('String', optional), 'f32: ' + schema.get('description', '')), structs
+                if schema['format'] == 'date-time':
+                    return (optionalize('DateTime<Utc>', optional), schema.get('description', '')), structs
+            return (optionalize('String', optional), schema.get('description', '')), structs
+        if schema['type'] == 'boolean':
+            return (optionalize('bool', optional), schema.get('description', '')), structs
+        if schema['type'] in ('number', 'integer'):
+            if schema['format'] == 'float':
+                return (optionalize('f32', optional), schema.get('description', '')), structs
+            if schema['format'] == 'double':
+                return (optionalize('f64', optional), schema.get('description', '')), structs
+            if schema['format'] == 'int32':
+                return (optionalize('i32', optional), schema.get('description', '')), structs
+            if schema['format'] == 'int64':
+                return (optionalize('i64', optional), schema.get('description', '')), structs
+        if schema['type'] == 'any':
+            return (optionalize('String', optional), 'ANY data: ' + schema.get('description', '')), structs
+        raise Exception('unimplemented!', name, schema)
     except KeyError as e:
-        print(name, prop)
+        print(name, schema)
         print(e)
         raise e
 
@@ -146,7 +155,7 @@ def scalar_type(jsont):
     raise Exception('unknown scalar type:', jsont)
 
 
-def generate_parameter_types(resources, super_name=''):
+def generate_params_structs(resources, super_name=''):
     """Generate parameter structs from the resources list.
 
     Returns a list of source code strings.
@@ -173,7 +182,7 @@ def generate_parameter_types(resources, super_name=''):
                     })
             frags.append(chevron.render(ResourceStructTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(generate_parameter_types(resource.get('resources', {}), super_name=resourcename))
+        frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename))
     return frags
 
 
@@ -284,24 +293,29 @@ def generate_service(resource, methods, discdoc):
     }) + '\n'.join(subresource_fragments)
 
 
-def generate_structs(discdoc):
+def generate_all(discdoc):
+    """Generate all structs and impls, and render them into a file."""
     schemas = discdoc['schemas']
     resources = discdoc['resources']
     structs = []
     services = []
-    # Generate parameter types.
-    parameter_types = generate_parameter_types(resources)
+    # Generate parameter types (*Params - those are used as "side inputs" to requests)
+    parameter_types = generate_params_structs(resources)
 
+    # Generate service impls
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
 
+    # Generate resource types
     for name, desc in schemas.items():
-        typ, substructs = type_of_property(name, desc)
+        typ, substructs = generate_resource_structs(name, desc)
         structs.extend(substructs)
 
+    # Assemble everything into a file.
     modname = (discdoc['id'] + '_types').replace(':', '_')
     with open(path.join('gen', modname + '.rs'), 'w') as f:
         f.write(RustHeader)
+        # Render resource structs.
         for s in structs:
             for field in s['fields']:
                 if field.get('comment', None):
@@ -309,23 +323,26 @@ def generate_structs(discdoc):
             if not s['name']:
                 print('WARN', s)
             f.write(chevron.render(ResourceStructTmpl, s))
+        # Render *Params structs.
         for pt in parameter_types:
             f.write(pt)
+        # Render service impls.
         for s in services:
             f.write(s)
 
 
 def fetch_discovery_base(url, apis):
-    '''Fetch the discovery base document from `url`. Return api documents for APIs with IDs in `apis`.
+    """Fetch the discovery base document from `url`. Return api documents for APIs with IDs in `apis`.
 
     Returns:
         List of API JSON documents.
-    '''
+    """
     doc = json.loads(requests.get(url).text)
     return [it for it in doc['items'] if it['id'] in apis]
 
 
 def fetch_discovery_doc(api_doc):
+    """Fetch discovery document for a given (short) API doc from the overall discovery document."""
     url = api_doc['discoveryRestUrl']
     return json.loads(requests.get(url).text)
 
@@ -340,7 +357,7 @@ def main():
     docs = fetch_discovery_base(args.discovery_base, args.only_apis.split(','))
     for doc in docs:
         discdoc = fetch_discovery_doc(doc)
-        generate_structs(discdoc)
+        generate_all(discdoc)
 
 
 if __name__ == '__main__':
