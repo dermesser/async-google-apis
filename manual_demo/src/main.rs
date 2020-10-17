@@ -68,6 +68,7 @@ async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
 
 async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
     let mut cl = drive::FilesService::new(cl, auth);
+    cl.set_scopes(&["https://www.googleapis.com/auth/drive.file"]);
 
     let data = hyper::body::Bytes::from(fs::read(&f).unwrap());
     let mut params = drive::FilesCreateParams::default();
