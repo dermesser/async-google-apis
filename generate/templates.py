@@ -55,14 +55,16 @@ pub struct {{{name}}} {
 ServiceImplementationTmpl = '''
 pub struct {{{service}}}Service {
   client: TlsClient,
-  authenticator: Authenticator,
+  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
   scopes: Vec<String>,
 }
 
 impl {{{service}}}Service {
-  /// Create a new {{service}}Service object.
-  pub fn new(client: TlsClient, auth: Authenticator) -> {{service}}Service {
-    {{{service}}}Service { client: client, authenticator: auth, scopes: vec![] }
+  /// Create a new {{service}}Service object. The easiest way to call this is wrapping the Authenticator
+  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+  /// This way, one authenticator can be shared among several services.
+  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> {{service}}Service {
+    {{{service}}}Service { client: client, authenticator: Box::new(auth), scopes: vec![] }
   }
 
   /// Explicitly select which scopes should be requested for authorization. Otherwise,

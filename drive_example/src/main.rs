@@ -9,6 +9,7 @@
 mod drive_v3_types;
 use drive_v3_types as drive;
 
+use std::rc::Rc;
 use std::fs;
 use std::path::Path;
 
@@ -61,6 +62,7 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
 
 #[tokio::main]
 async fn main() {
+    let https = https_client();
     // Put your client secret in the working directory!
     let sec = yup_oauth2::read_application_secret("client_secret.json")
         .await
@@ -70,13 +72,13 @@ async fn main() {
         yup_oauth2::InstalledFlowReturnMethod::HTTPRedirect,
     )
     .persist_tokens_to_disk("tokencache.json")
+    .hyper_client(https.clone())
     .build()
     .await
     .expect("InstalledFlowAuthenticator failed to build");
 
     let scopes = &["https://www.googleapis.com/auth/drive"];
-    let https = https_client();
-    let mut cl = drive::FilesService::new(https, auth);
+    let mut cl = drive::FilesService::new(https, Rc::new(auth));
     cl.set_scopes(scopes);
 
     let arg = std::env::args().skip(1).next();
