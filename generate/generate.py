@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+#
+# (c) 2020 Lewin Bormann <lbo@spheniscida.de>
+# 
+# Please let me know about your use case of this code!
 
 import argparse
 import chevron
