@@ -16,7 +16,6 @@ readme = "README.md"
 [dependencies]
 anyhow = "~1.0"
 chrono = "~0.4"
-follow-redirects = "~0.1"
 hyper = "~0.13"
 hyper-rustls = "~0.20"
 percent-encoding = "~2.1"

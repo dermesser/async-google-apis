@@ -1,7 +1,6 @@
 // A manual client for a Google API (e.g. Drive), to test what makes sense and what doesn't.
 
 mod drive_v3_types;
-mod storage_v1_types;
 
 use drive_v3_types as drive;
 
@@ -66,8 +65,22 @@ async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
     println!("{:?}", about);
 }
 
+async fn export(cl: TlsClient, auth: Authenticator) {
+    let mut cl = drive::FilesService::new(cl, std::rc::Rc::new(auth));
+    cl.set_scopes(&["https://www.googleapis.com/auth/drive"]);
+
+    let mut params = drive::FilesExportParams::default();
+    params.file_id = "1XW3lQaYRQz3GcCijaSIwCm1r5DIx30azjcRxjME0Rj8".to_string();
+    params.mime_type = "application/vnd.oasis.opendocument.text".to_string();
+
+    let mut dst = fs::OpenOptions::new().write(true).create(true).open("test.odt").unwrap();
+
+    let resp = cl.export(&params, &mut dst).await.unwrap();
+    println!("{:?}", resp);
+}
+
 async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
-    let mut cl = drive::FilesService::new(cl, auth);
+    let mut cl = drive::FilesService::new(cl, std::rc::Rc::new(auth));
     cl.set_scopes(&["https://www.googleapis.com/auth/drive.file"]);
 
     let data = hyper::body::Bytes::from(fs::read(&f).unwrap());
@@ -135,7 +148,8 @@ async fn main() {
 
     //get_about(&mut cl, &mut auth).await;
     //upload_file(&mut cl, &mut auth, Path::new("pp.jpg")).await;
-    new_upload_file(cl, auth, Path::new("pp.jpg")).await;
+    //new_upload_file(cl, auth, Path::new("pp.jpg")).await;
+    export(cl, auth).await;
 
     //match auth.token(scopes).await {
     //    Ok(token) => println!("The token is {:?}", token),
