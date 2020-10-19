@@ -252,6 +252,7 @@ def generate_service(resource, methods, discdoc):
         else:
             upload_path = ''
         http_method = method['httpMethod']
+        formatted_path, required_params = resolve_parameters(method['path'])
 
         if is_download:
             data_download = {
@@ -271,7 +272,7 @@ def generate_service(resource, methods, discdoc):
                 } for (p, sp) in required_parameters.items()],
                 'scopes': [{
                     'scope': s
-                } for s in method['scopes']],
+                } for s in method.get('scopes', [])],
                 'description': method.get('description', ''),
                 'http_method': http_method
             }
@@ -280,7 +281,6 @@ def generate_service(resource, methods, discdoc):
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
 
         else:
-            formatted_path, required_params = resolve_parameters(method['path'])
             data_normal = {
                 'name': snake_case(methodname),
                 'param_type': params_type_name,
@@ -298,7 +298,7 @@ def generate_service(resource, methods, discdoc):
                 } for (p, sp) in required_parameters.items()],
                 'scopes': [{
                     'scope': s
-                } for s in method['scopes']],
+                } for s in method.get('scopes', [])],
                 'description': method.get('description', ''),
                 'http_method': http_method
             }
@@ -356,8 +356,9 @@ def generate_scopes_type(name, scopes):
 
 def generate_all(discdoc):
     """Generate all structs and impls, and render them into a file."""
-    schemas = discdoc['schemas']
-    resources = discdoc['resources']
+    print('Processing:', discdoc.get('id', ''))
+    schemas = discdoc.get('schemas', {})
+    resources = discdoc.get('resources', {})
     # Generate scopes.
     scopes_type = generate_scopes_type(discdoc['name'], discdoc.get('auth', {}).get('oauth2', {}).get('scopes', {}))
 
@@ -403,7 +404,7 @@ def fetch_discovery_base(url, apis):
         List of API JSON documents.
     """
     doc = json.loads(requests.get(url).text)
-    return [it for it in doc['items'] if it['id'] in apis]
+    return [it for it in doc['items'] if (not apis or it['id'] in apis)]
 
 
 def fetch_discovery_doc(api_doc):
@@ -419,10 +420,23 @@ def main():
                    help='Base Discovery document.')
     p.add_argument('--only_apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
     args = p.parse_args()
-    docs = fetch_discovery_base(args.discovery_base, args.only_apis.split(','))
+    if args.only_apis:
+        apilist = args.only_apis.split(',')
+    else:
+        apilist = []
+
+    docs = fetch_discovery_base(args.discovery_base, apilist)
     for doc in docs:
-        discdoc = fetch_discovery_doc(doc)
-        generate_all(discdoc)
+        try:
+            discdoc = fetch_discovery_doc(doc)
+            if 'error' in discdoc:
+                print('Error while fetching document for', doc['id'], ':', discdoc)
+                continue
+            generate_all(discdoc)
+        except Exception as e:
+            print("Error while processing", discdoc)
+            print(e)
+            continue
 
 
 if __name__ == '__main__':
