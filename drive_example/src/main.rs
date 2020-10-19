@@ -32,6 +32,7 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     println!("{:?}", params);
 
     // Upload data using the upload version of create(). We obtain a `File` object.
+    //
     let resp = cl.create_upload(&params, data).await?;
     println!("{:?}", resp);
 
@@ -40,11 +41,13 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     let fname = f.file_name().unwrap().to_str().unwrap();
 
     // Rename file to the file name on our computer.
+    //
     let mut params = drive::FilesUpdateParams::default();
     println!("{:?}", params);
-
     params.file_id = file_id.clone();
     params.include_permissions_for_view = Some("published".to_string());
+
+    // File object for patching
     let mut file = drive::File::default();
     file.name = Some(fname.to_string());
 
@@ -52,6 +55,7 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     println!("{:?}", update_resp);
 
     // Now get the file and check that it is correct.
+    //
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
 
