@@ -255,6 +255,7 @@ def generate_service(resource, methods, discdoc):
         formatted_path, required_params = resolve_parameters(method['path'])
 
         if is_download:
+            assert out_type == '()'
             data_download = {
                 'name': snake_case(methodname),
                 'param_type': params_type_name,

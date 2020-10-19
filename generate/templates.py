@@ -9,29 +9,7 @@ RustHeader = '''
 //!
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
 
-use serde::{Deserialize, Serialize};
-use chrono::{DateTime, Utc};
-use anyhow::{Error, Result};
-use std::collections::HashMap;
-use tokio::stream::StreamExt;
-use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
-
-pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
-pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
-pub type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
-
-#[derive(Debug, Clone)]
-pub enum ApiError {
-  InputDataError(String),
-  HTTPError(hyper::StatusCode),
-}
-
-impl std::error::Error for ApiError {}
-impl std::fmt::Display for ApiError {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    std::fmt::Debug::fmt(self, f)
-  }
-}
+use async_google_apis_common::*;
 '''
 
 # Dict contents --
@@ -146,28 +124,12 @@ pub async fn {{{name}}}(
     {{/required_params}}
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("{{{http_method}}}")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
+    let opt_request: Option<EmptyRequest> = None;
     {{#in_type}}
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
+    let opt_request = Some(req);
     {{/in_type}}
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    do_request(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request).await
   }
 '''
 
@@ -205,20 +167,7 @@ pub async fn {{{name}}}_upload(
     {{/required_params}}
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("{{{http_method}}}")
-        .header("Content-Length", data.len());
-    let body = hyper::Body::from(data);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    do_upload(&self.client, &full_uri, &[], "{{{http_method}}}", data).await
   }
 '''
 
@@ -230,7 +179,8 @@ pub async fn {{{name}}}_upload(
 DownloadMethodTmpl = '''
 /// {{{description}}}
 pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}{{{in_type}}},{{/in_type}} dst: &mut dyn std::io::Write) -> Result<{{out_type}}> {
+    &mut self, params: &{{{param_type}}}, {{#in_type}}req: {{{in_type}}},{{/in_type}} dst: &mut dyn std::io::Write)
+    -> Result<{{out_type}}> {
 
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
@@ -256,34 +206,11 @@ pub async fn {{{name}}}(
     {{/required_params}}
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("{{{http_method}}}")
-        .header("Content-Type", "application/json");
-
-    let body = hyper::Body::from("");
+    let opt_request: Option<EmptyRequest> = None;
     {{#in_type}}
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
+    let opt_request = Some(req);
     {{/in_type}}
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = resp.into_body();
-    let write_result = resp_body.map(move |chunk| {
-        dst.write(chunk?.as_ref())
-            .map(|_| ())
-            .map_err(Error::from)
-        })
-        .collect::<Vec<Result<()>>>().await;
-    if let Some(e) = write_result.into_iter().find(|r| r.is_err()) {
-        return e;
-    }
-    Ok(())
+
+    do_download(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request, dst).await
   }
 '''
