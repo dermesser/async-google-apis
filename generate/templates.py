@@ -63,11 +63,14 @@ pub struct {{{name}}} {
 SchemaDisplayTmpl = '''
 impl std::fmt::Display for {{{name}}} {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        {{#fields}}
+        {{#required_fields}}
+        write!(f, "&{}={}", "{{{original_name}}}", percent_encode(format!("{}", self.{{{name}}}).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        {{/required_fields}}
+        {{#optional_fields}}
         if let Some(ref v) = self.{{{name}}} {
             write!(f, "&{}={}", "{{{original_name}}}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
-        {{/fields}}
+        {{/optional_fields}}
         Ok(())
     }
 }
@@ -128,22 +131,13 @@ pub async fn {{{name}}}(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    {{#params}}
-    if let Some(ref val) = &params.{{{snake_param}}} {
-        url_params.push_str(&format!("&{{{param}}}={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    {{/params}}
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
     }
     {{/global_params_name}}
-    {{#required_params}}
-    url_params.push_str(&format!("&{{{param}}}={}",
-        percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    {{/required_params}}
 
     let full_uri = path + &url_params;
 
@@ -177,23 +171,14 @@ pub async fn {{{name}}}_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}", token=tok.as_str());
 
-    {{#params}}
-    if let Some(ref val) = &params.{{{snake_param}}} {
-        url_params.push_str(&format!("&{{{param}}}={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    {{/params}}
+    url_params.push_str(&format!("{}", params));
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
     }
     {{/global_params_name}}
-    {{#required_params}}
-    url_params.push_str(&format!("&{{{param}}}={}",
-        percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    {{/required_params}}
 
     let full_uri = path + &url_params;
     let opt_request: Option<EmptyRequest> = None;
@@ -229,22 +214,13 @@ pub async fn {{{name}}}(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    {{#params}}
-    if let Some(ref val) = &params.{{{snake_param}}} {
-        url_params.push_str(&format!("&{{{param}}}={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    {{/params}}
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
     }
     {{/global_params_name}}
-    {{#required_params}}
-    url_params.push_str(&format!("&{{{param}}}={}",
-        percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    {{/required_params}}
 
     let full_uri = path + &url_params;
     let opt_request: Option<EmptyRequest> = None;

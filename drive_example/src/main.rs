@@ -29,8 +29,12 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     cl.set_scopes(&[drive::DriveScopes::DriveFile]);
     let fname = f.file_name().unwrap().to_str().unwrap();
 
+    let mut general_params = drive::DriveParams::default();
+    general_params.fields = Some("*".to_string());
+
     let data = hyper::body::Bytes::from(fs::read(&f)?);
     let mut params = drive::FilesCreateParams::default();
+    params.drive_params = Some(general_params.clone());
     params.include_permissions_for_view = Some("published".to_string());
     println!("{:?}", params);
     let mut file = drive::File::default();
@@ -50,6 +54,7 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     //
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
+    params.drive_params = Some(general_params.clone());
 
     let get_file = cl.get(&params).await?;
     println!("{:?}", get_file);
@@ -77,7 +82,7 @@ async fn main() {
     .await
     .expect("InstalledFlowAuthenticator failed to build");
 
-    let scopes = vec![drive::DriveScopes::DriveFile];
+    let scopes = vec![drive::DriveScopes::Drive];
     let mut cl = drive::FilesService::new(https, Rc::new(auth));
     cl.set_scopes(&scopes);
 
@@ -88,8 +93,11 @@ async fn main() {
             .expect("Upload failed :(");
     } else {
         // By default, list root directory.
+        let mut general_params = drive::DriveParams::default();
+        general_params.fields = Some("*".to_string());
         let mut p = drive::FilesListParams::default();
-        p.q = Some("'root' in parents".to_string());
+        p.q = Some("'root' in parents and trashed = false".to_string());
+        p.drive_params = Some(general_params);
 
         let resp = cl.list(&p).await.expect("listing your Drive failed!");
 
@@ -97,8 +105,8 @@ async fn main() {
             for f in files {
                 println!(
                     "{} => {:?}",
+                    f.id.unwrap(),
                     f.name.as_ref().unwrap_or(&"???".to_string()),
-                    f
                 );
             }
         }

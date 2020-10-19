@@ -1670,6 +1670,12 @@ pub struct AboutGetParams {
     pub drive_params: Option<DriveParams>,
 }
 
+impl std::fmt::Display for AboutGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
+}
+
 /// Parameters for the `changes.getStartPageToken` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesGetStartPageTokenParams {
@@ -1688,6 +1694,24 @@ pub struct ChangesGetStartPageTokenParams {
     /// Deprecated use driveId instead.
     #[serde(rename = "teamDriveId")]
     pub team_drive_id: Option<String>,
+}
+
+impl std::fmt::Display for ChangesGetStartPageTokenParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.drive_id {
+            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.team_drive_id {
+            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `changes.list` method.
@@ -1737,6 +1761,49 @@ pub struct ChangesListParams {
     pub team_drive_id: Option<String>,
 }
 
+impl std::fmt::Display for ChangesListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", self.page_token).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        if let Some(ref v) = self.drive_id {
+            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_corpus_removals {
+            write!(f, "&{}={}", "includeCorpusRemovals", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_items_from_all_drives {
+            write!(f, "&{}={}", "includeItemsFromAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_removed {
+            write!(f, "&{}={}", "includeRemoved", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_team_drive_items {
+            write!(f, "&{}={}", "includeTeamDriveItems", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.restrict_to_my_drive {
+            write!(f, "&{}={}", "restrictToMyDrive", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.spaces {
+            write!(f, "&{}={}", "spaces", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.team_drive_id {
+            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `changes.watch` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesWatchParams {
@@ -1784,12 +1851,61 @@ pub struct ChangesWatchParams {
     pub team_drive_id: Option<String>,
 }
 
+impl std::fmt::Display for ChangesWatchParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", self.page_token).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        if let Some(ref v) = self.drive_id {
+            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_corpus_removals {
+            write!(f, "&{}={}", "includeCorpusRemovals", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_items_from_all_drives {
+            write!(f, "&{}={}", "includeItemsFromAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_removed {
+            write!(f, "&{}={}", "includeRemoved", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_team_drive_items {
+            write!(f, "&{}={}", "includeTeamDriveItems", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.restrict_to_my_drive {
+            write!(f, "&{}={}", "restrictToMyDrive", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.spaces {
+            write!(f, "&{}={}", "spaces", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.team_drive_id {
+            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `channels.stop` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChannelsStopParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
     pub drive_params: Option<DriveParams>,
+}
+
+impl std::fmt::Display for ChannelsStopParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `comments.create` method.
@@ -1801,6 +1917,12 @@ pub struct CommentsCreateParams {
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
+}
+
+impl std::fmt::Display for CommentsCreateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `comments.delete` method.
@@ -1815,6 +1937,12 @@ pub struct CommentsDeleteParams {
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
+}
+
+impl std::fmt::Display for CommentsDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `comments.get` method.
@@ -1832,6 +1960,15 @@ pub struct CommentsGetParams {
     /// Whether to return deleted comments. Deleted comments will not include their original content.
     #[serde(rename = "includeDeleted")]
     pub include_deleted: Option<bool>,
+}
+
+impl std::fmt::Display for CommentsGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.include_deleted {
+            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `comments.list` method.
@@ -1857,6 +1994,24 @@ pub struct CommentsListParams {
     pub start_modified_time: Option<String>,
 }
 
+impl std::fmt::Display for CommentsListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.include_deleted {
+            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.start_modified_time {
+            write!(f, "&{}={}", "startModifiedTime", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `comments.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsUpdateParams {
@@ -1871,6 +2026,12 @@ pub struct CommentsUpdateParams {
     pub file_id: String,
 }
 
+impl std::fmt::Display for CommentsUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
+}
+
 /// Parameters for the `drives.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesCreateParams {
@@ -1882,6 +2043,13 @@ pub struct DrivesCreateParams {
     pub request_id: String,
 }
 
+impl std::fmt::Display for DrivesCreateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "&{}={}", "requestId", percent_encode(format!("{}", self.request_id).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        Ok(())
+    }
+}
+
 /// Parameters for the `drives.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesDeleteParams {
@@ -1891,6 +2059,12 @@ pub struct DrivesDeleteParams {
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
+}
+
+impl std::fmt::Display for DrivesDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `drives.get` method.
@@ -1907,6 +2081,15 @@ pub struct DrivesGetParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for DrivesGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `drives.hide` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesHideParams {
@@ -1916,6 +2099,12 @@ pub struct DrivesHideParams {
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
+}
+
+impl std::fmt::Display for DrivesHideParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `drives.list` method.
@@ -1938,6 +2127,24 @@ pub struct DrivesListParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for DrivesListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.q {
+            write!(f, "&{}={}", "q", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `drives.unhide` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesUnhideParams {
@@ -1947,6 +2154,12 @@ pub struct DrivesUnhideParams {
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
+}
+
+impl std::fmt::Display for DrivesUnhideParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `drives.update` method.
@@ -1961,6 +2174,15 @@ pub struct DrivesUpdateParams {
     /// Issue the request as a domain administrator; if set to true, then the requester will be granted access if they are an administrator of the domain to which the shared drive belongs.
     #[serde(rename = "useDomainAdminAccess")]
     pub use_domain_admin_access: Option<bool>,
+}
+
+impl std::fmt::Display for DrivesUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `files.copy` method.
@@ -1995,6 +2217,33 @@ pub struct FilesCopyParams {
     pub supports_team_drives: Option<bool>,
 }
 
+impl std::fmt::Display for FilesCopyParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.enforce_single_parent {
+            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.ignore_default_visibility {
+            write!(f, "&{}={}", "ignoreDefaultVisibility", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.keep_revision_forever {
+            write!(f, "&{}={}", "keepRevisionForever", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.ocr_language {
+            write!(f, "&{}={}", "ocrLanguage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `files.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesCreateParams {
@@ -2027,6 +2276,36 @@ pub struct FilesCreateParams {
     pub use_content_as_indexable_text: Option<bool>,
 }
 
+impl std::fmt::Display for FilesCreateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.enforce_single_parent {
+            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.ignore_default_visibility {
+            write!(f, "&{}={}", "ignoreDefaultVisibility", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.keep_revision_forever {
+            write!(f, "&{}={}", "keepRevisionForever", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.ocr_language {
+            write!(f, "&{}={}", "ocrLanguage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_content_as_indexable_text {
+            write!(f, "&{}={}", "useContentAsIndexableText", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `files.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesDeleteParams {
@@ -2047,6 +2326,21 @@ pub struct FilesDeleteParams {
     pub supports_team_drives: Option<bool>,
 }
 
+impl std::fmt::Display for FilesDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.enforce_single_parent {
+            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `files.emptyTrash` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesEmptyTrashParams {
@@ -2056,6 +2350,15 @@ pub struct FilesEmptyTrashParams {
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
+}
+
+impl std::fmt::Display for FilesEmptyTrashParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.enforce_single_parent {
+            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `files.export` method.
@@ -2072,6 +2375,13 @@ pub struct FilesExportParams {
     pub mime_type: String,
 }
 
+impl std::fmt::Display for FilesExportParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "&{}={}", "mimeType", percent_encode(format!("{}", self.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        Ok(())
+    }
+}
+
 /// Parameters for the `files.generateIds` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesGenerateIdsParams {
@@ -2084,6 +2394,18 @@ pub struct FilesGenerateIdsParams {
     /// The space in which the IDs can be used to create new files. Supported values are 'drive' and 'appDataFolder'.
     #[serde(rename = "space")]
     pub space: Option<String>,
+}
+
+impl std::fmt::Display for FilesGenerateIdsParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.count {
+            write!(f, "&{}={}", "count", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.space {
+            write!(f, "&{}={}", "space", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `files.get` method.
@@ -2107,6 +2429,24 @@ pub struct FilesGetParams {
     /// Deprecated use supportsAllDrives instead.
     #[serde(rename = "supportsTeamDrives")]
     pub supports_team_drives: Option<bool>,
+}
+
+impl std::fmt::Display for FilesGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.acknowledge_abuse {
+            write!(f, "&{}={}", "acknowledgeAbuse", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `files.list` method.
@@ -2159,6 +2499,54 @@ pub struct FilesListParams {
     pub team_drive_id: Option<String>,
 }
 
+impl std::fmt::Display for FilesListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.corpora {
+            write!(f, "&{}={}", "corpora", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.corpus {
+            write!(f, "&{}={}", "corpus", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.drive_id {
+            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_items_from_all_drives {
+            write!(f, "&{}={}", "includeItemsFromAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_team_drive_items {
+            write!(f, "&{}={}", "includeTeamDriveItems", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.order_by {
+            write!(f, "&{}={}", "orderBy", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.q {
+            write!(f, "&{}={}", "q", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.spaces {
+            write!(f, "&{}={}", "spaces", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.team_drive_id {
+            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `files.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesUpdateParams {
@@ -2197,6 +2585,39 @@ pub struct FilesUpdateParams {
     pub use_content_as_indexable_text: Option<bool>,
 }
 
+impl std::fmt::Display for FilesUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.add_parents {
+            write!(f, "&{}={}", "addParents", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.enforce_single_parent {
+            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.keep_revision_forever {
+            write!(f, "&{}={}", "keepRevisionForever", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.ocr_language {
+            write!(f, "&{}={}", "ocrLanguage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.remove_parents {
+            write!(f, "&{}={}", "removeParents", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_content_as_indexable_text {
+            write!(f, "&{}={}", "useContentAsIndexableText", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `files.watch` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesWatchParams {
@@ -2218,6 +2639,24 @@ pub struct FilesWatchParams {
     /// Deprecated use supportsAllDrives instead.
     #[serde(rename = "supportsTeamDrives")]
     pub supports_team_drives: Option<bool>,
+}
+
+impl std::fmt::Display for FilesWatchParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.acknowledge_abuse {
+            write!(f, "&{}={}", "acknowledgeAbuse", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `permissions.create` method.
@@ -2255,6 +2694,36 @@ pub struct PermissionsCreateParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for PermissionsCreateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.email_message {
+            write!(f, "&{}={}", "emailMessage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.enforce_single_parent {
+            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.move_to_new_owners_root {
+            write!(f, "&{}={}", "moveToNewOwnersRoot", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.send_notification_email {
+            write!(f, "&{}={}", "sendNotificationEmail", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.transfer_ownership {
+            write!(f, "&{}={}", "transferOwnership", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `permissions.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsDeleteParams {
@@ -2278,6 +2747,21 @@ pub struct PermissionsDeleteParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for PermissionsDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `permissions.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsGetParams {
@@ -2299,6 +2783,21 @@ pub struct PermissionsGetParams {
     /// Issue the request as a domain administrator; if set to true, then the requester will be granted access if the file ID parameter refers to a shared drive and the requester is an administrator of the domain to which the shared drive belongs.
     #[serde(rename = "useDomainAdminAccess")]
     pub use_domain_admin_access: Option<bool>,
+}
+
+impl std::fmt::Display for PermissionsGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `permissions.list` method.
@@ -2330,6 +2829,30 @@ pub struct PermissionsListParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for PermissionsListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.include_permissions_for_view {
+            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `permissions.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsUpdateParams {
@@ -2359,6 +2882,27 @@ pub struct PermissionsUpdateParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for PermissionsUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.remove_expiration {
+            write!(f, "&{}={}", "removeExpiration", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_all_drives {
+            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.supports_team_drives {
+            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.transfer_ownership {
+            write!(f, "&{}={}", "transferOwnership", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `replies.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesCreateParams {
@@ -2371,6 +2915,12 @@ pub struct RepliesCreateParams {
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
+}
+
+impl std::fmt::Display for RepliesCreateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `replies.delete` method.
@@ -2388,6 +2938,12 @@ pub struct RepliesDeleteParams {
     /// The ID of the reply.
     #[serde(rename = "replyId")]
     pub reply_id: String,
+}
+
+impl std::fmt::Display for RepliesDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `replies.get` method.
@@ -2408,6 +2964,15 @@ pub struct RepliesGetParams {
     /// The ID of the reply.
     #[serde(rename = "replyId")]
     pub reply_id: String,
+}
+
+impl std::fmt::Display for RepliesGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.include_deleted {
+            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `replies.list` method.
@@ -2433,6 +2998,21 @@ pub struct RepliesListParams {
     pub page_token: Option<String>,
 }
 
+impl std::fmt::Display for RepliesListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.include_deleted {
+            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `replies.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesUpdateParams {
@@ -2450,6 +3030,12 @@ pub struct RepliesUpdateParams {
     pub reply_id: String,
 }
 
+impl std::fmt::Display for RepliesUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
+}
+
 /// Parameters for the `revisions.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsDeleteParams {
@@ -2462,6 +3048,12 @@ pub struct RevisionsDeleteParams {
     /// The ID of the revision.
     #[serde(rename = "revisionId")]
     pub revision_id: String,
+}
+
+impl std::fmt::Display for RevisionsDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `revisions.get` method.
@@ -2481,6 +3073,15 @@ pub struct RevisionsGetParams {
     pub revision_id: String,
 }
 
+impl std::fmt::Display for RevisionsGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.acknowledge_abuse {
+            write!(f, "&{}={}", "acknowledgeAbuse", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `revisions.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsListParams {
@@ -2498,6 +3099,18 @@ pub struct RevisionsListParams {
     pub page_token: Option<String>,
 }
 
+impl std::fmt::Display for RevisionsListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `revisions.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsUpdateParams {
@@ -2512,6 +3125,12 @@ pub struct RevisionsUpdateParams {
     pub revision_id: String,
 }
 
+impl std::fmt::Display for RevisionsUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
+}
+
 /// Parameters for the `teamdrives.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesCreateParams {
@@ -2523,6 +3142,13 @@ pub struct TeamdrivesCreateParams {
     pub request_id: String,
 }
 
+impl std::fmt::Display for TeamdrivesCreateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "&{}={}", "requestId", percent_encode(format!("{}", self.request_id).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        Ok(())
+    }
+}
+
 /// Parameters for the `teamdrives.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesDeleteParams {
@@ -2532,6 +3158,12 @@ pub struct TeamdrivesDeleteParams {
     /// The ID of the Team Drive
     #[serde(rename = "teamDriveId")]
     pub team_drive_id: String,
+}
+
+impl std::fmt::Display for TeamdrivesDeleteParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Ok(())
+    }
 }
 
 /// Parameters for the `teamdrives.get` method.
@@ -2546,6 +3178,15 @@ pub struct TeamdrivesGetParams {
     /// Issue the request as a domain administrator; if set to true, then the requester will be granted access if they are an administrator of the domain to which the Team Drive belongs.
     #[serde(rename = "useDomainAdminAccess")]
     pub use_domain_admin_access: Option<bool>,
+}
+
+impl std::fmt::Display for TeamdrivesGetParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// Parameters for the `teamdrives.list` method.
@@ -2568,6 +3209,24 @@ pub struct TeamdrivesListParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+impl std::fmt::Display for TeamdrivesListParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.page_size {
+            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.page_token {
+            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.q {
+            write!(f, "&{}={}", "q", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
+}
+
 /// Parameters for the `teamdrives.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesUpdateParams {
@@ -2580,6 +3239,15 @@ pub struct TeamdrivesUpdateParams {
     /// Issue the request as a domain administrator; if set to true, then the requester will be granted access if they are an administrator of the domain to which the Team Drive belongs.
     #[serde(rename = "useDomainAdminAccess")]
     pub use_domain_admin_access: Option<bool>,
+}
+
+impl std::fmt::Display for TeamdrivesUpdateParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.use_domain_admin_access {
+            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 impl std::fmt::Display for DriveParams {
@@ -2653,7 +3321,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -2710,23 +3379,8 @@ pub async fn get_start_page_token(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -2758,60 +3412,11 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_corpus_removals {
-        url_params.push_str(&format!("&includeCorpusRemovals={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_items_from_all_drives {
-        url_params.push_str(&format!("&includeItemsFromAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_removed {
-        url_params.push_str(&format!("&includeRemoved={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_team_drive_items {
-        url_params.push_str(&format!("&includeTeamDriveItems={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.restrict_to_my_drive {
-        url_params.push_str(&format!("&restrictToMyDrive={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.spaces {
-        url_params.push_str(&format!("&spaces={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
-    url_params.push_str(&format!("&pageToken={}",
-        percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
 
@@ -2840,60 +3445,11 @@ pub async fn watch(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_corpus_removals {
-        url_params.push_str(&format!("&includeCorpusRemovals={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_items_from_all_drives {
-        url_params.push_str(&format!("&includeItemsFromAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_removed {
-        url_params.push_str(&format!("&includeRemoved={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_team_drive_items {
-        url_params.push_str(&format!("&includeTeamDriveItems={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.restrict_to_my_drive {
-        url_params.push_str(&format!("&restrictToMyDrive={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.spaces {
-        url_params.push_str(&format!("&spaces={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
-    url_params.push_str(&format!("&pageToken={}",
-        percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
 
@@ -2948,7 +3504,8 @@ pub async fn stop(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3001,7 +3558,8 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3029,7 +3587,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3057,11 +3616,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3089,23 +3645,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.start_modified_time {
-        url_params.push_str(&format!("&startModifiedTime={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3132,7 +3673,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3184,12 +3726,11 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
-    url_params.push_str(&format!("&requestId={}",
-        percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
 
@@ -3213,7 +3754,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3240,11 +3782,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3270,7 +3809,8 @@ pub async fn hide(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3297,23 +3837,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.q {
-        url_params.push_str(&format!("&q={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3339,7 +3864,8 @@ pub async fn unhide(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3365,11 +3891,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3424,35 +3947,8 @@ pub async fn copy(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ignore_default_visibility {
-        url_params.push_str(&format!("&ignoreDefaultVisibility={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3481,39 +3977,8 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ignore_default_visibility {
-        url_params.push_str(&format!("&ignoreDefaultVisibility={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3544,40 +4009,9 @@ pub async fn create_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}", token=tok.as_str());
 
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ignore_default_visibility {
-        url_params.push_str(&format!("&ignoreDefaultVisibility={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3606,19 +4040,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3644,11 +4067,8 @@ pub async fn empty_trash(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3680,12 +4100,11 @@ pub async fn export(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
-    url_params.push_str(&format!("&mimeType={}",
-        percent_encode(format!("{}", params.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
     let opt_request: Option<EmptyRequest> = None;
@@ -3710,15 +4129,8 @@ pub async fn generate_ids(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.count {
-        url_params.push_str(&format!("&count={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.space {
-        url_params.push_str(&format!("&space={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3750,23 +4162,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.acknowledge_abuse {
-        url_params.push_str(&format!("&acknowledgeAbuse={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3798,63 +4195,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.corpora {
-        url_params.push_str(&format!("&corpora={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.corpus {
-        url_params.push_str(&format!("&corpus={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.drive_id {
-        url_params.push_str(&format!("&driveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_items_from_all_drives {
-        url_params.push_str(&format!("&includeItemsFromAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_team_drive_items {
-        url_params.push_str(&format!("&includeTeamDriveItems={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.order_by {
-        url_params.push_str(&format!("&orderBy={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.q {
-        url_params.push_str(&format!("&q={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.spaces {
-        url_params.push_str(&format!("&spaces={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.team_drive_id {
-        url_params.push_str(&format!("&teamDriveId={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3884,43 +4226,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.add_parents {
-        url_params.push_str(&format!("&addParents={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.remove_parents {
-        url_params.push_str(&format!("&removeParents={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3953,44 +4260,9 @@ pub async fn update_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}", token=tok.as_str());
 
-    if let Some(ref val) = &params.add_parents {
-        url_params.push_str(&format!("&addParents={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.keep_revision_forever {
-        url_params.push_str(&format!("&keepRevisionForever={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.ocr_language {
-        url_params.push_str(&format!("&ocrLanguage={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.remove_parents {
-        url_params.push_str(&format!("&removeParents={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_content_as_indexable_text {
-        url_params.push_str(&format!("&useContentAsIndexableText={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4023,23 +4295,8 @@ pub async fn watch(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.acknowledge_abuse {
-        url_params.push_str(&format!("&acknowledgeAbuse={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4092,39 +4349,8 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.email_message {
-        url_params.push_str(&format!("&emailMessage={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.enforce_single_parent {
-        url_params.push_str(&format!("&enforceSingleParent={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.move_to_new_owners_root {
-        url_params.push_str(&format!("&moveToNewOwnersRoot={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.send_notification_email {
-        url_params.push_str(&format!("&sendNotificationEmail={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.transfer_ownership {
-        url_params.push_str(&format!("&transferOwnership={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4152,19 +4378,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4195,19 +4410,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4238,31 +4442,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.include_permissions_for_view {
-        url_params.push_str(&format!("&includePermissionsForView={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4289,27 +4470,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.remove_expiration {
-        url_params.push_str(&format!("&removeExpiration={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_all_drives {
-        url_params.push_str(&format!("&supportsAllDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.supports_team_drives {
-        url_params.push_str(&format!("&supportsTeamDrives={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.transfer_ownership {
-        url_params.push_str(&format!("&transferOwnership={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4362,7 +4524,8 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4390,7 +4553,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4418,11 +4582,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4450,19 +4611,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.include_deleted {
-        url_params.push_str(&format!("&includeDeleted={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4489,7 +4639,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4543,7 +4694,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4575,11 +4727,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.acknowledge_abuse {
-        url_params.push_str(&format!("&acknowledgeAbuse={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4611,15 +4760,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4647,7 +4789,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4699,12 +4842,11 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
-    url_params.push_str(&format!("&requestId={}",
-        percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
 
@@ -4728,7 +4870,8 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4755,11 +4898,8 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4786,23 +4926,8 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.page_size {
-        url_params.push_str(&format!("&pageSize={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.page_token {
-        url_params.push_str(&format!("&pageToken={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.q {
-        url_params.push_str(&format!("&q={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4828,11 +4953,8 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
-    if let Some(ref val) = &params.use_domain_admin_access {
-        url_params.push_str(&format!("&useDomainAdminAccess={}",
-            percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
-    }
+    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
+    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }

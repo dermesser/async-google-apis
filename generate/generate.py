@@ -189,6 +189,8 @@ def generate_params_structs(resources, super_name='', global_params=None):
                 'description': 'Parameters for the `{}.{}` method.'.format(resourcename, methodname),
                 'fields': []
             }
+            req_query_parameters = []
+            opt_query_parameters = []
             struct['fields'].append({'name': snake_case(global_params),
                 'typ': optionalize(global_params, True),
                 'attr': '#[serde(flatten)]',
@@ -197,13 +199,23 @@ def generate_params_structs(resources, super_name='', global_params=None):
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
                     (typ, desc), substructs = parse_schema_types('', param, optional=False)
-                    struct['fields'].append({
+                    field = {
                         'name': snake_case(paramname),
+                        'original_name': paramname,
                         'typ': optionalize(typ, not param.get('required', False)),
                         'comment': desc,
                         'attr': '#[serde(rename = "{}")]'.format(paramname),
-                    })
+                    }
+                    struct['fields'].append(field)
+                    if param.get('location', '') == 'query':
+                        if param.get('required', False):
+                            req_query_parameters.append(field)
+                        else:
+                            opt_query_parameters.append(field)
             frags.append(chevron.render(SchemaStructTmpl, struct))
+            struct['required_fields'] = req_query_parameters
+            struct['optional_fields'] = opt_query_parameters
+            frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
         frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename))
     return frags
@@ -383,23 +395,24 @@ def generate_all(discdoc):
     params_struct_name = capitalize_first(discdoc['name'])+'Params'
     parameter_types = generate_params_structs(resources, global_params=params_struct_name)
 
-    # Generate service impls
+    # Generate service impls.
     services = []
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
 
-    # Generate resource types
+    # Generate resource types.
     structs = []
     for name, desc in schemas.items():
         typ, substructs = parse_schema_types(name, desc)
         structs.extend(substructs)
 
-    # Generate global params.
+    # Generate global parameters struct and its Display impl.
     if 'parameters' in discdoc:
         schema = {'type': 'object', 'properties': discdoc['parameters']}
         name =  params_struct_name
         typ, substructs = parse_schema_types(name, schema)
         for s in substructs:
+            s['optional_fields'] = s['fields']
             parameter_types.append(chevron.render(SchemaDisplayTmpl, s))
         structs.extend(substructs)
 
