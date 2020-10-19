@@ -57,7 +57,7 @@ def parse_schema_types(name, schema, optional=True):
         second element is a comment detailing the use of the field. The list of
         dicts returned as second element are any structs that need to be separately
         implemented and that the generated struct (if it was a struct) depends
-        on. The dict contains elements as expected by templates.ResourceStructTmpl.
+        on. The dict contains elements as expected by templates.SchemaStructTmpl.
     """
     typ = ''
     comment = ''
@@ -70,10 +70,14 @@ def parse_schema_types(name, schema, optional=True):
             # There are two types of objects: those with `properties` are translated into a Rust struct,
             # and those with `additionalProperties` into a HashMap<String, ...>.
 
-            # Structs are represented as dicts that can be used to render the ResourceStructTmpl.
+            # Structs are represented as dicts that can be used to render the SchemaStructTmpl.
             if 'properties' in schema:
                 typ = name
-                struct = {'name': name, 'fields': []}
+                struct = {
+                        'name': name,
+                        'description': schema.get('description', ''),
+                        'fields': []
+                }
                 for pn, pp in schema['properties'].items():
                     subtyp, substructs = parse_schema_types(name + capitalize_first(pn), pp, optional=True)
                     if type(subtyp) is tuple:
@@ -181,7 +185,11 @@ def generate_params_structs(resources, super_name=''):
             param_type_name = capitalize_first(super_name) + capitalize_first(resourcename) + capitalize_first(
                 methodname) + 'Params'
             print("processed:", resourcename, methodname, param_type_name)
-            struct = {'name': param_type_name, 'fields': []}
+            struct = {
+                    'name': param_type_name,
+                    'description': 'Parameters for the `{}.{}` method.'.format(resourcename, methodname),
+                    'fields': []
+            }
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
@@ -192,7 +200,7 @@ def generate_params_structs(resources, super_name=''):
                         'comment': desc,
                         'attr': '#[serde(rename = "{}")]'.format(paramname),
                     })
-            frags.append(chevron.render(ResourceStructTmpl, struct))
+            frags.append(chevron.render(SchemaStructTmpl, struct))
         # Generate parameter types for subresources.
         frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename))
     return frags
@@ -280,7 +288,6 @@ def generate_service(resource, methods, discdoc):
             if in_type == '()':
                 data_download.pop('in_type')
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
-
         else:
             data_normal = {
                 'name': snake_case(methodname),
@@ -307,10 +314,12 @@ def generate_service(resource, methods, discdoc):
                 data_normal.pop('in_type')
             method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
+            # We generate an additional implementation with the option of uploading data.
             if is_upload:
                 data_upload = {
                     'name': snake_case(methodname),
                     'param_type': params_type_name,
+                    'in_type': in_type,
                     'out_type': out_type,
                     'base_path': discdoc['rootUrl'],
                     'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
@@ -389,7 +398,7 @@ def generate_all(discdoc):
                     field['comment'] = field['comment'].replace('\n', ' ')
             if not s['name']:
                 print('WARN', s)
-            f.write(chevron.render(ResourceStructTmpl, s))
+            f.write(chevron.render(SchemaStructTmpl, s))
         # Render *Params structs.
         for pt in parameter_types:
             f.write(pt)

@@ -43,10 +43,4 @@ APIs to gain insights on which code to generate.
 * Don't always fetch all fields. Currently, the parameter `&fields=*` is sent
 with every request, which guarantees a full response, but not the best
 performance.
-* Multipart uploads are not yet supported. As a crutch, uploadable API endpoints
-are defined using two methods: `method()` and `method_upload()`, where
-`method_upload()` only uploads data, and `method()` only works with metadata.
-This works at least for my favorite API, the Google Drive API (v3). @Byron has a
-simple implementation of multipart HTTP in his excellent
-[Byron/google-apis-rs](https://github.com/Byron/google-apis-rs) crate; something
-similar may be useful here.
+* No resumable uploads -- even big files need to be held in memory.

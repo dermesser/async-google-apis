@@ -43,7 +43,8 @@ impl std::convert::AsRef<str> for {{{name}}}Scopes {
 # Dict contents --
 # name
 # fields: [{name, comment, attr, typ}]
-ResourceStructTmpl = '''
+SchemaStructTmpl = '''
+/// {{{description}}}
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct {{{name}}} {
 {{#fields}}
@@ -59,10 +60,12 @@ pub struct {{{name}}} {
 '''
 
 # Dict contents --
-# service (e.g. Files)
-# methods: [{text}]
+#
+# api, service (names: e.g. Files)
+# methods: [{text}] (the method implementations as {'text': ...} dicts)
 # name (API name)
 ServiceImplementationTmpl = '''
+/// The {{{name}}} {{{service}}} service represents the {{{service}}} resource.
 pub struct {{{service}}}Service {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -140,8 +143,10 @@ pub async fn {{{name}}}(
 # http_method
 UploadMethodTmpl = '''
 /// {{{description}}}
+///
+/// This method is a variant of `{{{name}}}()`, taking data for upload.
 pub async fn {{{name}}}_upload(
-    &mut self, params: &{{{param_type}}}, data: hyper::body::Bytes) -> Result<{{out_type}}> {
+    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
 
@@ -153,7 +158,7 @@ pub async fn {{{name}}}_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=media&oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}&fields=*", token=tok.as_str());
 
     {{#params}}
     if let Some(ref val) = &params.{{{snake_param}}} {
@@ -167,7 +172,12 @@ pub async fn {{{name}}}_upload(
     {{/required_params}}
 
     let full_uri = path + &url_params;
-    do_upload(&self.client, &full_uri, &[], "{{{http_method}}}", data).await
+    let opt_request: Option<EmptyRequest> = None;
+    {{#in_type}}
+    let opt_request = Some(req);
+    {{/in_type}}
+
+    do_upload_multipart(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request, data).await
   }
 '''
 
@@ -178,8 +188,10 @@ pub async fn {{{name}}}_upload(
 # http_method
 DownloadMethodTmpl = '''
 /// {{{description}}}
+///
+/// This method downloads data.
 pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}req: {{{in_type}}},{{/in_type}} dst: &mut dyn std::io::Write)
+    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} dst: &mut dyn std::io::Write)
     -> Result<{{out_type}}> {
 
     let rel_path = {{{rel_path_expr}}};
