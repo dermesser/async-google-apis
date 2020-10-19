@@ -8,29 +8,9 @@
 //!
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
 
-use serde::{Deserialize, Serialize};
-use chrono::{DateTime, Utc};
-use anyhow::{Error, Result};
-use std::collections::HashMap;
-use tokio::stream::StreamExt;
-use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
+use async_google_apis_common::*;
+use async_google_apis_common::{Deserialize, Serialize};
 
-pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
-pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
-pub type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
-
-#[derive(Debug, Clone)]
-pub enum ApiError {
-  InputDataError(String),
-  HTTPError(hyper::StatusCode),
-}
-
-impl std::error::Error for ApiError {}
-impl std::fmt::Display for ApiError {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    std::fmt::Debug::fmt(self, f)
-  }
-}
 
 /// Scopes of this API. Convertible to their string representation with `AsRef`.
 #[derive(Debug, Clone, Copy)]
@@ -1055,7 +1035,7 @@ pub struct File {
     #[serde(rename = "teamDriveId")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub team_drive_id: Option<String>,
-    /// A short-lived link to the file's thumbnail, if available. Typically lasts on the order of hours. Only populated when the requesting app can access the file's content.
+    /// A short-lived link to the file's thumbnail, if available. Typically lasts on the order of hours. Only populated when the requesting app can access the file's content. If the file isn't shared publicly, the URL returned in Files.thumbnailLink must be fetched using a credentialed request.
     #[serde(rename = "thumbnailLink")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumbnail_link: Option<String>,
@@ -3621,7 +3601,7 @@ pub async fn empty_trash(
 pub async fn export(
     &mut self, params: &FilesExportParams,  dst: &mut dyn std::io::Write) -> Result<()> {
 
-    let rel_path = format!("files/trash", );
+    let rel_path = format!("files/{fileId}/export", fileId=params.file_id);
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
     let tok;

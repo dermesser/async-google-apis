@@ -9,12 +9,14 @@
 mod drive_v3_types;
 use drive_v3_types as drive;
 
+use async_google_apis_common as common;
+
 use std::rc::Rc;
 use std::fs;
 use std::path::Path;
 
 /// Create a new HTTPS client.
-fn https_client() -> drive::TlsClient {
+fn https_client() -> common::TlsClient {
     let conn = hyper_rustls::HttpsConnector::new();
     let cl = hyper::Client::builder().build(conn);
     cl
