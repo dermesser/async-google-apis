@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # (c) 2020 Lewin Bormann <lbo@spheniscida.de>
-# 
+#
 # Please let me know about your use case of this code!
 
 import argparse
@@ -329,13 +329,15 @@ def generate_service(resource, methods, discdoc):
                 }
                 method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
 
-    return chevron.render(ServiceImplementationTmpl, {
-        'service': service,
-        'name': capitalize_first(discdoc.get('name', '')),
-        'methods': [{
-            'text': t
-        } for t in method_fragments]
-    }) + '\n'.join(subresource_fragments)
+    return chevron.render(
+        ServiceImplementationTmpl, {
+            'service': service,
+            'name': capitalize_first(discdoc.get('name', '')),
+            'methods': [{
+                'text': t
+            } for t in method_fragments]
+        }) + '\n'.join(subresource_fragments)
+
 
 def generate_scopes_type(name, scopes):
     """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
@@ -350,6 +352,7 @@ def generate_scopes_type(name, scopes):
         fancy_name = ''.join([capitalize_first(p) for p in rawname.split('.')])
         parameters['scopes'].append({'name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
     return chevron.render(OauthScopesType, parameters)
+
 
 def generate_all(discdoc):
     """Generate all structs and impls, and render them into a file."""
