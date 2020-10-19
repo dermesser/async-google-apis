@@ -9,6 +9,8 @@
 mod drive_v3_types;
 use drive_v3_types as drive;
 
+use env_logger;
+
 use async_google_apis_common as common;
 
 use std::fs;
@@ -58,6 +60,8 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
 
 #[tokio::main]
 async fn main() {
+    env_logger::init();
+
     let https = https_client();
     // Put your client secret in the working directory!
     let sec = yup_oauth2::read_application_secret("client_secret.json")

@@ -32,8 +32,14 @@ pub async fn do_request<Req: Serialize, Resp: DeserializeOwned + Clone>(
     }
 
     let http_request = reqb.body(body)?;
+
+    debug!("do_request: Launching HTTP request: {:?}", http_request);
+
     let http_response = cl.request(http_request).await?;
     let status = http_response.status();
+
+    debug!("do_request: HTTP response with status {} received: {:?}", status, http_response);
+
     let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
     let response_body_str = String::from_utf8(response_body.to_vec());
     if !status.is_success() {
@@ -69,39 +75,10 @@ pub async fn do_upload_multipart<Req: Serialize, Resp: DeserializeOwned + Clone>
 
     let body = hyper::Body::from(data.as_ref().to_vec());
     let http_request = reqb.body(body)?;
+    debug!("do_upload_multipart: Launching HTTP request: {:?}", http_request);
     let http_response = cl.request(http_request).await?;
     let status = http_response.status();
-    let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
-    let response_body_str = String::from_utf8(response_body.to_vec());
-
-    if !status.is_success() {
-        Err(Error::new(ApiError::HTTPError(
-            status,
-            response_body_str.unwrap_or("".to_string()),
-        )))
-    } else {
-        serde_json::from_reader(response_body.as_ref()).map_err(Error::from)
-    }
-}
-
-/// The Content-Length header is set automatically.
-pub async fn do_upload<Resp: DeserializeOwned + Clone>(
-    cl: &TlsClient,
-    path: &str,
-    headers: &[(String, String)],
-    http_method: &str,
-    data: hyper::body::Bytes,
-) -> Result<Resp> {
-    let mut reqb = hyper::Request::builder().uri(path).method(http_method);
-    for (k, v) in headers {
-        reqb = reqb.header(k, v);
-    }
-    reqb = reqb.header("Content-Length", data.len());
-
-    let body = hyper::Body::from(data);
-    let http_request = reqb.body(body)?;
-    let http_response = cl.request(http_request).await?;
-    let status = http_response.status();
+    debug!("do_upload_multipart: HTTP response with status {} received: {:?}", status, http_response);
     let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
     let response_body_str = String::from_utf8(response_body.to_vec());
 
@@ -125,6 +102,7 @@ pub async fn do_download<Req: Serialize>(
 ) -> Result<()> {
     let mut path = path.to_string();
     let mut http_response;
+    let mut i = 0;
 
     // Follow redirects.
     loop {
@@ -141,12 +119,16 @@ pub async fn do_download<Req: Serialize>(
         }
 
         let http_request = reqb.body(body)?;
+        debug!("do_download: Redirect {}, Launching HTTP request: {:?}", i, http_request);
+
         http_response = Some(cl.request(http_request).await?);
         let status = http_response.as_ref().unwrap().status();
+        debug!("do_download: Redirect {}, HTTP response with status {} received: {:?}", i, status, http_response);
 
         if status.is_success() {
             break;
         } else if status.is_redirection() {
+            i += 1;
             let new_location = http_response
                 .as_ref()
                 .unwrap()

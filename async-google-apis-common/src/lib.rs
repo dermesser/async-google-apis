@@ -5,6 +5,7 @@ pub use hyper;
 pub use serde;
 pub use serde_json;
 pub use yup_oauth2;
+pub use log::{trace, debug, info, warn, error};
 
 pub use anyhow::{Error, Result};
 pub use chrono::{DateTime, Utc};
@@ -30,7 +31,7 @@ impl std::fmt::Display for ApiError {
     }
 }
 
+mod multipart;
 mod http;
 pub use http::*;
 
-pub mod multipart;
