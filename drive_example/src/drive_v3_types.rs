@@ -9,8 +9,6 @@
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
 
 use async_google_apis_common::*;
-use async_google_apis_common::{Deserialize, Serialize};
-
 
 /// Scopes of this API. Convertible to their string representation with `AsRef`.
 #[derive(Debug, Clone, Copy)]
@@ -2372,21 +2370,9 @@ pub async fn get(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 }
@@ -2453,21 +2439,9 @@ pub async fn get_start_page_token(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -2544,21 +2518,9 @@ pub async fn list(
         percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -2635,26 +2597,10 @@ pub async fn watch(
         percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 }
@@ -2705,26 +2651,10 @@ pub async fn stop(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 }
@@ -2770,26 +2700,10 @@ pub async fn create(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -2811,21 +2725,9 @@ pub async fn delete(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -2852,21 +2754,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -2905,21 +2795,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -2941,26 +2819,10 @@ pub async fn update(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 }
@@ -3007,26 +2869,10 @@ pub async fn create(
         percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -3047,21 +2893,9 @@ pub async fn delete(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -3087,21 +2921,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -3122,21 +2944,9 @@ pub async fn hide(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -3174,21 +2984,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -3209,21 +3007,9 @@ pub async fn unhide(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -3248,26 +3034,10 @@ pub async fn update(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 }
@@ -3343,26 +3113,10 @@ pub async fn copy(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -3417,26 +3171,10 @@ pub async fn create(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -3492,20 +3230,7 @@ pub async fn create_upload(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Length", data.len());
-    let body = hyper::Body::from(data);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    do_upload(&self.client, &full_uri, &[], "POST", data).await
   }
 
 
@@ -3540,21 +3265,9 @@ pub async fn delete(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -3579,27 +3292,16 @@ pub async fn empty_trash(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
 /// Exports a Google Doc to the requested MIME type and returns the exported content. Please note that the exported content is limited to 10MB.
 pub async fn export(
-    &mut self, params: &FilesExportParams,  dst: &mut dyn std::io::Write) -> Result<()> {
+    &mut self, params: &FilesExportParams,  dst: &mut dyn std::io::Write)
+    -> Result<()> {
 
     let rel_path = format!("files/{fileId}/export", fileId=params.file_id);
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
@@ -3619,28 +3321,9 @@ pub async fn export(
         percent_encode(format!("{}", params.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
+    let opt_request: Option<EmptyRequest> = None;
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = resp.into_body();
-    let write_result = resp_body.map(move |chunk| {
-        dst.write(chunk?.as_ref())
-            .map(|_| ())
-            .map_err(Error::from)
-        })
-        .collect::<Vec<Result<()>>>().await;
-    if let Some(e) = write_result.into_iter().find(|r| r.is_err()) {
-        return e;
-    }
-    Ok(())
+    do_download(&self.client, &full_uri, &[], "GET", opt_request, dst).await
   }
 
 
@@ -3671,21 +3354,9 @@ pub async fn generate_ids(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -3728,21 +3399,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -3825,21 +3484,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -3900,26 +3547,10 @@ pub async fn update(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 
@@ -3981,20 +3612,7 @@ pub async fn update_upload(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Length", data.len());
-    let body = hyper::Body::from(data);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    do_upload(&self.client, &full_uri, &[], "PATCH", data).await
   }
 
 
@@ -4037,26 +3655,10 @@ pub async fn watch(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 }
@@ -4134,26 +3736,10 @@ pub async fn create(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -4187,21 +3773,9 @@ pub async fn delete(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -4239,21 +3813,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4303,21 +3865,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4359,26 +3909,10 @@ pub async fn update(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 }
@@ -4424,26 +3958,10 @@ pub async fn create(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -4465,21 +3983,9 @@ pub async fn delete(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -4506,21 +4012,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4555,21 +4049,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4591,26 +4073,10 @@ pub async fn update(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 }
@@ -4657,21 +4123,9 @@ pub async fn delete(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -4702,21 +4156,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4751,21 +4193,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4788,26 +4218,10 @@ pub async fn update(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 }
@@ -4854,26 +4268,10 @@ pub async fn create(
         percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("POST")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
   }
 
 
@@ -4894,21 +4292,9 @@ pub async fn delete(
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("DELETE")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
   }
 
 
@@ -4934,21 +4320,9 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -4986,21 +4360,9 @@ pub async fn list(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("GET")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
   }
 
 
@@ -5025,26 +4387,10 @@ pub async fn update(
     }
 
     let full_uri = path + &url_params;
-    let reqb = hyper::Request::builder()
-        .uri(full_uri)
-        .method("PATCH")
-        .header("Content-Type", "application/json");
 
-    let body = hyper::Body::from("");
-    let mut body_str = serde_json::to_string(req)?;
-    if body_str == "null" {
-        body_str.clear();
-    }
-    let body = hyper::Body::from(body_str);
-    let request = reqb.body(body)?;
-    let resp = self.client.request(request).await?;
-    if !resp.status().is_success() {
-        return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
-    }
-    let resp_body = hyper::body::to_bytes(resp.into_body()).await?;
-    let resp_body_str = String::from_utf8(resp_body.to_vec())?;
-    let decoded = serde_json::from_str(&resp_body_str)?;
-    Ok(decoded)
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
   }
 
 }
