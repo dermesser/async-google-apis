@@ -350,7 +350,7 @@ def generate_scopes_type(name, scopes):
     for url, desc in scopes.items():
         rawname = url.split('/')[-1]
         fancy_name = ''.join([capitalize_first(p) for p in rawname.split('.')])
-        parameters['scopes'].append({'name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
+        parameters['scopes'].append({'scope_name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
     return chevron.render(OauthScopesType, parameters)
 
 
