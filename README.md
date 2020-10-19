@@ -12,30 +12,31 @@ Google API.
 
 ## Parts
 
-`manual_demo` is just a demo crate with some code for developers (well, me) to
+* `manual_demo` is just a demo crate with some code for developers (well, me) to
 experiment if the generated APIs work, and also to work manually with the Google
 APIs to gain insights on which code to generate.
 
-`generate` contains a Python program fetching current Google Discovery documents
-(https://www.googleapis.com/discovery/v1/apis, see
- [documentation](https://developers.google.com/discovery/v1/reference)) and
-generating Rust code in the `generate/gen` directory. This is done very
-non-fancily using a few mustache templates and the `chevron` package. The script
-only takes two parameters, which you can discover using `--help`. In short, to
-generate an API stub for the API with ID `storage:v1` (Google Cloud Storage v1),
-run
-
-```shell
-$ pipenv run ./generate.py --only_apis=storage:v1
-```
-
-(install `pipenv` using `pip install --user pipenv` before, if you don't have it
-yet)
-
-Consult `drive_example` for a simple but useful example of using the generated
-code. As you can see, it is reasonably easy! Use `cargo doc` to generate the
-documentation for generated code, as the API comments is translated into Rust
-doc comments.
+* `generate` contains a Python program fetching current Google Discovery documents
+  (https://www.googleapis.com/discovery/v1/apis, see
+   [documentation](https://developers.google.com/discovery/v1/reference)) and
+  generating Rust code in the `generate/gen` directory. This is done very
+  non-fancily using a few mustache templates and the `chevron` package. The script
+  only takes two parameters, which you can discover using `--help`. In short, to
+  generate an API stub for the API with ID `storage:v1` (Google Cloud Storage v1),
+  run
+  ```shell
+  $ pipenv run ./generate.py --only_apis=storage:v1
+  ```
+  (install `pipenv` using `pip install --user pipenv` before, if you don't have it
+  yet)
+* Consult `drive_example` for a simple but useful example of using the generated
+  code. As you can see, it is reasonably easy! Use `cargo doc` to generate the
+  documentation for generated code, as the API comments is translated into Rust
+  doc comments.
+* `async-google-apis-common` contains shared code, for example the HTTP logic,
+  used by the generated code, as well as some types (like errors) and as well as
+  all imports. Include this crate in your dependencies when you are using
+  the generated code in your project.
 
 ## To Do
 
