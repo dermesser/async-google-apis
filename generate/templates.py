@@ -74,7 +74,7 @@ pub struct {{{service}}}Service {
 
 impl {{{service}}}Service {
     /// Create a new {{service}}Service object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> {{service}}Service {
         {{{service}}}Service { client: client, authenticator: Box::new(auth), scopes: vec![] }

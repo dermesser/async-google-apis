@@ -2420,7 +2420,7 @@ pub struct AboutService {
 
 impl AboutService {
     /// Create a new AboutService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> AboutService {
         AboutService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -2474,7 +2474,7 @@ pub struct ChangesService {
 
 impl ChangesService {
     /// Create a new ChangesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> ChangesService {
         ChangesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -2703,7 +2703,7 @@ pub struct ChannelsService {
 
 impl ChannelsService {
     /// Create a new ChannelsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> ChannelsService {
         ChannelsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -2758,7 +2758,7 @@ pub struct CommentsService {
 
 impl CommentsService {
     /// Create a new CommentsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> CommentsService {
         CommentsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -2927,7 +2927,7 @@ pub struct DrivesService {
 
 impl DrivesService {
     /// Create a new DrivesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> DrivesService {
         DrivesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -3143,7 +3143,7 @@ pub struct FilesService {
 
 impl FilesService {
     /// Create a new FilesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> FilesService {
         FilesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -3777,7 +3777,7 @@ pub struct PermissionsService {
 
 impl PermissionsService {
     /// Create a new PermissionsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> PermissionsService {
         PermissionsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -4032,7 +4032,7 @@ pub struct RepliesService {
 
 impl RepliesService {
     /// Create a new RepliesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> RepliesService {
         RepliesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -4197,7 +4197,7 @@ pub struct RevisionsService {
 
 impl RevisionsService {
     /// Create a new RevisionsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> RevisionsService {
         RevisionsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
@@ -4343,7 +4343,7 @@ pub struct TeamdrivesService {
 
 impl TeamdrivesService {
     /// Create a new TeamdrivesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> TeamdrivesService {
         TeamdrivesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
