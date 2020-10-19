@@ -73,11 +73,7 @@ def parse_schema_types(name, schema, optional=True):
             # Structs are represented as dicts that can be used to render the SchemaStructTmpl.
             if 'properties' in schema:
                 typ = name
-                struct = {
-                        'name': name,
-                        'description': schema.get('description', ''),
-                        'fields': []
-                }
+                struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
                     subtyp, substructs = parse_schema_types(name + capitalize_first(pn), pp, optional=True)
                     if type(subtyp) is tuple:
@@ -186,9 +182,9 @@ def generate_params_structs(resources, super_name=''):
                 methodname) + 'Params'
             print("processed:", resourcename, methodname, param_type_name)
             struct = {
-                    'name': param_type_name,
-                    'description': 'Parameters for the `{}.{}` method.'.format(resourcename, methodname),
-                    'fields': []
+                'name': param_type_name,
+                'description': 'Parameters for the `{}.{}` method.'.format(resourcename, methodname),
+                'fields': []
             }
             # Build struct dict for rendering.
             if 'parameters' in method:
