@@ -31,6 +31,59 @@ impl std::fmt::Display for ApiError {
   }
 }
 
+/// Scopes of this API. Convertible to their string representation with `AsRef`.
+#[derive(Debug, Clone, Copy)]
+pub enum DriveScopes {
+    /// See, edit, create, and delete all of your Google Drive files
+    ///
+    /// URL: https://www.googleapis.com/auth/drive
+    Drive,
+    /// View and manage its own configuration data in your Google Drive
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.appdata
+    DriveAppdata,
+    /// View and manage Google Drive files and folders that you have opened or created with this app
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.file
+    DriveFile,
+    /// View and manage metadata of files in your Google Drive
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.metadata
+    DriveMetadata,
+    /// View metadata for files in your Google Drive
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.metadata.readonly
+    DriveMetadataReadonly,
+    /// View the photos, videos and albums in your Google Photos
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.photos.readonly
+    DrivePhotosReadonly,
+    /// See and download all your Google Drive files
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.readonly
+    DriveReadonly,
+    /// Modify your Google Apps Script scripts' behavior
+    ///
+    /// URL: https://www.googleapis.com/auth/drive.scripts
+    DriveScripts,
+}
+
+impl std::convert::AsRef<str> for DriveScopes {
+    fn as_ref(&self) -> &'static str {
+        match self {
+            Drive => "https://www.googleapis.com/auth/drive",
+            DriveAppdata => "https://www.googleapis.com/auth/drive.appdata",
+            DriveFile => "https://www.googleapis.com/auth/drive.file",
+            DriveMetadata => "https://www.googleapis.com/auth/drive.metadata",
+            DriveMetadataReadonly => "https://www.googleapis.com/auth/drive.metadata.readonly",
+            DrivePhotosReadonly => "https://www.googleapis.com/auth/drive.photos.readonly",
+            DriveReadonly => "https://www.googleapis.com/auth/drive.readonly",
+            DriveScripts => "https://www.googleapis.com/auth/drive.scripts",
+        }
+    }
+}
+
+
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutDriveThemes {
     /// A link to this theme's background image.
@@ -1001,7 +1054,7 @@ pub struct File {
     #[serde(rename = "teamDriveId")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub team_drive_id: Option<String>,
-    /// A short-lived link to the file's thumbnail, if available. Typically lasts on the order of hours. Only populated when the requesting app can access the file's content.
+    /// A short-lived link to the file's thumbnail, if available. Typically lasts on the order of hours. Only populated when the requesting app can access the file's content. If the file isn't shared publicly, the URL returned in Files.thumbnailLink must be fetched using a credentialed request.
     #[serde(rename = "thumbnailLink")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumbnail_link: Option<String>,
@@ -2293,26 +2346,28 @@ pub struct TeamdrivesUpdateParams {
 }
 
 pub struct AboutService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl AboutService {
-  /// Create a new AboutService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> AboutService {
-    AboutService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new AboutService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> AboutService {
+        AboutService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Gets information about the user, the user's Drive, and system capabilities.
 pub async fn get(
     &mut self, params: &AboutGetParams) -> Result<About> {
@@ -2351,30 +2406,31 @@ pub async fn get(
     Ok(decoded)
   }
 
-
 }
 
 pub struct ChangesService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl ChangesService {
-  /// Create a new ChangesService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> ChangesService {
-    ChangesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new ChangesService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> ChangesService {
+        ChangesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Gets the starting pageToken for listing future changes.
 pub async fn get_start_page_token(
     &mut self, params: &ChangesGetStartPageTokenParams) -> Result<StartPageToken> {
@@ -2429,7 +2485,7 @@ pub async fn get_start_page_token(
     Ok(decoded)
   }
 
-  
+
 /// Lists the changes for a user or shared drive.
 pub async fn list(
     &mut self, params: &ChangesListParams) -> Result<ChangeList> {
@@ -2518,7 +2574,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Subscribes to changes for a user.
 pub async fn watch(
     &mut self, params: &ChangesWatchParams, req: &Channel) -> Result<Channel> {
@@ -2612,30 +2668,31 @@ pub async fn watch(
     Ok(decoded)
   }
 
-
 }
 
 pub struct ChannelsService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl ChannelsService {
-  /// Create a new ChannelsService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> ChannelsService {
-    ChannelsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new ChannelsService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> ChannelsService {
+        ChannelsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Stop watching resources through this channel
 pub async fn stop(
     &mut self, params: &ChannelsStopParams, req: &Channel) -> Result<()> {
@@ -2679,30 +2736,31 @@ pub async fn stop(
     Ok(decoded)
   }
 
-
 }
 
 pub struct CommentsService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl CommentsService {
-  /// Create a new CommentsService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> CommentsService {
-    CommentsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new CommentsService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> CommentsService {
+        CommentsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Creates a new comment on a file.
 pub async fn create(
     &mut self, params: &CommentsCreateParams, req: &Comment) -> Result<Comment> {
@@ -2741,7 +2799,7 @@ pub async fn create(
     Ok(decoded)
   }
 
-  
+
 /// Deletes a comment.
 pub async fn delete(
     &mut self, params: &CommentsDeleteParams) -> Result<()> {
@@ -2775,7 +2833,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Gets a comment by ID.
 pub async fn get(
     &mut self, params: &CommentsGetParams) -> Result<Comment> {
@@ -2814,7 +2872,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Lists a file's comments.
 pub async fn list(
     &mut self, params: &CommentsListParams) -> Result<CommentList> {
@@ -2865,7 +2923,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Updates a comment with patch semantics.
 pub async fn update(
     &mut self, params: &CommentsUpdateParams, req: &Comment) -> Result<Comment> {
@@ -2904,30 +2962,31 @@ pub async fn update(
     Ok(decoded)
   }
 
-
 }
 
 pub struct DrivesService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl DrivesService {
-  /// Create a new DrivesService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> DrivesService {
-    DrivesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new DrivesService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> DrivesService {
+        DrivesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Creates a new shared drive.
 pub async fn create(
     &mut self, params: &DrivesCreateParams, req: &Drive) -> Result<Drive> {
@@ -2967,7 +3026,7 @@ pub async fn create(
     Ok(decoded)
   }
 
-  
+
 /// Permanently deletes a shared drive for which the user is an organizer. The shared drive cannot contain any untrashed items.
 pub async fn delete(
     &mut self, params: &DrivesDeleteParams) -> Result<()> {
@@ -3000,7 +3059,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Gets a shared drive's metadata by ID.
 pub async fn get(
     &mut self, params: &DrivesGetParams) -> Result<Drive> {
@@ -3038,7 +3097,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Hides a shared drive from the default view.
 pub async fn hide(
     &mut self, params: &DrivesHideParams) -> Result<Drive> {
@@ -3071,7 +3130,7 @@ pub async fn hide(
     Ok(decoded)
   }
 
-  
+
 /// Lists the user's shared drives.
 pub async fn list(
     &mut self, params: &DrivesListParams) -> Result<DriveList> {
@@ -3121,7 +3180,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Restores a shared drive to the default view.
 pub async fn unhide(
     &mut self, params: &DrivesUnhideParams) -> Result<Drive> {
@@ -3154,7 +3213,7 @@ pub async fn unhide(
     Ok(decoded)
   }
 
-  
+
 /// Updates the metadate for a shared drive.
 pub async fn update(
     &mut self, params: &DrivesUpdateParams, req: &Drive) -> Result<Drive> {
@@ -3196,30 +3255,31 @@ pub async fn update(
     Ok(decoded)
   }
 
-
 }
 
 pub struct FilesService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl FilesService {
-  /// Create a new FilesService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> FilesService {
-    FilesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new FilesService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> FilesService {
+        FilesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Creates a copy of a file and applies any requested updates with patch semantics. Folders cannot be copied.
 pub async fn copy(
     &mut self, params: &FilesCopyParams, req: &File) -> Result<File> {
@@ -3288,7 +3348,7 @@ pub async fn copy(
     Ok(decoded)
   }
 
-  
+
 /// Creates a new file.
 pub async fn create(
     &mut self, params: &FilesCreateParams, req: &File) -> Result<File> {
@@ -3360,7 +3420,7 @@ pub async fn create(
     Ok(decoded)
   }
 
-  
+
 /// Creates a new file.
 pub async fn create_upload(
     &mut self, params: &FilesCreateParams, data: hyper::body::Bytes) -> Result<File> {
@@ -3419,7 +3479,7 @@ pub async fn create_upload(
     Ok(decoded)
   }
 
-  
+
 /// Permanently deletes a file owned by the user without moving it to the trash. If the file belongs to a shared drive the user must be an organizer on the parent. If the target is a folder, all descendants owned by the user are also deleted.
 pub async fn delete(
     &mut self, params: &FilesDeleteParams) -> Result<()> {
@@ -3466,7 +3526,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Permanently deletes all of the user's trashed files.
 pub async fn empty_trash(
     &mut self, params: &FilesEmptyTrashParams) -> Result<()> {
@@ -3503,7 +3563,7 @@ pub async fn empty_trash(
     Ok(decoded)
   }
 
-  
+
 /// Exports a Google Doc to the requested MIME type and returns the exported content. Please note that the exported content is limited to 10MB.
 pub async fn export(
     &mut self, params: &FilesExportParams,  dst: &mut std::io::Write) -> Result<()> {
@@ -3535,14 +3595,14 @@ pub async fn export(
         return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
     }
     let resp_body = resp.into_body();
-    let write_result = resp_body.map(move |chunk| { dst.write(chunk?.as_ref()); Ok(()) }).collect::<Vec<Result<()>>>().await;
+    let write_result = resp_body.map(move |chunk| { dst.write(chunk?.as_ref()).map(|_| ()).map_err(Error::from) }).collect::<Vec<Result<()>>>().await;
     if let Some(e) = write_result.into_iter().find(|r| r.is_err()) {
         return e;
     }
     Ok(())
   }
 
-  
+
 /// Generates a set of file IDs which can be provided in create or copy requests.
 pub async fn generate_ids(
     &mut self, params: &FilesGenerateIdsParams) -> Result<GeneratedIds> {
@@ -3585,7 +3645,7 @@ pub async fn generate_ids(
     Ok(decoded)
   }
 
-  
+
 /// Gets a file's metadata or content by ID.
 pub async fn get(
     &mut self, params: &FilesGetParams) -> Result<File> {
@@ -3640,7 +3700,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Lists or searches files.
 pub async fn list(
     &mut self, params: &FilesListParams) -> Result<FileList> {
@@ -3735,7 +3795,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Updates a file's metadata and/or content. This method supports patch semantics.
 pub async fn update(
     &mut self, params: &FilesUpdateParams, req: &File) -> Result<File> {
@@ -3813,7 +3873,7 @@ pub async fn update(
     Ok(decoded)
   }
 
-  
+
 /// Updates a file's metadata and/or content. This method supports patch semantics.
 pub async fn update_upload(
     &mut self, params: &FilesUpdateParams, data: hyper::body::Bytes) -> Result<File> {
@@ -3876,7 +3936,7 @@ pub async fn update_upload(
     Ok(decoded)
   }
 
-  
+
 /// Subscribes to changes to a file
 pub async fn watch(
     &mut self, params: &FilesWatchParams, req: &Channel) -> Result<Channel> {
@@ -3936,30 +3996,31 @@ pub async fn watch(
     Ok(decoded)
   }
 
-
 }
 
 pub struct PermissionsService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl PermissionsService {
-  /// Create a new PermissionsService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> PermissionsService {
-    PermissionsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new PermissionsService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> PermissionsService {
+        PermissionsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Creates a permission for a file or shared drive.
 pub async fn create(
     &mut self, params: &PermissionsCreateParams, req: &Permission) -> Result<Permission> {
@@ -4030,7 +4091,7 @@ pub async fn create(
     Ok(decoded)
   }
 
-  
+
 /// Deletes a permission.
 pub async fn delete(
     &mut self, params: &PermissionsDeleteParams) -> Result<()> {
@@ -4076,7 +4137,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Gets a permission by ID.
 pub async fn get(
     &mut self, params: &PermissionsGetParams) -> Result<Permission> {
@@ -4126,7 +4187,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Lists a file's or shared drive's permissions.
 pub async fn list(
     &mut self, params: &PermissionsListParams) -> Result<PermissionList> {
@@ -4188,7 +4249,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Updates a permission with patch semantics.
 pub async fn update(
     &mut self, params: &PermissionsUpdateParams, req: &Permission) -> Result<Permission> {
@@ -4247,30 +4308,31 @@ pub async fn update(
     Ok(decoded)
   }
 
-
 }
 
 pub struct RepliesService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl RepliesService {
-  /// Create a new RepliesService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> RepliesService {
-    RepliesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new RepliesService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> RepliesService {
+        RepliesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Creates a new reply to a comment.
 pub async fn create(
     &mut self, params: &RepliesCreateParams, req: &Reply) -> Result<Reply> {
@@ -4309,7 +4371,7 @@ pub async fn create(
     Ok(decoded)
   }
 
-  
+
 /// Deletes a reply.
 pub async fn delete(
     &mut self, params: &RepliesDeleteParams) -> Result<()> {
@@ -4343,7 +4405,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Gets a reply by ID.
 pub async fn get(
     &mut self, params: &RepliesGetParams) -> Result<Reply> {
@@ -4382,7 +4444,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Lists a comment's replies.
 pub async fn list(
     &mut self, params: &RepliesListParams) -> Result<ReplyList> {
@@ -4429,7 +4491,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Updates a reply with patch semantics.
 pub async fn update(
     &mut self, params: &RepliesUpdateParams, req: &Reply) -> Result<Reply> {
@@ -4468,30 +4530,31 @@ pub async fn update(
     Ok(decoded)
   }
 
-
 }
 
 pub struct RevisionsService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl RevisionsService {
-  /// Create a new RevisionsService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> RevisionsService {
-    RevisionsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new RevisionsService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> RevisionsService {
+        RevisionsService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Permanently deletes a file version. You can only delete revisions for files with binary content in Google Drive, like images or videos. Revisions for other files, like Google Docs or Sheets, and the last remaining file version can't be deleted.
 pub async fn delete(
     &mut self, params: &RevisionsDeleteParams) -> Result<()> {
@@ -4526,7 +4589,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Gets a revision's metadata or content by ID.
 pub async fn get(
     &mut self, params: &RevisionsGetParams) -> Result<Revision> {
@@ -4569,7 +4632,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Lists a file's revisions.
 pub async fn list(
     &mut self, params: &RevisionsListParams) -> Result<RevisionList> {
@@ -4616,7 +4679,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Updates a revision with patch semantics.
 pub async fn update(
     &mut self, params: &RevisionsUpdateParams, req: &Revision) -> Result<Revision> {
@@ -4656,30 +4719,31 @@ pub async fn update(
     Ok(decoded)
   }
 
-
 }
 
 pub struct TeamdrivesService {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl TeamdrivesService {
-  /// Create a new TeamdrivesService object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> TeamdrivesService {
-    TeamdrivesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new TeamdrivesService object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> TeamdrivesService {
+        TeamdrivesService { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of DriveScopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  
+
 /// Deprecated use drives.create instead.
 pub async fn create(
     &mut self, params: &TeamdrivesCreateParams, req: &TeamDrive) -> Result<TeamDrive> {
@@ -4719,7 +4783,7 @@ pub async fn create(
     Ok(decoded)
   }
 
-  
+
 /// Deprecated use drives.delete instead.
 pub async fn delete(
     &mut self, params: &TeamdrivesDeleteParams) -> Result<()> {
@@ -4752,7 +4816,7 @@ pub async fn delete(
     Ok(decoded)
   }
 
-  
+
 /// Deprecated use drives.get instead.
 pub async fn get(
     &mut self, params: &TeamdrivesGetParams) -> Result<TeamDrive> {
@@ -4790,7 +4854,7 @@ pub async fn get(
     Ok(decoded)
   }
 
-  
+
 /// Deprecated use drives.list instead.
 pub async fn list(
     &mut self, params: &TeamdrivesListParams) -> Result<TeamDriveList> {
@@ -4840,7 +4904,7 @@ pub async fn list(
     Ok(decoded)
   }
 
-  
+
 /// Deprecated use drives.update instead
 pub async fn update(
     &mut self, params: &TeamdrivesUpdateParams, req: &TeamDrive) -> Result<TeamDrive> {
@@ -4881,6 +4945,5 @@ pub async fn update(
     let decoded = serde_json::from_str(&bodystr)?;
     Ok(decoded)
   }
-
 
 }

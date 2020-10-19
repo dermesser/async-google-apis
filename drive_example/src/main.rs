@@ -77,7 +77,7 @@ async fn main() {
     .await
     .expect("InstalledFlowAuthenticator failed to build");
 
-    let scopes = &["https://www.googleapis.com/auth/drive"];
+    let scopes = vec![drive::DriveScopes::DriveFile];
     let mut cl = drive::FilesService::new(https, Rc::new(auth));
     cl.set_scopes(scopes);
 

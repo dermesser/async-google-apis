@@ -33,7 +33,37 @@ impl std::fmt::Display for ApiError {
 }
 '''
 
+# Dict contents --
+# name (of API, Capitalized)
+# scopes: [{name, url, desc}]
+OauthScopesType = '''
+/// Scopes of this API. Convertible to their string representation with `AsRef`.
+#[derive(Debug, Clone, Copy)]
+pub enum {{{name}}}Scopes {
+    {{#scopes}}
+    /// {{{desc}}}
+    ///
+    /// URL: {{{url}}}
+    {{{name}}},
+    {{/scopes}}
+}
+
+impl std::convert::AsRef<str> for {{{name}}}Scopes {
+    fn as_ref(&self) -> &'static str {
+        match self {
+            {{#scopes}}
+            {{{name}}} => "{{{url}}}",
+            {{/scopes}}
+        }
+    }
+}
+
+'''
+
 # A struct for parameters or input/output API types.
+# Dict contents --
+# name
+# fields: [{name, comment, attr, typ}]
 ResourceStructTmpl = '''
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct {{{name}}} {
@@ -51,36 +81,38 @@ pub struct {{{name}}} {
 
 # Dict contents --
 # service (e.g. Files)
-# [methods] ([{'text': ...}])
+# methods: [{text}]
+# name (API name)
 ServiceImplementationTmpl = '''
 pub struct {{{service}}}Service {
-  client: TlsClient,
-  authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
-  scopes: Vec<String>,
+    client: TlsClient,
+    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    scopes: Vec<String>,
 }
 
 impl {{{service}}}Service {
-  /// Create a new {{service}}Service object. The easiest way to call this is wrapping the Authenticator
-  /// into an Rc: new(client.clone(), Rc::new(authenticator)).
-  /// This way, one authenticator can be shared among several services.
-  pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> {{service}}Service {
-    {{{service}}}Service { client: client, authenticator: Box::new(auth), scopes: vec![] }
-  }
+    /// Create a new {{service}}Service object. The easiest way to call this is wrapping the Authenticator
+    /// into an Rc: new(client.clone(), Rc::new(authenticator)).
+    /// This way, one authenticator can be shared among several services.
+    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> {{service}}Service {
+        {{{service}}}Service { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    }
 
-  /// Explicitly select which scopes should be requested for authorization. Otherwise,
-  /// a possibly too large scope will be requested.
-  pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
-    self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
-  }
+    /// Explicitly select which scopes should be requested for authorization. Otherwise,
+    /// a possibly too large scope will be requested.
+    ///
+    /// It is most convenient to supply a vec or slice of {{{name}}}Scopes enum values.
+    pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
+        self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
+    }
 
-  {{#methods}}
-  {{{text}}}
-  {{/methods}}
-
+    {{#methods}}
+{{{text}}}
+    {{/methods}}
 }
 '''
 
-# Takes:
+# Takes dict contents:
 # name, description, param_type, in_type, out_type
 # base_path, rel_path_expr, scopes (string repr. of rust string array),
 # params: [{param, snake_param}]
@@ -229,7 +261,12 @@ pub async fn {{{name}}}(
         return Err(anyhow::Error::new(ApiError::HTTPError(resp.status())));
     }
     let resp_body = resp.into_body();
-    let write_result = resp_body.map(move |chunk| { dst.write(chunk?.as_ref()); Ok(()) }).collect::<Vec<Result<()>>>().await;
+    let write_result = resp_body.map(move |chunk| {
+        dst.write(chunk?.as_ref())
+            .map(|_| ())
+            .map_err(Error::from)
+        })
+        .collect::<Vec<Result<()>>>().await;
     if let Some(e) = write_result.into_iter().find(|r| r.is_err()) {
         return e;
     }

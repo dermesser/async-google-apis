@@ -215,7 +215,9 @@ def generate_service(resource, methods, discdoc):
     Returns a rendered string with source code.
     """
     service = capitalize_first(resource)
+    # Source code fragments implementing the methods.
     method_fragments = []
+    # Source code fragments for impls of subordinate resources.
     subresource_fragments = []
 
     # Generate methods for subresources.
@@ -329,26 +331,43 @@ def generate_service(resource, methods, discdoc):
 
     return chevron.render(ServiceImplementationTmpl, {
         'service': service,
+        'name': capitalize_first(discdoc.get('name', '')),
         'methods': [{
             'text': t
         } for t in method_fragments]
     }) + '\n'.join(subresource_fragments)
 
+def generate_scopes_type(name, scopes):
+    """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
+    containing { scope_url: { description: "..." } }.
+    """
+    name = capitalize_first(name)
+    if len(scopes) == 0:
+        return chevron.render(OauthScopesType, {'name': name, 'scopes': []})
+    parameters = {'name': name, 'scopes': []}
+    for url, desc in scopes.items():
+        rawname = url.split('/')[-1]
+        fancy_name = ''.join([capitalize_first(p) for p in rawname.split('.')])
+        parameters['scopes'].append({'name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
+    return chevron.render(OauthScopesType, parameters)
 
 def generate_all(discdoc):
     """Generate all structs and impls, and render them into a file."""
     schemas = discdoc['schemas']
     resources = discdoc['resources']
-    structs = []
-    services = []
+    # Generate scopes.
+    scopes_type = generate_scopes_type(discdoc['name'], discdoc.get('auth', {}).get('oauth2', {}).get('scopes', {}))
+
     # Generate parameter types (*Params - those are used as "side inputs" to requests)
     parameter_types = generate_params_structs(resources)
 
     # Generate service impls
+    services = []
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
 
     # Generate resource types
+    structs = []
     for name, desc in schemas.items():
         typ, substructs = parse_schema_types(name, desc)
         structs.extend(substructs)
@@ -357,6 +376,7 @@ def generate_all(discdoc):
     modname = (discdoc['id'] + '_types').replace(':', '_')
     with open(path.join('gen', modname + '.rs'), 'w') as f:
         f.write(RustHeader)
+        f.write(scopes_type)
         # Render resource structs.
         for s in structs:
             for field in s['fields']:
