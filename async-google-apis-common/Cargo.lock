@@ -18,8 +18,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
- "futures-core",
- "futures-util",
  "hyper",
  "hyper-rustls",
  "percent-encoding",
