@@ -47,6 +47,46 @@ pub async fn do_request<Req: Serialize, Resp: DeserializeOwned + Clone>(
 }
 
 /// The Content-Length header is set automatically.
+pub async fn do_upload_multipart<Req: Serialize, Resp: DeserializeOwned + Clone>(
+    cl: &TlsClient,
+    path: &str,
+    headers: &[(String, String)],
+    http_method: &str,
+    req: Option<Req>,
+    data: hyper::body::Bytes,
+) -> Result<Resp> {
+    let mut reqb = hyper::Request::builder().uri(path).method(http_method);
+    for (k, v) in headers {
+        reqb = reqb.header(k, v);
+    }
+
+    let data = multipart::format_multipart(&req, data)?;
+    println!("{}", String::from_utf8(data.clone().to_vec()).unwrap());
+    reqb = reqb.header("Content-Length", data.as_ref().len());
+    reqb = reqb.header(
+        "Content-Type",
+        format!("multipart/related; boundary={}", multipart::MIME_BOUNDARY),
+    );
+
+    let body = hyper::Body::from(data.as_ref().to_vec());
+    let http_request = reqb.body(body)?;
+    println!("{:?}", http_request);
+    let http_response = cl.request(http_request).await?;
+    let status = http_response.status();
+    let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
+    let response_body_str = String::from_utf8(response_body.to_vec());
+
+    if !status.is_success() {
+        Err(Error::new(ApiError::HTTPError(
+            status,
+            response_body_str.unwrap_or("".to_string()),
+        )))
+    } else {
+        serde_json::from_reader(response_body.as_ref()).map_err(Error::from)
+    }
+}
+
+/// The Content-Length header is set automatically.
 pub async fn do_upload<Resp: DeserializeOwned + Clone>(
     cl: &TlsClient,
     path: &str,

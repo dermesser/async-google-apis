@@ -33,3 +33,4 @@ impl std::fmt::Display for ApiError {
 mod http;
 pub use http::*;
 
+pub mod multipart;

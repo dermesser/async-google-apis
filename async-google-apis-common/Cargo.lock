@@ -7,14 +7,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a1fd36ffbb1fb7c834eac128ea8d0e310c5aeb635548f9d58861e1308d46e71c"
 
 [[package]]
+name = "arrayref"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a4c527152e37cf757a3f78aae5a06fbeefdb07ccc535c980a3208ee3060dd544"
+
+[[package]]
 name = "async-google-apis-common"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
+ "futures-core",
+ "futures-util",
  "hyper",
  "hyper-rustls",
  "percent-encoding",
+ "radix64",
  "serde",
  "serde_json",
  "tokio",
@@ -552,6 +561,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa563d17ecb180e500da1cfd2b028310ac758de548efdd203e18f283af693f37"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "radix64"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "999718fa65c3be3a74f3f6dae5a98526ff436ea58a82a574f0de89eecd342bee"
+dependencies = [
+ "arrayref",
+ "cfg-if",
 ]
 
 [[package]]
