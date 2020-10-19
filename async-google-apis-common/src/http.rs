@@ -61,7 +61,6 @@ pub async fn do_upload_multipart<Req: Serialize, Resp: DeserializeOwned + Clone>
     }
 
     let data = multipart::format_multipart(&req, data)?;
-    println!("{}", String::from_utf8(data.clone().to_vec()).unwrap());
     reqb = reqb.header("Content-Length", data.as_ref().len());
     reqb = reqb.header(
         "Content-Type",
@@ -70,7 +69,6 @@ pub async fn do_upload_multipart<Req: Serialize, Resp: DeserializeOwned + Clone>
 
     let body = hyper::Body::from(data.as_ref().to_vec());
     let http_request = reqb.body(body)?;
-    println!("{:?}", http_request);
     let http_response = cl.request(http_request).await?;
     let status = http_response.status();
     let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
