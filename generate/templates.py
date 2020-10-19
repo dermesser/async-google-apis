@@ -64,11 +64,11 @@ SchemaDisplayTmpl = '''
 impl std::fmt::Display for {{{name}}} {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         {{#required_fields}}
-        write!(f, "&{}={}", "{{{original_name}}}", percent_encode(format!("{}", self.{{{name}}}).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        write!(f, "&{{{original_name}}}={}", percent_encode(format!("{}", self.{{{name}}}).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         {{/required_fields}}
         {{#optional_fields}}
         if let Some(ref v) = self.{{{name}}} {
-            write!(f, "&{}={}", "{{{original_name}}}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&{{{original_name}}}={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         {{/optional_fields}}
         Ok(())

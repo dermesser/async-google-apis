@@ -1699,16 +1699,16 @@ pub struct ChangesGetStartPageTokenParams {
 impl std::fmt::Display for ChangesGetStartPageTokenParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.drive_id {
-            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&driveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.team_drive_id {
-            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&teamDriveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -1763,42 +1763,42 @@ pub struct ChangesListParams {
 
 impl std::fmt::Display for ChangesListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", self.page_token).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        write!(f, "&pageToken={}", percent_encode(format!("{}", self.page_token).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         if let Some(ref v) = self.drive_id {
-            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&driveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_corpus_removals {
-            write!(f, "&{}={}", "includeCorpusRemovals", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeCorpusRemovals={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_items_from_all_drives {
-            write!(f, "&{}={}", "includeItemsFromAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeItemsFromAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_removed {
-            write!(f, "&{}={}", "includeRemoved", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeRemoved={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_team_drive_items {
-            write!(f, "&{}={}", "includeTeamDriveItems", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeTeamDriveItems={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.restrict_to_my_drive {
-            write!(f, "&{}={}", "restrictToMyDrive", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&restrictToMyDrive={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.spaces {
-            write!(f, "&{}={}", "spaces", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&spaces={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.team_drive_id {
-            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&teamDriveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -1853,42 +1853,42 @@ pub struct ChangesWatchParams {
 
 impl std::fmt::Display for ChangesWatchParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", self.page_token).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        write!(f, "&pageToken={}", percent_encode(format!("{}", self.page_token).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         if let Some(ref v) = self.drive_id {
-            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&driveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_corpus_removals {
-            write!(f, "&{}={}", "includeCorpusRemovals", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeCorpusRemovals={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_items_from_all_drives {
-            write!(f, "&{}={}", "includeItemsFromAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeItemsFromAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_removed {
-            write!(f, "&{}={}", "includeRemoved", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeRemoved={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_team_drive_items {
-            write!(f, "&{}={}", "includeTeamDriveItems", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeTeamDriveItems={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.restrict_to_my_drive {
-            write!(f, "&{}={}", "restrictToMyDrive", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&restrictToMyDrive={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.spaces {
-            write!(f, "&{}={}", "spaces", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&spaces={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.team_drive_id {
-            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&teamDriveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -1965,7 +1965,7 @@ pub struct CommentsGetParams {
 impl std::fmt::Display for CommentsGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.include_deleted {
-            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeDeleted={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -1997,16 +1997,16 @@ pub struct CommentsListParams {
 impl std::fmt::Display for CommentsListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.include_deleted {
-            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeDeleted={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.start_modified_time {
-            write!(f, "&{}={}", "startModifiedTime", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&startModifiedTime={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2045,7 +2045,7 @@ pub struct DrivesCreateParams {
 
 impl std::fmt::Display for DrivesCreateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "&{}={}", "requestId", percent_encode(format!("{}", self.request_id).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        write!(f, "&requestId={}", percent_encode(format!("{}", self.request_id).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         Ok(())
     }
 }
@@ -2084,7 +2084,7 @@ pub struct DrivesGetParams {
 impl std::fmt::Display for DrivesGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2130,16 +2130,16 @@ pub struct DrivesListParams {
 impl std::fmt::Display for DrivesListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.q {
-            write!(f, "&{}={}", "q", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&q={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2179,7 +2179,7 @@ pub struct DrivesUpdateParams {
 impl std::fmt::Display for DrivesUpdateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2220,25 +2220,25 @@ pub struct FilesCopyParams {
 impl std::fmt::Display for FilesCopyParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.enforce_single_parent {
-            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&enforceSingleParent={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.ignore_default_visibility {
-            write!(f, "&{}={}", "ignoreDefaultVisibility", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&ignoreDefaultVisibility={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.keep_revision_forever {
-            write!(f, "&{}={}", "keepRevisionForever", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&keepRevisionForever={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.ocr_language {
-            write!(f, "&{}={}", "ocrLanguage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&ocrLanguage={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2279,28 +2279,28 @@ pub struct FilesCreateParams {
 impl std::fmt::Display for FilesCreateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.enforce_single_parent {
-            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&enforceSingleParent={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.ignore_default_visibility {
-            write!(f, "&{}={}", "ignoreDefaultVisibility", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&ignoreDefaultVisibility={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.keep_revision_forever {
-            write!(f, "&{}={}", "keepRevisionForever", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&keepRevisionForever={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.ocr_language {
-            write!(f, "&{}={}", "ocrLanguage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&ocrLanguage={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_content_as_indexable_text {
-            write!(f, "&{}={}", "useContentAsIndexableText", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useContentAsIndexableText={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2329,13 +2329,13 @@ pub struct FilesDeleteParams {
 impl std::fmt::Display for FilesDeleteParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.enforce_single_parent {
-            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&enforceSingleParent={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2355,7 +2355,7 @@ pub struct FilesEmptyTrashParams {
 impl std::fmt::Display for FilesEmptyTrashParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.enforce_single_parent {
-            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&enforceSingleParent={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2377,7 +2377,7 @@ pub struct FilesExportParams {
 
 impl std::fmt::Display for FilesExportParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "&{}={}", "mimeType", percent_encode(format!("{}", self.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        write!(f, "&mimeType={}", percent_encode(format!("{}", self.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         Ok(())
     }
 }
@@ -2399,10 +2399,10 @@ pub struct FilesGenerateIdsParams {
 impl std::fmt::Display for FilesGenerateIdsParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.count {
-            write!(f, "&{}={}", "count", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&count={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.space {
-            write!(f, "&{}={}", "space", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&space={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2434,16 +2434,16 @@ pub struct FilesGetParams {
 impl std::fmt::Display for FilesGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.acknowledge_abuse {
-            write!(f, "&{}={}", "acknowledgeAbuse", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&acknowledgeAbuse={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2502,46 +2502,46 @@ pub struct FilesListParams {
 impl std::fmt::Display for FilesListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.corpora {
-            write!(f, "&{}={}", "corpora", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&corpora={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.corpus {
-            write!(f, "&{}={}", "corpus", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&corpus={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.drive_id {
-            write!(f, "&{}={}", "driveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&driveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_items_from_all_drives {
-            write!(f, "&{}={}", "includeItemsFromAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeItemsFromAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_team_drive_items {
-            write!(f, "&{}={}", "includeTeamDriveItems", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeTeamDriveItems={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.order_by {
-            write!(f, "&{}={}", "orderBy", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&orderBy={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.q {
-            write!(f, "&{}={}", "q", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&q={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.spaces {
-            write!(f, "&{}={}", "spaces", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&spaces={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.team_drive_id {
-            write!(f, "&{}={}", "teamDriveId", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&teamDriveId={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2588,31 +2588,31 @@ pub struct FilesUpdateParams {
 impl std::fmt::Display for FilesUpdateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.add_parents {
-            write!(f, "&{}={}", "addParents", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&addParents={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.enforce_single_parent {
-            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&enforceSingleParent={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.keep_revision_forever {
-            write!(f, "&{}={}", "keepRevisionForever", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&keepRevisionForever={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.ocr_language {
-            write!(f, "&{}={}", "ocrLanguage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&ocrLanguage={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.remove_parents {
-            write!(f, "&{}={}", "removeParents", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&removeParents={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_content_as_indexable_text {
-            write!(f, "&{}={}", "useContentAsIndexableText", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useContentAsIndexableText={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2644,16 +2644,16 @@ pub struct FilesWatchParams {
 impl std::fmt::Display for FilesWatchParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.acknowledge_abuse {
-            write!(f, "&{}={}", "acknowledgeAbuse", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&acknowledgeAbuse={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2697,28 +2697,28 @@ pub struct PermissionsCreateParams {
 impl std::fmt::Display for PermissionsCreateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.email_message {
-            write!(f, "&{}={}", "emailMessage", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&emailMessage={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.enforce_single_parent {
-            write!(f, "&{}={}", "enforceSingleParent", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&enforceSingleParent={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.move_to_new_owners_root {
-            write!(f, "&{}={}", "moveToNewOwnersRoot", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&moveToNewOwnersRoot={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.send_notification_email {
-            write!(f, "&{}={}", "sendNotificationEmail", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&sendNotificationEmail={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.transfer_ownership {
-            write!(f, "&{}={}", "transferOwnership", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&transferOwnership={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2750,13 +2750,13 @@ pub struct PermissionsDeleteParams {
 impl std::fmt::Display for PermissionsDeleteParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2788,13 +2788,13 @@ pub struct PermissionsGetParams {
 impl std::fmt::Display for PermissionsGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2832,22 +2832,22 @@ pub struct PermissionsListParams {
 impl std::fmt::Display for PermissionsListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.include_permissions_for_view {
-            write!(f, "&{}={}", "includePermissionsForView", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includePermissionsForView={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2885,19 +2885,19 @@ pub struct PermissionsUpdateParams {
 impl std::fmt::Display for PermissionsUpdateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.remove_expiration {
-            write!(f, "&{}={}", "removeExpiration", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&removeExpiration={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_all_drives {
-            write!(f, "&{}={}", "supportsAllDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsAllDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.supports_team_drives {
-            write!(f, "&{}={}", "supportsTeamDrives", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&supportsTeamDrives={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.transfer_ownership {
-            write!(f, "&{}={}", "transferOwnership", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&transferOwnership={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -2969,7 +2969,7 @@ pub struct RepliesGetParams {
 impl std::fmt::Display for RepliesGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.include_deleted {
-            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeDeleted={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3001,13 +3001,13 @@ pub struct RepliesListParams {
 impl std::fmt::Display for RepliesListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.include_deleted {
-            write!(f, "&{}={}", "includeDeleted", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&includeDeleted={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3076,7 +3076,7 @@ pub struct RevisionsGetParams {
 impl std::fmt::Display for RevisionsGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.acknowledge_abuse {
-            write!(f, "&{}={}", "acknowledgeAbuse", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&acknowledgeAbuse={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3102,10 +3102,10 @@ pub struct RevisionsListParams {
 impl std::fmt::Display for RevisionsListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3144,7 +3144,7 @@ pub struct TeamdrivesCreateParams {
 
 impl std::fmt::Display for TeamdrivesCreateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "&{}={}", "requestId", percent_encode(format!("{}", self.request_id).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        write!(f, "&requestId={}", percent_encode(format!("{}", self.request_id).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         Ok(())
     }
 }
@@ -3183,7 +3183,7 @@ pub struct TeamdrivesGetParams {
 impl std::fmt::Display for TeamdrivesGetParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3212,16 +3212,16 @@ pub struct TeamdrivesListParams {
 impl std::fmt::Display for TeamdrivesListParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.page_size {
-            write!(f, "&{}={}", "pageSize", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageSize={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.page_token {
-            write!(f, "&{}={}", "pageToken", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&pageToken={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.q {
-            write!(f, "&{}={}", "q", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&q={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3244,7 +3244,7 @@ pub struct TeamdrivesUpdateParams {
 impl std::fmt::Display for TeamdrivesUpdateParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.use_domain_admin_access {
-            write!(f, "&{}={}", "useDomainAdminAccess", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&useDomainAdminAccess={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
@@ -3253,25 +3253,25 @@ impl std::fmt::Display for TeamdrivesUpdateParams {
 impl std::fmt::Display for DriveParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.alt {
-            write!(f, "&{}={}", "alt", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&alt={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.fields {
-            write!(f, "&{}={}", "fields", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&fields={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.key {
-            write!(f, "&{}={}", "key", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&key={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.oauth_token {
-            write!(f, "&{}={}", "oauth_token", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&oauth_token={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.pretty_print {
-            write!(f, "&{}={}", "prettyPrint", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&prettyPrint={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.quota_user {
-            write!(f, "&{}={}", "quotaUser", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&quotaUser={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         if let Some(ref v) = self.user_ip {
-            write!(f, "&{}={}", "userIp", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+            write!(f, "&userIp={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         Ok(())
     }
