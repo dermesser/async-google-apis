@@ -79,7 +79,7 @@ async fn main() {
 
     let scopes = vec![drive::DriveScopes::DriveFile];
     let mut cl = drive::FilesService::new(https, Rc::new(auth));
-    cl.set_scopes(scopes);
+    cl.set_scopes(&scopes);
 
     let arg = std::env::args().skip(1).next();
     if let Some(fp) = arg {
