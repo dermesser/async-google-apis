@@ -3309,13 +3309,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3367,13 +3361,7 @@ pub async fn get_start_page_token(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3400,13 +3388,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3433,13 +3415,7 @@ pub async fn watch(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3492,13 +3468,7 @@ pub async fn stop(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3551,8 +3521,7 @@ pub async fn create(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3580,8 +3549,7 @@ pub async fn delete(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3608,9 +3576,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3637,9 +3603,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3666,8 +3630,7 @@ pub async fn update(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3775,8 +3738,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3830,8 +3792,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3938,10 +3899,7 @@ pub async fn copy(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -3969,9 +3927,7 @@ pub async fn create(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4001,9 +3957,7 @@ pub async fn create_upload(
 
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4032,9 +3986,7 @@ pub async fn delete(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4092,9 +4044,7 @@ pub async fn export(
 
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4121,9 +4071,7 @@ pub async fn generate_ids(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4150,13 +4098,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4183,13 +4125,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4216,11 +4152,7 @@ pub async fn update(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.scripts".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4250,11 +4182,7 @@ pub async fn update_upload(
 
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.scripts".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4283,13 +4211,7 @@ pub async fn watch(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4342,8 +4264,7 @@ pub async fn create(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4371,8 +4292,7 @@ pub async fn delete(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4399,12 +4319,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4431,12 +4346,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4463,8 +4373,7 @@ pub async fn update(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4517,8 +4426,7 @@ pub async fn create(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4546,8 +4454,7 @@ pub async fn delete(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4574,9 +4481,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4603,9 +4508,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4632,8 +4535,7 @@ pub async fn update(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4686,9 +4588,7 @@ pub async fn delete(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4715,13 +4615,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4748,13 +4642,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata".to_string(),
-        "https://www.googleapis.com/auth/drive.metadata.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.photos.readonly".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4781,9 +4669,7 @@ pub async fn update(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.appdata".to_string(),
-        "https://www.googleapis.com/auth/drive.file".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4891,8 +4777,7 @@ pub async fn get(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -4919,8 +4804,7 @@ pub async fn list(
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &["https://www.googleapis.com/auth/drive".to_string(),
-        "https://www.googleapis.com/auth/drive.readonly".to_string(),
+        let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
         ];
         tok = self.authenticator.token(scopes).await?;
     } else {

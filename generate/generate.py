@@ -296,9 +296,7 @@ def generate_service(resource, methods, discdoc):
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
                 'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
-                'scopes': [{
-                    'scope': s
-                } for s in method.get('scopes', [])],
+                'scopes': [{'scope': method.get('scopes', [''])[-1]}],
                 'description': method.get('description', ''),
                 'http_method': http_method
             }
@@ -322,9 +320,7 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
-                'scopes': [{
-                    'scope': s
-                } for s in method.get('scopes', [])],
+                'scopes': [{'scope': method.get('scopes', [''])[-1]}],
                 'description': method.get('description', ''),
                 'http_method': http_method
             }
@@ -350,9 +346,7 @@ def generate_service(resource, methods, discdoc):
                         'param': p,
                         'snake_param': sp
                     } for (p, sp) in required_parameters.items()],
-                    'scopes': [{
-                        'scope': s
-                    } for s in method['scopes']],
+                    'scopes': [{'scope': method.get('scopes', [''])[-1]}],
                     'description': method.get('description', ''),
                     'http_method': http_method,
                 }
