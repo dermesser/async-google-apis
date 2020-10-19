@@ -11,9 +11,9 @@ use drive_v3_types as drive;
 
 use async_google_apis_common as common;
 
-use std::rc::Rc;
 use std::fs;
 use std::path::Path;
+use std::rc::Rc;
 
 /// Create a new HTTPS client.
 fn https_client() -> common::TlsClient {
@@ -24,35 +24,25 @@ fn https_client() -> common::TlsClient {
 
 /// Upload a local file `f` to your drive.
 async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()> {
-    cl.set_scopes(&["https://www.googleapis.com/auth/drive.file"]);
+    cl.set_scopes(&[drive::DriveScopes::DriveFile]);
+    let fname = f.file_name().unwrap().to_str().unwrap();
 
     let data = hyper::body::Bytes::from(fs::read(&f)?);
     let mut params = drive::FilesCreateParams::default();
     params.include_permissions_for_view = Some("published".to_string());
     println!("{:?}", params);
-
-    // Upload data using the upload version of create(). We obtain a `File` object.
-    //
-    let resp = cl.create_upload(&params, data).await?;
-    println!("{:?}", resp);
-
-    // Copy ID from response.
-    let file_id = resp.id.unwrap();
-    let fname = f.file_name().unwrap().to_str().unwrap();
-
-    // Rename file to the file name on our computer.
-    //
-    let mut params = drive::FilesUpdateParams::default();
-    println!("{:?}", params);
-    params.file_id = file_id.clone();
-    params.include_permissions_for_view = Some("published".to_string());
-
-    // File object for patching
     let mut file = drive::File::default();
     file.name = Some(fname.to_string());
 
-    let update_resp = cl.update(&params, &file).await;
-    println!("{:?}", update_resp);
+    // Upload data using the upload version of create(). We obtain a `File` object.
+    //
+    let resp = cl.create_upload(&params, &file, data).await?;
+
+    // If you used this method, no file content would be uploaded:
+    // let resp = cl.create(&params, &file).await?;
+    println!("{:?}", resp);
+
+    let file_id = resp.id.unwrap();
 
     // Now get the file and check that it is correct.
     //

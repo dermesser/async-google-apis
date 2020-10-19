@@ -63,6 +63,7 @@ impl std::convert::AsRef<str> for DriveScopes {
 }
 
 
+/// 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutDriveThemes {
     /// A link to this theme's background image.
@@ -79,6 +80,7 @@ pub struct AboutDriveThemes {
     pub id: Option<String>,
 }
 
+/// The user's storage quota limits and usage. All fields are measured in bytes.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutStorageQuota {
     /// i64: The usage limit, if applicable. This will not be present if the user has unlimited storage.
@@ -99,6 +101,7 @@ pub struct AboutStorageQuota {
     pub usage_in_drive_trash: Option<String>,
 }
 
+/// 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutTeamDriveThemes {
     /// Deprecated - use driveThemes/backgroundImageLink instead.
@@ -115,6 +118,7 @@ pub struct AboutTeamDriveThemes {
     pub id: Option<String>,
 }
 
+/// Information about the user, the user's Drive, and system capabilities.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct About {
     /// Whether the user has installed the requesting app.
@@ -170,6 +174,7 @@ pub struct About {
     pub user: Option<User>,
 }
 
+/// A change to a file or shared drive.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Change {
     /// The type of the change. Possible values are file and drive.
@@ -215,6 +220,7 @@ pub struct Change {
     pub typ: Option<String>,
 }
 
+/// A list of changes for a user.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangeList {
     /// The list of changes. If nextPageToken is populated, then this list may be incomplete and an additional page of results should be fetched.
@@ -235,6 +241,7 @@ pub struct ChangeList {
     pub next_page_token: Option<String>,
 }
 
+/// An notification channel used to watch for resource changes.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Channel {
     /// The address where notifications are delivered for this channel.
@@ -279,6 +286,7 @@ pub struct Channel {
     pub typ: Option<String>,
 }
 
+/// The file content to which the comment refers, typically within the anchor region. For a text file, for example, this would be the text at the location of the comment.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentQuotedFileContent {
     /// The MIME type of the quoted content.
@@ -291,6 +299,7 @@ pub struct CommentQuotedFileContent {
     pub value: Option<String>,
 }
 
+/// A comment on a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Comment {
     /// A region of the document represented as a JSON string. See anchor documentation for details on how to define and interpret anchor properties.
@@ -342,6 +351,7 @@ pub struct Comment {
     pub resolved: Option<bool>,
 }
 
+/// A list of comments on a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentList {
     /// The list of comments. If nextPageToken is populated, then this list may be incomplete and an additional page of results should be fetched.
@@ -358,6 +368,7 @@ pub struct CommentList {
     pub next_page_token: Option<String>,
 }
 
+/// A restriction for accessing the content of the file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ContentRestriction {
     /// Whether the content of the file is read-only. If a file is read-only, a new revision of the file may not be added, comments may not be added or modified, and the title of the file may not be modified.
@@ -381,6 +392,7 @@ pub struct ContentRestriction {
     pub typ: Option<String>,
 }
 
+/// An image file and cropping parameters from which a background image for this shared drive is set. This is a write only field; it can only be set on drive.drives.update requests that don't set themeId. When specified, all fields of the backgroundImageFile must be set.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DriveBackgroundImageFile {
     /// The ID of an image file in Google Drive to use for the background image.
@@ -401,6 +413,7 @@ pub struct DriveBackgroundImageFile {
     pub y_coordinate: Option<f32>,
 }
 
+/// Capabilities the current user has on this shared drive.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DriveCapabilities {
     /// Whether the current user can add children to folders in this shared drive.
@@ -477,6 +490,7 @@ pub struct DriveCapabilities {
     pub can_trash_children: Option<bool>,
 }
 
+/// A set of restrictions that apply to this shared drive or items inside this shared drive.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DriveRestrictions {
     /// Whether administrative privileges on this shared drive are required to modify restrictions.
@@ -497,6 +511,7 @@ pub struct DriveRestrictions {
     pub drive_members_only: Option<bool>,
 }
 
+/// Representation of a shared drive.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Drive {
     /// An image file and cropping parameters from which a background image for this shared drive is set. This is a write only field; it can only be set on drive.drives.update requests that don't set themeId. When specified, all fields of the backgroundImageFile must be set.
@@ -545,6 +560,7 @@ pub struct Drive {
     pub theme_id: Option<String>,
 }
 
+/// A list of shared drives.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DriveList {
     /// The list of shared drives. If nextPageToken is populated, then this list may be incomplete and an additional page of results should be fetched.
@@ -561,6 +577,7 @@ pub struct DriveList {
     pub next_page_token: Option<String>,
 }
 
+/// Capabilities the current user has on this file. Each capability corresponds to a fine-grained action that a user may take.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileCapabilities {
     /// Whether the current user can add children to this folder. This is always false when the item is not a folder.
@@ -701,6 +718,7 @@ pub struct FileCapabilities {
     pub can_untrash: Option<bool>,
 }
 
+/// A thumbnail for the file. This will only be used if Google Drive cannot generate a standard thumbnail.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileContentHintsThumbnail {
     /// The thumbnail data encoded with URL-safe Base64 (RFC 4648 section 5).
@@ -713,6 +731,7 @@ pub struct FileContentHintsThumbnail {
     pub mime_type: Option<String>,
 }
 
+/// Additional information about the content of the file. These fields are never populated in responses.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileContentHints {
     /// Text to be indexed for the file to improve fullText queries. This is limited to 128KB in length and may contain HTML elements.
@@ -725,6 +744,7 @@ pub struct FileContentHints {
     pub thumbnail: Option<FileContentHintsThumbnail>,
 }
 
+/// Geographic location information stored in the image.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileImageMediaMetadataLocation {
     /// The altitude stored in the image.
@@ -741,6 +761,7 @@ pub struct FileImageMediaMetadataLocation {
     pub longitude: Option<f64>,
 }
 
+/// Additional metadata about image media, if available.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileImageMediaMetadata {
     /// The aperture used to create the photo (f-number).
@@ -829,6 +850,7 @@ pub struct FileImageMediaMetadata {
     pub width: Option<i32>,
 }
 
+/// Shortcut file details. Only populated for shortcut files, which have the mimeType field set to application/vnd.google-apps.shortcut.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileShortcutDetails {
     /// The ID of the file that this shortcut points to.
@@ -841,6 +863,7 @@ pub struct FileShortcutDetails {
     pub target_mime_type: Option<String>,
 }
 
+/// Additional metadata about video media. This may not be available immediately upon upload.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileVideoMediaMetadata {
     /// i64: The duration of the video in milliseconds.
@@ -857,6 +880,7 @@ pub struct FileVideoMediaMetadata {
     pub width: Option<i32>,
 }
 
+/// The metadata for a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct File {
     /// A collection of arbitrary key-value pairs which are private to the requesting app. Entries with null values are cleared in update and copy requests.
@@ -1086,6 +1110,7 @@ pub struct File {
     pub writers_can_share: Option<bool>,
 }
 
+/// A list of files.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FileList {
     /// The list of files. If nextPageToken is populated, then this list may be incomplete and an additional page of results should be fetched.
@@ -1106,6 +1131,7 @@ pub struct FileList {
     pub next_page_token: Option<String>,
 }
 
+/// A list of generated file IDs which can be provided in create requests.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct GeneratedIds {
     /// The IDs generated for the requesting user in the specified space.
@@ -1122,6 +1148,7 @@ pub struct GeneratedIds {
     pub space: Option<String>,
 }
 
+/// 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionPermissionDetails {
     /// Whether this permission is inherited. This field is always populated. This is an output-only field.
@@ -1142,6 +1169,7 @@ pub struct PermissionPermissionDetails {
     pub role: Option<String>,
 }
 
+/// 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionTeamDrivePermissionDetails {
     /// Deprecated - use permissionDetails/inherited instead.
@@ -1162,6 +1190,7 @@ pub struct PermissionTeamDrivePermissionDetails {
     pub team_drive_permission_type: Option<String>,
 }
 
+/// A permission for a file. A permission grants a user, group, domain or the world access to a file or a folder hierarchy.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Permission {
     /// Whether the permission allows the file to be discovered through search. This is only applicable for permissions of type domain or anyone.
@@ -1222,6 +1251,7 @@ pub struct Permission {
     pub view: Option<String>,
 }
 
+/// A list of permissions for a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionList {
     /// Identifies what kind of resource this is. Value: the fixed string "drive#permissionList".
@@ -1238,6 +1268,7 @@ pub struct PermissionList {
     pub permissions: Option<Vec<Permission>>,
 }
 
+/// A reply to a comment on a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Reply {
     /// The action the reply performed to the parent comment. Valid values are:   - resolve  - reopen
@@ -1277,6 +1308,7 @@ pub struct Reply {
     pub modified_time: Option<DateTime<Utc>>,
 }
 
+/// A list of replies to a comment on a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ReplyList {
     /// Identifies what kind of resource this is. Value: the fixed string "drive#replyList".
@@ -1293,6 +1325,7 @@ pub struct ReplyList {
     pub replies: Option<Vec<Reply>>,
 }
 
+/// The metadata for a revision to a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Revision {
     /// Links for exporting Google Docs to specific formats.
@@ -1352,6 +1385,7 @@ pub struct Revision {
     pub size: Option<String>,
 }
 
+/// A list of revisions of a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionList {
     /// Identifies what kind of resource this is. Value: the fixed string "drive#revisionList".
@@ -1368,6 +1402,7 @@ pub struct RevisionList {
     pub revisions: Option<Vec<Revision>>,
 }
 
+/// 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct StartPageToken {
     /// Identifies what kind of resource this is. Value: the fixed string "drive#startPageToken".
@@ -1380,6 +1415,7 @@ pub struct StartPageToken {
     pub start_page_token: Option<String>,
 }
 
+/// An image file and cropping parameters from which a background image for this Team Drive is set. This is a write only field; it can only be set on drive.teamdrives.update requests that don't set themeId. When specified, all fields of the backgroundImageFile must be set.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamDriveBackgroundImageFile {
     /// The ID of an image file in Drive to use for the background image.
@@ -1400,6 +1436,7 @@ pub struct TeamDriveBackgroundImageFile {
     pub y_coordinate: Option<f32>,
 }
 
+/// Capabilities the current user has on this Team Drive.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamDriveCapabilities {
     /// Whether the current user can add children to folders in this Team Drive.
@@ -1480,6 +1517,7 @@ pub struct TeamDriveCapabilities {
     pub can_trash_children: Option<bool>,
 }
 
+/// A set of restrictions that apply to this Team Drive or items inside this Team Drive.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamDriveRestrictions {
     /// Whether administrative privileges on this Team Drive are required to modify restrictions.
@@ -1500,6 +1538,7 @@ pub struct TeamDriveRestrictions {
     pub team_members_only: Option<bool>,
 }
 
+/// Deprecated: use the drive collection instead.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamDrive {
     /// An image file and cropping parameters from which a background image for this Team Drive is set. This is a write only field; it can only be set on drive.teamdrives.update requests that don't set themeId. When specified, all fields of the backgroundImageFile must be set.
@@ -1544,6 +1583,7 @@ pub struct TeamDrive {
     pub theme_id: Option<String>,
 }
 
+/// A list of Team Drives.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamDriveList {
     /// Identifies what kind of resource this is. Value: the fixed string "drive#teamDriveList".
@@ -1560,6 +1600,7 @@ pub struct TeamDriveList {
     pub team_drives: Option<Vec<TeamDrive>>,
 }
 
+/// Information about a Drive user.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct User {
     /// A plain text displayable name for this user.
@@ -1588,10 +1629,12 @@ pub struct User {
     pub photo_link: Option<String>,
 }
 
+/// Parameters for the `about.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutGetParams {
 }
 
+/// Parameters for the `changes.getStartPageToken` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesGetStartPageTokenParams {
     /// The ID of the shared drive for which the starting pageToken for listing future changes from that shared drive is returned.
@@ -1608,6 +1651,7 @@ pub struct ChangesGetStartPageTokenParams {
     pub team_drive_id: Option<String>,
 }
 
+/// Parameters for the `changes.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesListParams {
     /// The shared drive from which changes are returned. If specified the change IDs will be reflective of the shared drive; use the combined drive ID and change ID as an identifier.
@@ -1651,6 +1695,7 @@ pub struct ChangesListParams {
     pub team_drive_id: Option<String>,
 }
 
+/// Parameters for the `changes.watch` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesWatchParams {
     /// The shared drive from which changes are returned. If specified the change IDs will be reflective of the shared drive; use the combined drive ID and change ID as an identifier.
@@ -1694,10 +1739,12 @@ pub struct ChangesWatchParams {
     pub team_drive_id: Option<String>,
 }
 
+/// Parameters for the `channels.stop` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChannelsStopParams {
 }
 
+/// Parameters for the `comments.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsCreateParams {
     /// The ID of the file.
@@ -1705,6 +1752,7 @@ pub struct CommentsCreateParams {
     pub file_id: String,
 }
 
+/// Parameters for the `comments.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsDeleteParams {
     /// The ID of the comment.
@@ -1715,6 +1763,7 @@ pub struct CommentsDeleteParams {
     pub file_id: String,
 }
 
+/// Parameters for the `comments.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsGetParams {
     /// The ID of the comment.
@@ -1728,6 +1777,7 @@ pub struct CommentsGetParams {
     pub include_deleted: Option<bool>,
 }
 
+/// Parameters for the `comments.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsListParams {
     /// The ID of the file.
@@ -1747,6 +1797,7 @@ pub struct CommentsListParams {
     pub start_modified_time: Option<String>,
 }
 
+/// Parameters for the `comments.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsUpdateParams {
     /// The ID of the comment.
@@ -1757,6 +1808,7 @@ pub struct CommentsUpdateParams {
     pub file_id: String,
 }
 
+/// Parameters for the `drives.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesCreateParams {
     /// An ID, such as a random UUID, which uniquely identifies this user's request for idempotent creation of a shared drive. A repeated request by the same user and with the same request ID will avoid creating duplicates by attempting to create the same shared drive. If the shared drive already exists a 409 error will be returned.
@@ -1764,6 +1816,7 @@ pub struct DrivesCreateParams {
     pub request_id: String,
 }
 
+/// Parameters for the `drives.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesDeleteParams {
     /// The ID of the shared drive.
@@ -1771,6 +1824,7 @@ pub struct DrivesDeleteParams {
     pub drive_id: String,
 }
 
+/// Parameters for the `drives.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesGetParams {
     /// The ID of the shared drive.
@@ -1781,6 +1835,7 @@ pub struct DrivesGetParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `drives.hide` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesHideParams {
     /// The ID of the shared drive.
@@ -1788,6 +1843,7 @@ pub struct DrivesHideParams {
     pub drive_id: String,
 }
 
+/// Parameters for the `drives.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesListParams {
     /// Maximum number of shared drives to return.
@@ -1804,6 +1860,7 @@ pub struct DrivesListParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `drives.unhide` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesUnhideParams {
     /// The ID of the shared drive.
@@ -1811,6 +1868,7 @@ pub struct DrivesUnhideParams {
     pub drive_id: String,
 }
 
+/// Parameters for the `drives.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesUpdateParams {
     /// The ID of the shared drive.
@@ -1821,6 +1879,7 @@ pub struct DrivesUpdateParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `files.copy` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesCopyParams {
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. Requests that specify more than one parent fail.
@@ -1849,6 +1908,7 @@ pub struct FilesCopyParams {
     pub supports_team_drives: Option<bool>,
 }
 
+/// Parameters for the `files.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesCreateParams {
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. Requests that specify more than one parent fail.
@@ -1877,6 +1937,7 @@ pub struct FilesCreateParams {
     pub use_content_as_indexable_text: Option<bool>,
 }
 
+/// Parameters for the `files.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesDeleteParams {
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
@@ -1893,6 +1954,7 @@ pub struct FilesDeleteParams {
     pub supports_team_drives: Option<bool>,
 }
 
+/// Parameters for the `files.emptyTrash` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesEmptyTrashParams {
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
@@ -1900,6 +1962,7 @@ pub struct FilesEmptyTrashParams {
     pub enforce_single_parent: Option<bool>,
 }
 
+/// Parameters for the `files.export` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesExportParams {
     /// The ID of the file.
@@ -1910,6 +1973,7 @@ pub struct FilesExportParams {
     pub mime_type: String,
 }
 
+/// Parameters for the `files.generateIds` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesGenerateIdsParams {
     /// The number of IDs to return.
@@ -1920,6 +1984,7 @@ pub struct FilesGenerateIdsParams {
     pub space: Option<String>,
 }
 
+/// Parameters for the `files.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesGetParams {
     /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. This is only applicable when alt=media.
@@ -1939,6 +2004,7 @@ pub struct FilesGetParams {
     pub supports_team_drives: Option<bool>,
 }
 
+/// Parameters for the `files.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesListParams {
     /// Groupings of files to which the query applies. Supported groupings are: 'user' (files created by, opened by, or shared directly with the user), 'drive' (files in the specified shared drive as indicated by the 'driveId'), 'domain' (files shared to the user's domain), and 'allDrives' (A combination of 'user' and 'drive' for all drives where the user is a member). When able, use 'user' or 'drive', instead of 'allDrives', for efficiency.
@@ -1985,6 +2051,7 @@ pub struct FilesListParams {
     pub team_drive_id: Option<String>,
 }
 
+/// Parameters for the `files.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesUpdateParams {
     /// A comma-separated list of parent IDs to add.
@@ -2019,6 +2086,7 @@ pub struct FilesUpdateParams {
     pub use_content_as_indexable_text: Option<bool>,
 }
 
+/// Parameters for the `files.watch` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesWatchParams {
     /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. This is only applicable when alt=media.
@@ -2038,6 +2106,7 @@ pub struct FilesWatchParams {
     pub supports_team_drives: Option<bool>,
 }
 
+/// Parameters for the `permissions.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsCreateParams {
     /// A plain text custom message to include in the notification email.
@@ -2069,6 +2138,7 @@ pub struct PermissionsCreateParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `permissions.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsDeleteParams {
     /// The ID of the file or shared drive.
@@ -2088,6 +2158,7 @@ pub struct PermissionsDeleteParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `permissions.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsGetParams {
     /// The ID of the file.
@@ -2107,6 +2178,7 @@ pub struct PermissionsGetParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `permissions.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsListParams {
     /// The ID of the file or shared drive.
@@ -2132,6 +2204,7 @@ pub struct PermissionsListParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `permissions.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsUpdateParams {
     /// The ID of the file or shared drive.
@@ -2157,6 +2230,7 @@ pub struct PermissionsUpdateParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `replies.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesCreateParams {
     /// The ID of the comment.
@@ -2167,6 +2241,7 @@ pub struct RepliesCreateParams {
     pub file_id: String,
 }
 
+/// Parameters for the `replies.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesDeleteParams {
     /// The ID of the comment.
@@ -2180,6 +2255,7 @@ pub struct RepliesDeleteParams {
     pub reply_id: String,
 }
 
+/// Parameters for the `replies.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesGetParams {
     /// The ID of the comment.
@@ -2196,6 +2272,7 @@ pub struct RepliesGetParams {
     pub reply_id: String,
 }
 
+/// Parameters for the `replies.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesListParams {
     /// The ID of the comment.
@@ -2215,6 +2292,7 @@ pub struct RepliesListParams {
     pub page_token: Option<String>,
 }
 
+/// Parameters for the `replies.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesUpdateParams {
     /// The ID of the comment.
@@ -2228,6 +2306,7 @@ pub struct RepliesUpdateParams {
     pub reply_id: String,
 }
 
+/// Parameters for the `revisions.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsDeleteParams {
     /// The ID of the file.
@@ -2238,6 +2317,7 @@ pub struct RevisionsDeleteParams {
     pub revision_id: String,
 }
 
+/// Parameters for the `revisions.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsGetParams {
     /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. This is only applicable when alt=media.
@@ -2251,6 +2331,7 @@ pub struct RevisionsGetParams {
     pub revision_id: String,
 }
 
+/// Parameters for the `revisions.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsListParams {
     /// The ID of the file.
@@ -2264,6 +2345,7 @@ pub struct RevisionsListParams {
     pub page_token: Option<String>,
 }
 
+/// Parameters for the `revisions.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsUpdateParams {
     /// The ID of the file.
@@ -2274,6 +2356,7 @@ pub struct RevisionsUpdateParams {
     pub revision_id: String,
 }
 
+/// Parameters for the `teamdrives.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesCreateParams {
     /// An ID, such as a random UUID, which uniquely identifies this user's request for idempotent creation of a Team Drive. A repeated request by the same user and with the same request ID will avoid creating duplicates by attempting to create the same Team Drive. If the Team Drive already exists a 409 error will be returned.
@@ -2281,6 +2364,7 @@ pub struct TeamdrivesCreateParams {
     pub request_id: String,
 }
 
+/// Parameters for the `teamdrives.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesDeleteParams {
     /// The ID of the Team Drive
@@ -2288,6 +2372,7 @@ pub struct TeamdrivesDeleteParams {
     pub team_drive_id: String,
 }
 
+/// Parameters for the `teamdrives.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesGetParams {
     /// The ID of the Team Drive
@@ -2298,6 +2383,7 @@ pub struct TeamdrivesGetParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `teamdrives.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesListParams {
     /// Maximum number of Team Drives to return.
@@ -2314,6 +2400,7 @@ pub struct TeamdrivesListParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// Parameters for the `teamdrives.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesUpdateParams {
     /// The ID of the Team Drive
@@ -2324,6 +2411,7 @@ pub struct TeamdrivesUpdateParams {
     pub use_domain_admin_access: Option<bool>,
 }
 
+/// The Drive About service represents the About resource.
 pub struct AboutService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -2377,6 +2465,7 @@ pub async fn get(
 
 }
 
+/// The Drive Changes service represents the Changes resource.
 pub struct ChangesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -2605,6 +2694,7 @@ pub async fn watch(
 
 }
 
+/// The Drive Channels service represents the Channels resource.
 pub struct ChannelsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -2659,6 +2749,7 @@ pub async fn stop(
 
 }
 
+/// The Drive Comments service represents the Comments resource.
 pub struct CommentsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -2827,6 +2918,7 @@ pub async fn update(
 
 }
 
+/// The Drive Drives service represents the Drives resource.
 pub struct DrivesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -3042,6 +3134,7 @@ pub async fn update(
 
 }
 
+/// The Drive Files service represents the Files resource.
 pub struct FilesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -3179,8 +3272,10 @@ pub async fn create(
 
 
 /// Creates a new file.
+///
+/// This method is a variant of `create()`, taking data for upload.
 pub async fn create_upload(
-    &mut self, params: &FilesCreateParams, data: hyper::body::Bytes) -> Result<File> {
+    &mut self, params: &FilesCreateParams, req: &File, data: hyper::body::Bytes) -> Result<File> {
     let rel_path = "upload/drive/v3/files";
     let path = "https://www.googleapis.com/".to_string() + &rel_path;
 
@@ -3194,7 +3289,7 @@ pub async fn create_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=media&oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}&fields=*", token=tok.as_str());
 
     if let Some(ref val) = &params.enforce_single_parent {
         url_params.push_str(&format!("&enforceSingleParent={}",
@@ -3230,7 +3325,10 @@ pub async fn create_upload(
     }
 
     let full_uri = path + &url_params;
-    do_upload(&self.client, &full_uri, &[], "POST", data).await
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+
+    do_upload_multipart(&self.client, &full_uri, &[], "POST", opt_request, data).await
   }
 
 
@@ -3299,6 +3397,8 @@ pub async fn empty_trash(
 
 
 /// Exports a Google Doc to the requested MIME type and returns the exported content. Please note that the exported content is limited to 10MB.
+///
+/// This method downloads data.
 pub async fn export(
     &mut self, params: &FilesExportParams,  dst: &mut dyn std::io::Write)
     -> Result<()> {
@@ -3555,8 +3655,10 @@ pub async fn update(
 
 
 /// Updates a file's metadata and/or content. This method supports patch semantics.
+///
+/// This method is a variant of `update()`, taking data for upload.
 pub async fn update_upload(
-    &mut self, params: &FilesUpdateParams, data: hyper::body::Bytes) -> Result<File> {
+    &mut self, params: &FilesUpdateParams, req: &File, data: hyper::body::Bytes) -> Result<File> {
     let rel_path = "upload/drive/v3/files/{fileId}";
     let path = "https://www.googleapis.com/".to_string() + &rel_path;
 
@@ -3572,7 +3674,7 @@ pub async fn update_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=media&oauth_token={token}&fields=*", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}&fields=*", token=tok.as_str());
 
     if let Some(ref val) = &params.add_parents {
         url_params.push_str(&format!("&addParents={}",
@@ -3612,7 +3714,10 @@ pub async fn update_upload(
     }
 
     let full_uri = path + &url_params;
-    do_upload(&self.client, &full_uri, &[], "PATCH", data).await
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+
+    do_upload_multipart(&self.client, &full_uri, &[], "PATCH", opt_request, data).await
   }
 
 
@@ -3663,6 +3768,7 @@ pub async fn watch(
 
 }
 
+/// The Drive Permissions service represents the Permissions resource.
 pub struct PermissionsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -3917,6 +4023,7 @@ pub async fn update(
 
 }
 
+/// The Drive Replies service represents the Replies resource.
 pub struct RepliesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -4081,6 +4188,7 @@ pub async fn update(
 
 }
 
+/// The Drive Revisions service represents the Revisions resource.
 pub struct RevisionsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
@@ -4226,6 +4334,7 @@ pub async fn update(
 
 }
 
+/// The Drive Teamdrives service represents the Teamdrives resource.
 pub struct TeamdrivesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
