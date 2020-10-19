@@ -37,8 +37,10 @@ def snake_case(name):
             return c
         return '_' + c.lower()
 
-    return ''.join([r(c) for c in name])
+    return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(name)])
 
+def global_params_name(api_name):
+    return capitalize_first(api_name)+'Params'
 
 def parse_schema_types(name, schema, optional=True):
     """Translate a JSON schema type into Rust types, recursively.
@@ -90,6 +92,7 @@ def parse_schema_types(name, schema, optional=True):
                     struct['fields'].append({
                         'name':
                         cleaned_pn,
+                        'original_name': jsonname,
                         'attr':
                         '#[serde(rename = "{}")]'.format(jsonname) +
                         '\n    #[serde(skip_serializing_if = "Option::is_none")]'
@@ -170,7 +173,7 @@ def parse_schema_types(name, schema, optional=True):
         raise e
 
 
-def generate_params_structs(resources, super_name=''):
+def generate_params_structs(resources, super_name='', global_params=None):
     """Generate parameter structs from the resources list.
 
     Returns a list of source code strings.
@@ -186,6 +189,10 @@ def generate_params_structs(resources, super_name=''):
                 'description': 'Parameters for the `{}.{}` method.'.format(resourcename, methodname),
                 'fields': []
             }
+            struct['fields'].append({'name': snake_case(global_params),
+                'typ': optionalize(global_params, True),
+                'attr': '#[serde(flatten)]',
+                'comment': 'General attributes applying to any API call'})
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
@@ -256,6 +263,7 @@ def generate_service(resource, methods, discdoc):
         else:
             upload_path = ''
         http_method = method['httpMethod']
+        has_global_params = 'parameters' in discdoc
         formatted_path, required_params = resolve_parameters(method['path'])
 
         if is_download:
@@ -275,6 +283,7 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
+                'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                 'scopes': [{
                     'scope': s
                 } for s in method.get('scopes', [])],
@@ -296,6 +305,7 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in parameters.items()],
+                'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                 'required_params': [{
                     'param': p,
                     'snake_param': sp
@@ -319,6 +329,7 @@ def generate_service(resource, methods, discdoc):
                     'out_type': out_type,
                     'base_path': discdoc['rootUrl'],
                     'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
+                    'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                     'params': [{
                         'param': p,
                         'snake_param': sp
@@ -369,7 +380,8 @@ def generate_all(discdoc):
     scopes_type = generate_scopes_type(discdoc['name'], discdoc.get('auth', {}).get('oauth2', {}).get('scopes', {}))
 
     # Generate parameter types (*Params - those are used as "side inputs" to requests)
-    parameter_types = generate_params_structs(resources)
+    params_struct_name = capitalize_first(discdoc['name'])+'Params'
+    parameter_types = generate_params_structs(resources, global_params=params_struct_name)
 
     # Generate service impls
     services = []
@@ -380,6 +392,15 @@ def generate_all(discdoc):
     structs = []
     for name, desc in schemas.items():
         typ, substructs = parse_schema_types(name, desc)
+        structs.extend(substructs)
+
+    # Generate global params.
+    if 'parameters' in discdoc:
+        schema = {'type': 'object', 'properties': discdoc['parameters']}
+        name =  params_struct_name
+        typ, substructs = parse_schema_types(name, schema)
+        for s in substructs:
+            parameter_types.append(chevron.render(SchemaDisplayTmpl, s))
         structs.extend(substructs)
 
     # Assemble everything into a file.

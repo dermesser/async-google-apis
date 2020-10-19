@@ -59,6 +59,20 @@ pub struct {{{name}}} {
 }
 '''
 
+# Serialize a global params struct to a URL query string.
+SchemaDisplayTmpl = '''
+impl std::fmt::Display for {{{name}}} {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        {{#fields}}
+        if let Some(ref v) = self.{{{name}}} {
+            write!(f, "&{}={}", "{{{original_name}}}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        {{/fields}}
+        Ok(())
+    }
+}
+'''
+
 # Dict contents --
 #
 # api, service (names: e.g. Files)
@@ -121,6 +135,11 @@ pub async fn {{{name}}}(
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     {{/params}}
+    {{#global_params_name}}
+    if let Some(ref api_params) = &params.{{{global_params_name}}} {
+        url_params.push_str(&format!("{}", api_params));
+    }
+    {{/global_params_name}}
     {{#required_params}}
     url_params.push_str(&format!("&{{{param}}}={}",
         percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
@@ -166,6 +185,11 @@ pub async fn {{{name}}}_upload(
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     {{/params}}
+    {{#global_params_name}}
+    if let Some(ref api_params) = &params.{{{global_params_name}}} {
+        url_params.push_str(&format!("{}", api_params));
+    }
+    {{/global_params_name}}
     {{#required_params}}
     url_params.push_str(&format!("&{{{param}}}={}",
         percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));
@@ -212,6 +236,11 @@ pub async fn {{{name}}}(
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
     {{/params}}
+    {{#global_params_name}}
+    if let Some(ref api_params) = &params.{{{global_params_name}}} {
+        url_params.push_str(&format!("{}", api_params));
+    }
+    {{/global_params_name}}
     {{#required_params}}
     url_params.push_str(&format!("&{{{param}}}={}",
         percent_encode(format!("{}", params.{{{snake_param}}}).as_bytes(), NON_ALPHANUMERIC).to_string()));

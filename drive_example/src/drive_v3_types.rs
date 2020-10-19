@@ -1629,14 +1629,53 @@ pub struct User {
     pub photo_link: Option<String>,
 }
 
+/// 
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+pub struct DriveParams {
+    /// Data format for the response.
+    #[serde(rename = "alt")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alt: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    #[serde(rename = "fields")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    #[serde(rename = "key")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    #[serde(rename = "oauth_token")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    #[serde(rename = "prettyPrint")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    #[serde(rename = "quotaUser")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quota_user: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    #[serde(rename = "userIp")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_ip: Option<String>,
+}
+
 /// Parameters for the `about.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
 }
 
 /// Parameters for the `changes.getStartPageToken` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesGetStartPageTokenParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the shared drive for which the starting pageToken for listing future changes from that shared drive is returned.
     #[serde(rename = "driveId")]
     pub drive_id: Option<String>,
@@ -1654,6 +1693,9 @@ pub struct ChangesGetStartPageTokenParams {
 /// Parameters for the `changes.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The shared drive from which changes are returned. If specified the change IDs will be reflective of the shared drive; use the combined drive ID and change ID as an identifier.
     #[serde(rename = "driveId")]
     pub drive_id: Option<String>,
@@ -1698,6 +1740,9 @@ pub struct ChangesListParams {
 /// Parameters for the `changes.watch` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChangesWatchParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The shared drive from which changes are returned. If specified the change IDs will be reflective of the shared drive; use the combined drive ID and change ID as an identifier.
     #[serde(rename = "driveId")]
     pub drive_id: Option<String>,
@@ -1742,11 +1787,17 @@ pub struct ChangesWatchParams {
 /// Parameters for the `channels.stop` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ChannelsStopParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
 }
 
 /// Parameters for the `comments.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsCreateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -1755,6 +1806,9 @@ pub struct CommentsCreateParams {
 /// Parameters for the `comments.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -1766,6 +1820,9 @@ pub struct CommentsDeleteParams {
 /// Parameters for the `comments.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -1780,6 +1837,9 @@ pub struct CommentsGetParams {
 /// Parameters for the `comments.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -1800,6 +1860,9 @@ pub struct CommentsListParams {
 /// Parameters for the `comments.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -1811,6 +1874,9 @@ pub struct CommentsUpdateParams {
 /// Parameters for the `drives.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesCreateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// An ID, such as a random UUID, which uniquely identifies this user's request for idempotent creation of a shared drive. A repeated request by the same user and with the same request ID will avoid creating duplicates by attempting to create the same shared drive. If the shared drive already exists a 409 error will be returned.
     #[serde(rename = "requestId")]
     pub request_id: String,
@@ -1819,6 +1885,9 @@ pub struct DrivesCreateParams {
 /// Parameters for the `drives.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
@@ -1827,6 +1896,9 @@ pub struct DrivesDeleteParams {
 /// Parameters for the `drives.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
@@ -1838,6 +1910,9 @@ pub struct DrivesGetParams {
 /// Parameters for the `drives.hide` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesHideParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
@@ -1846,6 +1921,9 @@ pub struct DrivesHideParams {
 /// Parameters for the `drives.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Maximum number of shared drives to return.
     #[serde(rename = "pageSize")]
     pub page_size: Option<i32>,
@@ -1863,6 +1941,9 @@ pub struct DrivesListParams {
 /// Parameters for the `drives.unhide` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesUnhideParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
@@ -1871,6 +1952,9 @@ pub struct DrivesUnhideParams {
 /// Parameters for the `drives.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DrivesUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the shared drive.
     #[serde(rename = "driveId")]
     pub drive_id: String,
@@ -1882,6 +1966,9 @@ pub struct DrivesUpdateParams {
 /// Parameters for the `files.copy` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesCopyParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. Requests that specify more than one parent fail.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
@@ -1911,6 +1998,9 @@ pub struct FilesCopyParams {
 /// Parameters for the `files.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesCreateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. Requests that specify more than one parent fail.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
@@ -1940,6 +2030,9 @@ pub struct FilesCreateParams {
 /// Parameters for the `files.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
@@ -1957,6 +2050,9 @@ pub struct FilesDeleteParams {
 /// Parameters for the `files.emptyTrash` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesEmptyTrashParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
@@ -1965,6 +2061,9 @@ pub struct FilesEmptyTrashParams {
 /// Parameters for the `files.export` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesExportParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -1976,6 +2075,9 @@ pub struct FilesExportParams {
 /// Parameters for the `files.generateIds` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesGenerateIdsParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The number of IDs to return.
     #[serde(rename = "count")]
     pub count: Option<i32>,
@@ -1987,6 +2089,9 @@ pub struct FilesGenerateIdsParams {
 /// Parameters for the `files.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. This is only applicable when alt=media.
     #[serde(rename = "acknowledgeAbuse")]
     pub acknowledge_abuse: Option<bool>,
@@ -2007,6 +2112,9 @@ pub struct FilesGetParams {
 /// Parameters for the `files.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Groupings of files to which the query applies. Supported groupings are: 'user' (files created by, opened by, or shared directly with the user), 'drive' (files in the specified shared drive as indicated by the 'driveId'), 'domain' (files shared to the user's domain), and 'allDrives' (A combination of 'user' and 'drive' for all drives where the user is a member). When able, use 'user' or 'drive', instead of 'allDrives', for efficiency.
     #[serde(rename = "corpora")]
     pub corpora: Option<String>,
@@ -2054,6 +2162,9 @@ pub struct FilesListParams {
 /// Parameters for the `files.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// A comma-separated list of parent IDs to add.
     #[serde(rename = "addParents")]
     pub add_parents: Option<String>,
@@ -2089,6 +2200,9 @@ pub struct FilesUpdateParams {
 /// Parameters for the `files.watch` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FilesWatchParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. This is only applicable when alt=media.
     #[serde(rename = "acknowledgeAbuse")]
     pub acknowledge_abuse: Option<bool>,
@@ -2109,6 +2223,9 @@ pub struct FilesWatchParams {
 /// Parameters for the `permissions.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsCreateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// A plain text custom message to include in the notification email.
     #[serde(rename = "emailMessage")]
     pub email_message: Option<String>,
@@ -2141,6 +2258,9 @@ pub struct PermissionsCreateParams {
 /// Parameters for the `permissions.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file or shared drive.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2161,6 +2281,9 @@ pub struct PermissionsDeleteParams {
 /// Parameters for the `permissions.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2181,6 +2304,9 @@ pub struct PermissionsGetParams {
 /// Parameters for the `permissions.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file or shared drive.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2207,6 +2333,9 @@ pub struct PermissionsListParams {
 /// Parameters for the `permissions.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionsUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file or shared drive.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2233,6 +2362,9 @@ pub struct PermissionsUpdateParams {
 /// Parameters for the `replies.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesCreateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -2244,6 +2376,9 @@ pub struct RepliesCreateParams {
 /// Parameters for the `replies.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -2258,6 +2393,9 @@ pub struct RepliesDeleteParams {
 /// Parameters for the `replies.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -2275,6 +2413,9 @@ pub struct RepliesGetParams {
 /// Parameters for the `replies.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -2295,6 +2436,9 @@ pub struct RepliesListParams {
 /// Parameters for the `replies.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RepliesUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the comment.
     #[serde(rename = "commentId")]
     pub comment_id: String,
@@ -2309,6 +2453,9 @@ pub struct RepliesUpdateParams {
 /// Parameters for the `revisions.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2320,6 +2467,9 @@ pub struct RevisionsDeleteParams {
 /// Parameters for the `revisions.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. This is only applicable when alt=media.
     #[serde(rename = "acknowledgeAbuse")]
     pub acknowledge_abuse: Option<bool>,
@@ -2334,6 +2484,9 @@ pub struct RevisionsGetParams {
 /// Parameters for the `revisions.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2348,6 +2501,9 @@ pub struct RevisionsListParams {
 /// Parameters for the `revisions.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct RevisionsUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -2359,6 +2515,9 @@ pub struct RevisionsUpdateParams {
 /// Parameters for the `teamdrives.create` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesCreateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// An ID, such as a random UUID, which uniquely identifies this user's request for idempotent creation of a Team Drive. A repeated request by the same user and with the same request ID will avoid creating duplicates by attempting to create the same Team Drive. If the Team Drive already exists a 409 error will be returned.
     #[serde(rename = "requestId")]
     pub request_id: String,
@@ -2367,6 +2526,9 @@ pub struct TeamdrivesCreateParams {
 /// Parameters for the `teamdrives.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesDeleteParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the Team Drive
     #[serde(rename = "teamDriveId")]
     pub team_drive_id: String,
@@ -2375,6 +2537,9 @@ pub struct TeamdrivesDeleteParams {
 /// Parameters for the `teamdrives.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesGetParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the Team Drive
     #[serde(rename = "teamDriveId")]
     pub team_drive_id: String,
@@ -2386,6 +2551,9 @@ pub struct TeamdrivesGetParams {
 /// Parameters for the `teamdrives.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesListParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// Maximum number of Team Drives to return.
     #[serde(rename = "pageSize")]
     pub page_size: Option<i32>,
@@ -2403,12 +2571,42 @@ pub struct TeamdrivesListParams {
 /// Parameters for the `teamdrives.update` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TeamdrivesUpdateParams {
+    /// General attributes applying to any API call
+    #[serde(flatten)]
+    pub drive_params: Option<DriveParams>,
     /// The ID of the Team Drive
     #[serde(rename = "teamDriveId")]
     pub team_drive_id: String,
     /// Issue the request as a domain administrator; if set to true, then the requester will be granted access if they are an administrator of the domain to which the Team Drive belongs.
     #[serde(rename = "useDomainAdminAccess")]
     pub use_domain_admin_access: Option<bool>,
+}
+
+impl std::fmt::Display for DriveParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(ref v) = self.alt {
+            write!(f, "&{}={}", "alt", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.fields {
+            write!(f, "&{}={}", "fields", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.key {
+            write!(f, "&{}={}", "key", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.oauth_token {
+            write!(f, "&{}={}", "oauth_token", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.pretty_print {
+            write!(f, "&{}={}", "prettyPrint", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.quota_user {
+            write!(f, "&{}={}", "quotaUser", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        if let Some(ref v) = self.user_ip {
+            write!(f, "&{}={}", "userIp", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        Ok(())
+    }
 }
 
 /// The Drive About service represents the About resource.
@@ -2456,6 +2654,9 @@ pub async fn get(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -2525,6 +2726,9 @@ pub async fn get_start_page_token(
     if let Some(ref val) = &params.team_drive_id {
         url_params.push_str(&format!("&teamDriveId={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -2602,6 +2806,9 @@ pub async fn list(
     if let Some(ref val) = &params.team_drive_id {
         url_params.push_str(&format!("&teamDriveId={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
     url_params.push_str(&format!("&pageToken={}",
         percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
@@ -2682,6 +2889,9 @@ pub async fn watch(
         url_params.push_str(&format!("&teamDriveId={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
     url_params.push_str(&format!("&pageToken={}",
         percent_encode(format!("{}", params.page_token).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
@@ -2739,6 +2949,9 @@ pub async fn stop(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -2789,6 +3002,9 @@ pub async fn create(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -2814,6 +3030,9 @@ pub async fn delete(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -2842,6 +3061,9 @@ pub async fn get(
     if let Some(ref val) = &params.include_deleted {
         url_params.push_str(&format!("&includeDeleted={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -2884,6 +3106,9 @@ pub async fn list(
         url_params.push_str(&format!("&startModifiedTime={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -2908,6 +3133,9 @@ pub async fn update(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -2957,6 +3185,9 @@ pub async fn create(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
     url_params.push_str(&format!("&requestId={}",
         percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
@@ -2983,6 +3214,9 @@ pub async fn delete(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3011,6 +3245,9 @@ pub async fn get(
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3034,6 +3271,9 @@ pub async fn hide(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3074,6 +3314,9 @@ pub async fn list(
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3097,6 +3340,9 @@ pub async fn unhide(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3123,6 +3369,9 @@ pub async fn update(
     if let Some(ref val) = &params.use_domain_admin_access {
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3204,6 +3453,9 @@ pub async fn copy(
         url_params.push_str(&format!("&supportsTeamDrives={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3261,6 +3513,9 @@ pub async fn create(
     if let Some(ref val) = &params.use_content_as_indexable_text {
         url_params.push_str(&format!("&useContentAsIndexableText={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3323,6 +3578,9 @@ pub async fn create_upload(
         url_params.push_str(&format!("&useContentAsIndexableText={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
     let opt_request: Option<EmptyRequest> = None;
@@ -3361,6 +3619,9 @@ pub async fn delete(
         url_params.push_str(&format!("&supportsTeamDrives={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3387,6 +3648,9 @@ pub async fn empty_trash(
     if let Some(ref val) = &params.enforce_single_parent {
         url_params.push_str(&format!("&enforceSingleParent={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3417,6 +3681,9 @@ pub async fn export(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
     url_params.push_str(&format!("&mimeType={}",
         percent_encode(format!("{}", params.mime_type).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
@@ -3451,6 +3718,9 @@ pub async fn generate_ids(
     if let Some(ref val) = &params.space {
         url_params.push_str(&format!("&space={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3496,6 +3766,9 @@ pub async fn get(
     if let Some(ref val) = &params.supports_team_drives {
         url_params.push_str(&format!("&supportsTeamDrives={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3582,6 +3855,9 @@ pub async fn list(
         url_params.push_str(&format!("&teamDriveId={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3644,6 +3920,9 @@ pub async fn update(
     if let Some(ref val) = &params.use_content_as_indexable_text {
         url_params.push_str(&format!("&useContentAsIndexableText={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3712,6 +3991,9 @@ pub async fn update_upload(
         url_params.push_str(&format!("&useContentAsIndexableText={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
     let opt_request: Option<EmptyRequest> = None;
@@ -3757,6 +4039,9 @@ pub async fn watch(
     if let Some(ref val) = &params.supports_team_drives {
         url_params.push_str(&format!("&supportsTeamDrives={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3840,6 +4125,9 @@ pub async fn create(
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -3876,6 +4164,9 @@ pub async fn delete(
     if let Some(ref val) = &params.use_domain_admin_access {
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3916,6 +4207,9 @@ pub async fn get(
     if let Some(ref val) = &params.use_domain_admin_access {
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -3969,6 +4263,9 @@ pub async fn list(
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4012,6 +4309,9 @@ pub async fn update(
     if let Some(ref val) = &params.use_domain_admin_access {
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -4063,6 +4363,9 @@ pub async fn create(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4088,6 +4391,9 @@ pub async fn delete(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4116,6 +4422,9 @@ pub async fn get(
     if let Some(ref val) = &params.include_deleted {
         url_params.push_str(&format!("&includeDeleted={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -4154,6 +4463,9 @@ pub async fn list(
         url_params.push_str(&format!("&pageToken={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4178,6 +4490,9 @@ pub async fn update(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4229,6 +4544,9 @@ pub async fn delete(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4261,6 +4579,9 @@ pub async fn get(
     if let Some(ref val) = &params.acknowledge_abuse {
         url_params.push_str(&format!("&acknowledgeAbuse={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -4299,6 +4620,9 @@ pub async fn list(
         url_params.push_str(&format!("&pageToken={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4324,6 +4648,9 @@ pub async fn update(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4373,6 +4700,9 @@ pub async fn create(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
     url_params.push_str(&format!("&requestId={}",
         percent_encode(format!("{}", params.request_id).as_bytes(), NON_ALPHANUMERIC).to_string()));
 
@@ -4399,6 +4729,9 @@ pub async fn delete(
         tok = self.authenticator.token(&self.scopes).await?;
     }
     let mut url_params = format!("?oauth_token={token}&fields=*", token=tok.as_str());
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4426,6 +4759,9 @@ pub async fn get(
     if let Some(ref val) = &params.use_domain_admin_access {
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
@@ -4467,6 +4803,9 @@ pub async fn list(
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
     }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
 
     let full_uri = path + &url_params;
 
@@ -4493,6 +4832,9 @@ pub async fn update(
     if let Some(ref val) = &params.use_domain_admin_access {
         url_params.push_str(&format!("&useDomainAdminAccess={}",
             percent_encode(format!("{}", val).as_bytes(), NON_ALPHANUMERIC).to_string()));
+    }
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
     }
 
     let full_uri = path + &url_params;
