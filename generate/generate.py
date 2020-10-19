@@ -39,8 +39,10 @@ def snake_case(name):
 
     return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(name)])
 
+
 def global_params_name(api_name):
-    return capitalize_first(api_name)+'Params'
+    return capitalize_first(api_name) + 'Params'
+
 
 def parse_schema_types(name, schema, optional=True):
     """Translate a JSON schema type into Rust types, recursively.
@@ -92,7 +94,8 @@ def parse_schema_types(name, schema, optional=True):
                     struct['fields'].append({
                         'name':
                         cleaned_pn,
-                        'original_name': jsonname,
+                        'original_name':
+                        jsonname,
                         'attr':
                         '#[serde(rename = "{}")]'.format(jsonname) +
                         '\n    #[serde(skip_serializing_if = "Option::is_none")]'
@@ -191,10 +194,12 @@ def generate_params_structs(resources, super_name='', global_params=None):
             }
             req_query_parameters = []
             opt_query_parameters = []
-            struct['fields'].append({'name': snake_case(global_params),
+            struct['fields'].append({
+                'name': snake_case(global_params),
                 'typ': optionalize(global_params, True),
                 'attr': '#[serde(flatten)]',
-                'comment': 'General attributes applying to any API call'})
+                'comment': 'General attributes applying to any API call'
+            })
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
@@ -295,8 +300,11 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
-                'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
-                'scopes': [{'scope': method.get('scopes', [''])[-1]}],
+                'global_params_name':
+                snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+                'scopes': [{
+                    'scope': method.get('scopes', [''])[-1]
+                }],
                 'description': method.get('description', ''),
                 'http_method': http_method
             }
@@ -315,12 +323,15 @@ def generate_service(resource, methods, discdoc):
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in parameters.items()],
-                'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+                'global_params_name':
+                snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                 'required_params': [{
                     'param': p,
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
-                'scopes': [{'scope': method.get('scopes', [''])[-1]}],
+                'scopes': [{
+                    'scope': method.get('scopes', [''])[-1]
+                }],
                 'description': method.get('description', ''),
                 'http_method': http_method
             }
@@ -337,7 +348,8 @@ def generate_service(resource, methods, discdoc):
                     'out_type': out_type,
                     'base_path': discdoc['rootUrl'],
                     'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
-                    'global_params_name': snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+                    'global_params_name':
+                    snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                     'params': [{
                         'param': p,
                         'snake_param': sp
@@ -346,7 +358,9 @@ def generate_service(resource, methods, discdoc):
                         'param': p,
                         'snake_param': sp
                     } for (p, sp) in required_parameters.items()],
-                    'scopes': [{'scope': method.get('scopes', [''])[-1]}],
+                    'scopes': [{
+                        'scope': method.get('scopes', [''])[-1]
+                    }],
                     'description': method.get('description', ''),
                     'http_method': http_method,
                 }
@@ -386,7 +400,7 @@ def generate_all(discdoc):
     scopes_type = generate_scopes_type(discdoc['name'], discdoc.get('auth', {}).get('oauth2', {}).get('scopes', {}))
 
     # Generate parameter types (*Params - those are used as "side inputs" to requests)
-    params_struct_name = capitalize_first(discdoc['name'])+'Params'
+    params_struct_name = capitalize_first(discdoc['name']) + 'Params'
     parameter_types = generate_params_structs(resources, global_params=params_struct_name)
 
     # Generate service impls.
@@ -403,7 +417,7 @@ def generate_all(discdoc):
     # Generate global parameters struct and its Display impl.
     if 'parameters' in discdoc:
         schema = {'type': 'object', 'properties': discdoc['parameters']}
-        name =  params_struct_name
+        name = params_struct_name
         typ, substructs = parse_schema_types(name, schema)
         for s in substructs:
             s['optional_fields'] = s['fields']
