@@ -408,7 +408,7 @@ def generate_all(discdoc):
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
 
-    # Generate resource types.
+    # Generate schema types.
     structs = []
     for name, desc in schemas.items():
         typ, substructs = parse_schema_types(name, desc)
