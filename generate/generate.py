@@ -290,12 +290,18 @@ def generate_service(resource, methods, discdoc):
         if is_download:
             assert out_type == '()'
             data_download = {
-                'name': rust_identifier(methodname),
-                'param_type': params_type_name,
-                'in_type': in_type,
-                'out_type': out_type,
-                'base_path': discdoc['baseUrl'],
-                'rel_path_expr': formatted_path,
+                'name':
+                rust_identifier(methodname),
+                'param_type':
+                params_type_name,
+                'in_type':
+                in_type,
+                'out_type':
+                out_type,
+                'base_path':
+                discdoc['baseUrl'],
+                'rel_path_expr':
+                formatted_path,
                 'params': [{
                     'param': p,
                     'snake_param': sp
@@ -309,20 +315,28 @@ def generate_service(resource, methods, discdoc):
                 'scopes': [{
                     'scope': method.get('scopes', [''])[-1]
                 }],
-                'description': method.get('description', ''),
-                'http_method': http_method
+                'description':
+                method.get('description', ''),
+                'http_method':
+                http_method
             }
             if in_type == '()':
                 data_download.pop('in_type')
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
         else:
             data_normal = {
-                'name': rust_identifier(methodname),
-                'param_type': params_type_name,
-                'in_type': in_type,
-                'out_type': out_type,
-                'base_path': discdoc['baseUrl'],
-                'rel_path_expr': formatted_path,
+                'name':
+                rust_identifier(methodname),
+                'param_type':
+                params_type_name,
+                'in_type':
+                in_type,
+                'out_type':
+                out_type,
+                'base_path':
+                discdoc['baseUrl'],
+                'rel_path_expr':
+                formatted_path,
                 'params': [{
                     'param': p,
                     'snake_param': sp
@@ -336,8 +350,10 @@ def generate_service(resource, methods, discdoc):
                 'scopes': [{
                     'scope': method.get('scopes', [''])[-1]
                 }],
-                'description': method.get('description', ''),
-                'http_method': http_method
+                'description':
+                method.get('description', ''),
+                'http_method':
+                http_method
             }
             if in_type == '()':
                 data_normal.pop('in_type')
@@ -346,12 +362,18 @@ def generate_service(resource, methods, discdoc):
             # We generate an additional implementation with the option of uploading data.
             if is_upload:
                 data_upload = {
-                    'name': rust_identifier(methodname),
-                    'param_type': params_type_name,
-                    'in_type': in_type,
-                    'out_type': out_type,
-                    'base_path': discdoc['rootUrl'],
-                    'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
+                    'name':
+                    rust_identifier(methodname),
+                    'param_type':
+                    params_type_name,
+                    'in_type':
+                    in_type,
+                    'out_type':
+                    out_type,
+                    'base_path':
+                    discdoc['rootUrl'],
+                    'rel_path_expr':
+                    '"' + upload_path.lstrip('/') + '"',
                     'global_params_name':
                     rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                     'params': [{
@@ -365,8 +387,10 @@ def generate_service(resource, methods, discdoc):
                     'scopes': [{
                         'scope': method.get('scopes', [''])[-1]
                     }],
-                    'description': method.get('description', ''),
-                    'http_method': http_method,
+                    'description':
+                    method.get('description', ''),
+                    'http_method':
+                    http_method,
                 }
                 method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
 
@@ -487,7 +511,7 @@ def main():
         for doc in docs:
             print('API:', doc['title'], 'ID:', doc['id'])
         return
- 
+
     if args.doc:
         discdoc = fetch_discovery_doc(url=args.doc)
         if 'error' in discdoc:
