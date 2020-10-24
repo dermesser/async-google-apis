@@ -10,6 +10,7 @@ import json
 import re
 import requests
 
+import os
 from os import path
 
 from templates import *
@@ -393,6 +394,7 @@ def generate_service(resource, methods, discdoc):
                     http_method,
                 }
                 method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
+                method_fragments.append(chevron.render(ResumableUploadMethodTmpl, data_upload))
 
     return chevron.render(
         ServiceImplementationTmpl, {
@@ -472,6 +474,24 @@ def generate_all(discdoc):
         for s in services:
             f.write(s)
 
+def from_cache(apiId):
+    try:
+        with open(path.join('cache', apiId+'.json'), 'r') as f:
+            print('Found API description in cache!')
+            return json.load(f)
+    except Exception as e:
+        print('Fetching description from cache failed:', e)
+        return None
+
+def to_cache(apiId, doc):
+    try:
+        os.makedirs('cache', exist_ok=True)
+        with open(path.join('cache', apiId+'.json'), 'w') as f:
+            json.dump(doc, f)
+    except Exception as e:
+        print(e)
+        return None
+    return None
 
 def fetch_discovery_base(url, apis):
     """Fetch the discovery base document from `url`. Return api documents for APIs with IDs in `apis`.
@@ -486,8 +506,13 @@ def fetch_discovery_base(url, apis):
 def fetch_discovery_doc(api_doc=None, url=None):
     """Fetch discovery document for a given (short) API doc from the overall discovery document."""
     if api_doc:
+        cached = from_cache(api_doc['id'])
+        if cached:
+            return cached
         url = api_doc['discoveryRestUrl']
-    return json.loads(requests.get(url).text)
+    js = json.loads(requests.get(url).text)
+    to_cache(api_doc['id'], js)
+    return js
 
 
 def main():
