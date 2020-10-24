@@ -5,10 +5,12 @@ use radix64::STD;
 use serde::Serialize;
 use std::io::Write;
 
+use anyhow::Context;
+
 pub const MIME_BOUNDARY: &'static str = "PB0BHe6XN3O6Q4bpnWQgS1pKfMfglTZdifFvh8YIc2APj4Cz3C";
 
-pub fn format_multipart<Req: Serialize>(req: &Req, data: Bytes) -> anyhow::Result<Bytes> {
-    let meta = serde_json::to_string(req)?;
+pub fn format_multipart<Req: Serialize + std::fmt::Debug>(req: &Req, data: Bytes) -> anyhow::Result<Bytes> {
+    let meta = serde_json::to_string(req).context(format!("{:?}", req))?;
     let mut buf = Vec::with_capacity(meta.len() + (1.5 * (data.len() as f64)) as usize);
 
     // Write metadata.

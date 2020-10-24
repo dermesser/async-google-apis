@@ -1,11 +1,17 @@
 use crate::*;
 
+use anyhow::Context;
+
+fn body_to_str(b: hyper::body::Bytes) -> String {
+    String::from_utf8(b.to_vec()).unwrap_or("[UTF-8 decode failed]".into())
+}
+
 /// This type is used as type parameter to the following functions, when `rq` is `None`.
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 pub struct EmptyRequest {}
 
 /// The Content-Type header is set automatically to application/json.
-pub async fn do_request<Req: Serialize, Resp: DeserializeOwned + Clone>(
+pub async fn do_request<Req: Serialize + std::fmt::Debug, Resp: DeserializeOwned + Clone>(
     cl: &TlsClient,
     path: &str,
     headers: &[(String, String)],
@@ -19,7 +25,7 @@ pub async fn do_request<Req: Serialize, Resp: DeserializeOwned + Clone>(
     reqb = reqb.header("Content-Type", "application/json");
     let body_str;
     if let Some(rq) = rq {
-        body_str = serde_json::to_string(&rq)?;
+        body_str = serde_json::to_string(&rq).context(format!("{:?}", rq))?;
     } else {
         body_str = "".to_string();
     }
@@ -38,22 +44,23 @@ pub async fn do_request<Req: Serialize, Resp: DeserializeOwned + Clone>(
     let http_response = cl.request(http_request).await?;
     let status = http_response.status();
 
-    debug!("do_request: HTTP response with status {} received: {:?}", status, http_response);
+    debug!(
+        "do_request: HTTP response with status {} received: {:?}",
+        status, http_response
+    );
 
     let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
-    let response_body_str = String::from_utf8(response_body.to_vec());
     if !status.is_success() {
-        Err(Error::new(ApiError::HTTPError(
-            status,
-            response_body_str.unwrap_or("".to_string()),
-        )))
+        Err(ApiError::HTTPResponseError(status, body_to_str(response_body)).into())
     } else {
-        serde_json::from_reader(response_body.as_ref()).map_err(Error::from)
+        // Evaluate body_to_str lazily
+        serde_json::from_reader(response_body.as_ref())
+            .map_err(|e| anyhow::Error::from(e).context(body_to_str(response_body)))
     }
 }
 
 /// The Content-Length header is set automatically.
-pub async fn do_upload_multipart<Req: Serialize, Resp: DeserializeOwned + Clone>(
+pub async fn do_upload_multipart<Req: Serialize + std::fmt::Debug, Resp: DeserializeOwned + Clone>(
     cl: &TlsClient,
     path: &str,
     headers: &[(String, String)],
@@ -75,24 +82,27 @@ pub async fn do_upload_multipart<Req: Serialize, Resp: DeserializeOwned + Clone>
 
     let body = hyper::Body::from(data.as_ref().to_vec());
     let http_request = reqb.body(body)?;
-    debug!("do_upload_multipart: Launching HTTP request: {:?}", http_request);
+    debug!(
+        "do_upload_multipart: Launching HTTP request: {:?}",
+        http_request
+    );
     let http_response = cl.request(http_request).await?;
     let status = http_response.status();
-    debug!("do_upload_multipart: HTTP response with status {} received: {:?}", status, http_response);
+    debug!(
+        "do_upload_multipart: HTTP response with status {} received: {:?}",
+        status, http_response
+    );
     let response_body = hyper::body::to_bytes(http_response.into_body()).await?;
-    let response_body_str = String::from_utf8(response_body.to_vec());
 
     if !status.is_success() {
-        Err(Error::new(ApiError::HTTPError(
-            status,
-            response_body_str.unwrap_or("".to_string()),
-        )))
+        Err(ApiError::HTTPResponseError(status, body_to_str(response_body)).into())
     } else {
-        serde_json::from_reader(response_body.as_ref()).map_err(Error::from)
+        serde_json::from_reader(response_body.as_ref())
+            .map_err(|e| anyhow::Error::from(e).context(body_to_str(response_body)))
     }
 }
 
-pub async fn do_download<Req: Serialize>(
+pub async fn do_download<Req: Serialize + std::fmt::Debug>(
     cl: &TlsClient,
     path: &str,
     headers: &[(String, String)],
@@ -110,7 +120,7 @@ pub async fn do_download<Req: Serialize>(
         for (k, v) in headers {
             reqb = reqb.header(k, v);
         }
-        let body_str = serde_json::to_string(&rq)?;
+        let body_str = serde_json::to_string(&rq).context(format!("{:?}", rq))?;
         let body;
         if body_str == "null" {
             body = hyper::Body::from("");
@@ -119,11 +129,17 @@ pub async fn do_download<Req: Serialize>(
         }
 
         let http_request = reqb.body(body)?;
-        debug!("do_download: Redirect {}, Launching HTTP request: {:?}", i, http_request);
+        debug!(
+            "do_download: Redirect {}, Launching HTTP request: {:?}",
+            i, http_request
+        );
 
         http_response = Some(cl.request(http_request).await?);
         let status = http_response.as_ref().unwrap().status();
-        debug!("do_download: Redirect {}, HTTP response with status {} received: {:?}", i, status, http_response);
+        debug!(
+            "do_download: Redirect {}, HTTP response with status {} received: {:?}",
+            i, status, http_response
+        );
 
         if status.is_success() {
             break;
@@ -135,21 +151,29 @@ pub async fn do_download<Req: Serialize>(
                 .headers()
                 .get(hyper::header::LOCATION);
             if new_location.is_none() {
-                return Err(Error::new(ApiError::HTTPError(
-                    status,
-                    format!("Redirect doesn't contain a Location: header"),
-                )));
+                return Err(ApiError::RedirectError(format!(
+                    "Redirect doesn't contain a Location: header"
+                ))
+                .into());
             }
             path = new_location.unwrap().to_str()?.to_string();
             continue;
         } else if !status.is_success() {
-            return Err(Error::new(ApiError::HTTPError(status, String::new())));
+            return Err(ApiError::HTTPResponseError(
+                status,
+                body_to_str(hyper::body::to_bytes(http_response.unwrap().into_body()).await?),
+            )
+            .into());
         }
     }
 
     let response_body = http_response.unwrap().into_body();
     let write_results = response_body
-        .map(move |chunk| dst.write(chunk?.as_ref()).map(|_| ()).map_err(Error::from))
+        .map(move |chunk| {
+            dst.write(chunk?.as_ref())
+                .map(|_| ())
+                .map_err(anyhow::Error::from)
+        })
         .collect::<Vec<Result<()>>>()
         .await;
     if let Some(e) = write_results.into_iter().find(|r| r.is_err()) {
