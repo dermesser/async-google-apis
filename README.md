@@ -40,7 +40,4 @@ APIs to gain insights on which code to generate.
 
 ## To Do
 
-* Don't always fetch all fields. Currently, the parameter `&fields=*` is sent
-with every request, which guarantees a full response, but not the best
-performance.
 * No resumable uploads -- even big files need to be held in memory.
