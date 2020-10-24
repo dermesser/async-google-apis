@@ -21,7 +21,7 @@ pub async fn do_request<
 >(
     cl: &TlsClient,
     path: &str,
-    headers: &[(String, String)],
+    headers: &[(hyper::header::HeaderName, String)],
     http_method: &str,
     rq: Option<Req>,
 ) -> Result<Resp> {
@@ -39,7 +39,7 @@ pub async fn do_request_with_headers<
 >(
     cl: &TlsClient,
     path: &str,
-    headers: &[(String, String)],
+    headers: &[(hyper::header::HeaderName, String)],
     http_method: &str,
     rq: Option<Req>,
 ) -> Result<(Resp, hyper::HeaderMap)> {
@@ -97,7 +97,7 @@ pub async fn do_upload_multipart<
 >(
     cl: &TlsClient,
     path: &str,
-    headers: &[(String, String)],
+    headers: &[(hyper::header::HeaderName, String)],
     http_method: &str,
     req: Option<Req>,
     data: hyper::body::Bytes,
@@ -139,7 +139,7 @@ pub async fn do_upload_multipart<
 pub async fn do_download<Req: Serialize + std::fmt::Debug>(
     cl: &TlsClient,
     path: &str,
-    headers: &[(String, String)],
+    headers: &[(hyper::header::HeaderName, String)],
     http_method: &str,
     rq: Option<Req>,
     dst: &mut dyn std::io::Write,

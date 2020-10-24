@@ -24,6 +24,7 @@ version = "0.1.4"
 dependencies = [
  "anyhow",
  "chrono",
+ "futures",
  "hyper",
  "hyper-rustls",
  "log",

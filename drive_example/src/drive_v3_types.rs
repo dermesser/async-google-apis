@@ -3315,7 +3315,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3323,7 +3323,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 }
@@ -3366,7 +3368,7 @@ pub async fn get_start_page_token(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3374,7 +3376,9 @@ pub async fn get_start_page_token(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -3392,7 +3396,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3400,7 +3404,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -3418,7 +3424,7 @@ pub async fn watch(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3427,7 +3433,9 @@ pub async fn watch(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 }
@@ -3470,7 +3478,7 @@ pub async fn stop(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3479,7 +3487,9 @@ pub async fn stop(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 }
@@ -3522,7 +3532,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3531,7 +3541,9 @@ pub async fn create(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -3549,7 +3561,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3557,7 +3569,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -3575,7 +3589,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3583,7 +3597,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -3601,7 +3617,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3609,7 +3625,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -3627,7 +3645,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3636,7 +3654,9 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 }
@@ -3679,7 +3699,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3688,7 +3708,9 @@ pub async fn create(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -3706,7 +3728,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3714,7 +3736,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -3732,7 +3756,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3740,7 +3764,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -3758,7 +3784,7 @@ pub async fn hide(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3766,7 +3792,9 @@ pub async fn hide(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -3784,7 +3812,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3792,7 +3820,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -3810,7 +3840,7 @@ pub async fn unhide(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3818,7 +3848,9 @@ pub async fn unhide(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -3836,7 +3868,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3845,7 +3877,9 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 }
@@ -3888,7 +3922,7 @@ pub async fn copy(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3897,7 +3931,9 @@ pub async fn copy(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -3915,7 +3951,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3924,13 +3960,15 @@ pub async fn create(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
 /// Creates a new file.
 ///
-/// This method is a variant of `create()`, taking data for upload.
+/// This method is a variant of `create()`, taking data for upload. It performs a multipart upload.
 pub async fn create_upload(
     &mut self, params: &FilesCreateParams, req: &File, data: hyper::body::Bytes) -> Result<File> {
     let rel_path = "upload/drive/v3/files";
@@ -3944,7 +3982,7 @@ pub async fn create_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?uploadType=multipart{params}", params=params);
 
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
@@ -3954,13 +3992,18 @@ pub async fn create_upload(
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
 
-    do_upload_multipart(&self.client, &full_uri, &[], "POST", opt_request, data).await
+    do_upload_multipart(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request, data).await
   }
 
 
 /// Creates a new file.
 ///
 /// This method is a variant of `create()`, taking data for upload.
+/// It returns a `ResumableUpload` upload manager which you can use to stream larger amounts
+/// of data to the API. The result of this call will be returned by the `ResumableUpload` method
+/// you choose for the upload.
 pub async fn create_resumable_upload<'client>(
     &'client mut self, params: &FilesCreateParams, req: &File) -> Result<ResumableUpload<'client, File>> {
 
@@ -3974,7 +4017,7 @@ pub async fn create_resumable_upload<'client>(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=resumable&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?uploadType=resumable{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3983,10 +4026,11 @@ pub async fn create_resumable_upload<'client>(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "POST", opt_request).await?;
+    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
+        &self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))], "POST", opt_request).await?;
     if let Some(dest) = headers.get(hyper::header::LOCATION) {
         use std::convert::TryFrom;
-        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 256*1024))
+        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 5*1024*1024))
     } else {
         Err(Error::from(ApiError::RedirectError(format!("Resumable upload response didn't contain Location: {:?}", headers)))
         .context(format!("{:?}", headers)))?
@@ -4008,7 +4052,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4016,7 +4060,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -4034,7 +4080,7 @@ pub async fn empty_trash(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4042,7 +4088,9 @@ pub async fn empty_trash(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -4064,8 +4112,7 @@ pub async fn export(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4073,7 +4120,8 @@ pub async fn export(
     let full_uri = path + &url_params;
     let opt_request: Option<EmptyRequest> = None;
 
-    do_download(&self.client, &full_uri, &[], "GET", opt_request, dst).await
+    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request, dst).await
   }
 
 
@@ -4091,7 +4139,7 @@ pub async fn generate_ids(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4099,7 +4147,9 @@ pub async fn generate_ids(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4117,7 +4167,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4125,7 +4175,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4143,7 +4195,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4151,7 +4203,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4169,7 +4223,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4178,13 +4232,15 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 
 /// Updates a file's metadata and/or content. This method supports patch semantics.
 ///
-/// This method is a variant of `update()`, taking data for upload.
+/// This method is a variant of `update()`, taking data for upload. It performs a multipart upload.
 pub async fn update_upload(
     &mut self, params: &FilesUpdateParams, req: &File, data: hyper::body::Bytes) -> Result<File> {
     let rel_path = "upload/drive/v3/files/{fileId}";
@@ -4198,7 +4254,7 @@ pub async fn update_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?uploadType=multipart{params}", params=params);
 
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
@@ -4208,13 +4264,18 @@ pub async fn update_upload(
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
 
-    do_upload_multipart(&self.client, &full_uri, &[], "PATCH", opt_request, data).await
+    do_upload_multipart(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request, data).await
   }
 
 
 /// Updates a file's metadata and/or content. This method supports patch semantics.
 ///
 /// This method is a variant of `update()`, taking data for upload.
+/// It returns a `ResumableUpload` upload manager which you can use to stream larger amounts
+/// of data to the API. The result of this call will be returned by the `ResumableUpload` method
+/// you choose for the upload.
 pub async fn update_resumable_upload<'client>(
     &'client mut self, params: &FilesUpdateParams, req: &File) -> Result<ResumableUpload<'client, File>> {
 
@@ -4228,7 +4289,7 @@ pub async fn update_resumable_upload<'client>(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=resumable&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?uploadType=resumable{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4237,10 +4298,11 @@ pub async fn update_resumable_upload<'client>(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "PATCH", opt_request).await?;
+    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
+        &self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))], "PATCH", opt_request).await?;
     if let Some(dest) = headers.get(hyper::header::LOCATION) {
         use std::convert::TryFrom;
-        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 256*1024))
+        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 5*1024*1024))
     } else {
         Err(Error::from(ApiError::RedirectError(format!("Resumable upload response didn't contain Location: {:?}", headers)))
         .context(format!("{:?}", headers)))?
@@ -4262,7 +4324,7 @@ pub async fn watch(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4271,7 +4333,9 @@ pub async fn watch(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 }
@@ -4314,7 +4378,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4323,7 +4387,9 @@ pub async fn create(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -4341,7 +4407,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4349,7 +4415,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -4367,7 +4435,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4375,7 +4443,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4393,7 +4463,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4401,7 +4471,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4419,7 +4491,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4428,7 +4500,9 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 }
@@ -4471,7 +4545,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4480,7 +4554,9 @@ pub async fn create(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -4498,7 +4574,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4506,7 +4582,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -4524,7 +4602,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4532,7 +4610,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4550,7 +4630,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4558,7 +4638,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4576,7 +4658,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4585,7 +4667,9 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 }
@@ -4628,7 +4712,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4636,7 +4720,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -4654,7 +4740,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4662,7 +4748,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4680,7 +4768,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4688,7 +4776,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4706,7 +4796,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4715,7 +4805,9 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 }
@@ -4758,7 +4850,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4767,7 +4859,9 @@ pub async fn create(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "POST", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request).await
   }
 
 
@@ -4785,7 +4879,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4793,7 +4887,9 @@ pub async fn delete(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "DELETE", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "DELETE", opt_request).await
   }
 
 
@@ -4811,7 +4907,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4819,7 +4915,9 @@ pub async fn get(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4837,7 +4935,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4845,7 +4943,9 @@ pub async fn list(
     let full_uri = path + &url_params;
 
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri, &[], "GET", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4863,7 +4963,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4872,7 +4972,9 @@ pub async fn update(
 
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri, &[], "PATCH", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "PATCH", opt_request).await
   }
 
 }
