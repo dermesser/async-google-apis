@@ -506,15 +506,14 @@ def fetch_discovery_base(url, apis):
     return [it for it in doc['items'] if (not apis or it['id'] in apis)]
 
 
-def fetch_discovery_doc(api_doc=None, url=None):
+def fetch_discovery_doc(url):
     """Fetch discovery document for a given (short) API doc from the overall discovery document."""
-    if api_doc:
-        cached = from_cache(api_doc['id'])
-        if cached:
-            return cached
-        url = api_doc['discoveryRestUrl']
+    cachekey = url.replace('/', '_')
+    cached = from_cache(cachekey)
+    if cached:
+        return cached
     js = json.loads(requests.get(url).text)
-    to_cache(api_doc['id'], js)
+    to_cache(cachekey, js)
     return js
 
 
@@ -541,7 +540,7 @@ def main():
         return
 
     if args.doc:
-        discdoc = fetch_discovery_doc(url=args.doc)
+        discdoc = fetch_discovery_doc(args.doc)
         if 'error' in discdoc:
             print('Error while fetching document for', doc['id'], ':', discdoc)
             return
@@ -552,7 +551,7 @@ def main():
 
     for doc in docs:
         try:
-            discdoc = fetch_discovery_doc(doc)
+            discdoc = fetch_discovery_doc(doc['discoveryRestUrl'])
             if 'error' in discdoc:
                 print('Error while fetching document for', doc['id'], ':', discdoc)
                 continue
