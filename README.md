@@ -40,4 +40,4 @@ APIs to gain insights on which code to generate.
 
 ## To Do
 
-* No resumable uploads -- even big files need to be held in memory.
+* Tests
