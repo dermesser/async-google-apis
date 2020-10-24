@@ -16,6 +16,7 @@ readme = "README.md"
 [dependencies]
 anyhow = "~1.0"
 chrono = "~0.4"
+futures = "~0.3"
 hyper = "~0.13"
 hyper-rustls = "~0.20"
 log = "~0.4"
