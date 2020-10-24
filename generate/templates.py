@@ -226,7 +226,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request).await?;
     if let Some(dest) = headers.get(hyper::header::LOCATION) {
         use std::convert::TryFrom;
-        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 256*1024))
+        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 5*1024*1024))
     } else {
         Err(Error::from(ApiError::RedirectError(format!("Resumable upload response didn't contain Location: {:?}", headers)))
         .context(format!("{:?}", headers)))?
