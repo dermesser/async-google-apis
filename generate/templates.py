@@ -131,7 +131,7 @@ pub async fn {{{name}}}(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?{params}", params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
@@ -144,7 +144,9 @@ pub async fn {{{name}}}(
     {{#in_type}}
     let opt_request = Some(req);
     {{/in_type}}
-    do_request(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request).await
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "{{{http_method}}}", opt_request).await
   }
 '''
 
@@ -156,7 +158,7 @@ pub async fn {{{name}}}(
 UploadMethodTmpl = '''
 /// {{{description}}}
 ///
-/// This method is a variant of `{{{name}}}()`, taking data for upload.
+/// This method is a variant of `{{{name}}}()`, taking data for upload. It performs a multipart upload.
 pub async fn {{{name}}}_upload(
     &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
     let rel_path = {{{rel_path_expr}}};
@@ -170,7 +172,7 @@ pub async fn {{{name}}}_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?uploadType=multipart{params}", params=params);
 
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
@@ -184,7 +186,9 @@ pub async fn {{{name}}}_upload(
     let opt_request = Some(req);
     {{/in_type}}
 
-    do_upload_multipart(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request, data).await
+    do_upload_multipart(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "{{{http_method}}}", opt_request, data).await
   }
 '''
 
@@ -197,6 +201,9 @@ ResumableUploadMethodTmpl = '''
 /// {{{description}}}
 ///
 /// This method is a variant of `{{{name}}}()`, taking data for upload.
+/// It returns a `ResumableUpload` upload manager which you can use to stream larger amounts
+/// of data to the API. The result of this call will be returned by the `ResumableUpload` method
+/// you choose for the upload.
 pub async fn {{{name}}}_resumable_upload<'client>(
     &'client mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
 
@@ -210,7 +217,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=resumable&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    let mut url_params = format!("?uploadType=resumable{params}", params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
@@ -223,7 +230,8 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     {{#in_type}}
     let opt_request = Some(req);
     {{/in_type}}
-    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request).await?;
+    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
+        &self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))], "{{{http_method}}}", opt_request).await?;
     if let Some(dest) = headers.get(hyper::header::LOCATION) {
         use std::convert::TryFrom;
         Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 5*1024*1024))
@@ -258,8 +266,7 @@ pub async fn {{{name}}}(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?{params}", params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
@@ -272,6 +279,7 @@ pub async fn {{{name}}}(
     let opt_request = Some(req);
     {{/in_type}}
 
-    do_download(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request, dst).await
+    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "{{{http_method}}}", opt_request, dst).await
   }
 '''
