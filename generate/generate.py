@@ -474,24 +474,27 @@ def generate_all(discdoc):
         for s in services:
             f.write(s)
 
+
 def from_cache(apiId):
     try:
-        with open(path.join('cache', apiId+'.json'), 'r') as f:
+        with open(path.join('cache', apiId + '.json'), 'r') as f:
             print('Found API description in cache for', apiId)
             return json.load(f)
     except Exception as e:
         print('Fetching description from cache failed:', e)
         return None
 
+
 def to_cache(apiId, doc):
     try:
         os.makedirs('cache', exist_ok=True)
-        with open(path.join('cache', apiId+'.json'), 'w') as f:
+        with open(path.join('cache', apiId + '.json'), 'w') as f:
             json.dump(doc, f)
     except Exception as e:
         print(e)
         return None
     return None
+
 
 def fetch_discovery_base(url, apis):
     """Fetch the discovery base document from `url`. Return api documents for APIs with IDs in `apis`.
