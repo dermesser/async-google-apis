@@ -33,6 +33,7 @@ version = "0.1.4"
 dependencies = [
  "anyhow",
  "chrono",
+ "futures",
  "hyper",
  "hyper-rustls",
  "log",
@@ -69,9 +70,9 @@ checksum = "b41b7ea54a0c9d92199de89e20e58d49f02f8e699814ef3fdf266f6f748d15c7"
 
 [[package]]
 name = "base64"
-version = "0.12.3"
+version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3441f0f7b02788e948e47f457ca01f1d7e6d92c693bc132c22b087d3141c03ff"
+checksum = "53d1ccbaf7d9ec9537465a97bf19edc1a4e158ecb49fc16178202238c569cc42"
 
 [[package]]
 name = "bitflags"
@@ -151,7 +152,6 @@ dependencies = [
  "env_logger",
  "hyper",
  "hyper-rustls",
- "rustls 0.17.0",
  "serde",
  "tokio",
 ]
@@ -395,7 +395,7 @@ dependencies = [
  "futures-util",
  "hyper",
  "log",
- "rustls 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls",
  "rustls-native-certs",
  "tokio",
  "tokio-rustls",
@@ -746,17 +746,6 @@ dependencies = [
 [[package]]
 name = "rustls"
 version = "0.17.0"
-dependencies = [
- "base64 0.11.0",
- "log",
- "ring",
- "sct",
- "webpki",
-]
-
-[[package]]
-name = "rustls"
-version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c0d4a31f5d68413404705d6982529b0e11a9aacd4839d1d6222ee3b8cb4015e1"
 dependencies = [
@@ -774,7 +763,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a75ffeb84a6bd9d014713119542ce415db3a3e4748f0bfce1e1416cd224a23a5"
 dependencies = [
  "openssl-probe",
- "rustls 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls",
  "schannel",
  "security-framework",
 ]
@@ -987,7 +976,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "15cb62a0d2770787abc96e99c1cd98fcf17f94959f3af63ca85bdfb203f051b4"
 dependencies = [
  "futures-core",
- "rustls 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls",
  "tokio",
  "webpki",
 ]
@@ -1239,7 +1228,7 @@ version = "4.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "749192b9464694a95dbaf0586e845c835b315e38d491aa2766a8477aaadb48ec"
 dependencies = [
- "base64 0.12.3",
+ "base64 0.12.1",
  "chrono",
  "futures",
  "http",
@@ -1247,7 +1236,7 @@ dependencies = [
  "hyper-rustls",
  "log",
  "percent-encoding",
- "rustls 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls",
  "seahash",
  "serde",
  "serde_json",

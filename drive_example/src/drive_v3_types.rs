@@ -3944,9 +3944,8 @@ pub async fn create_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}{params}", token=tok.as_str(), params=params);
 
-    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3956,6 +3955,42 @@ pub async fn create_upload(
     let opt_request = Some(req);
 
     do_upload_multipart(&self.client, &full_uri, &[], "POST", opt_request, data).await
+  }
+
+
+/// Creates a new file.
+///
+/// This method is a variant of `create()`, taking data for upload.
+pub async fn create_resumable_upload<'client>(
+    &'client mut self, params: &FilesCreateParams, req: &File) -> Result<ResumableUpload<'client, File>> {
+
+    let rel_path = "upload/drive/v3/files";
+    let path = "https://www.googleapis.com/".to_string() + &rel_path;
+    let tok;
+    if self.scopes.is_empty() {
+        let scopes = &["https://www.googleapis.com/auth/drive.file".to_string(),
+        ];
+        tok = self.authenticator.token(scopes).await?;
+    } else {
+        tok = self.authenticator.token(&self.scopes).await?;
+    }
+    let mut url_params = format!("?uploadType=resumable&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
+
+    let full_uri = path + &url_params;
+
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "POST", opt_request).await?;
+    if let Some(dest) = headers.get(hyper::header::LOCATION) {
+        use std::convert::TryFrom;
+        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 256*1024))
+    } else {
+        Err(Error::from(ApiError::RedirectError(format!("Resumable upload response didn't contain Location: {:?}", headers)))
+        .context(format!("{:?}", headers)))?
+    }
   }
 
 
@@ -4163,9 +4198,8 @@ pub async fn update_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}{params}", token=tok.as_str(), params=params);
 
-    url_params.push_str(&format!("{}", params));
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4175,6 +4209,42 @@ pub async fn update_upload(
     let opt_request = Some(req);
 
     do_upload_multipart(&self.client, &full_uri, &[], "PATCH", opt_request, data).await
+  }
+
+
+/// Updates a file's metadata and/or content. This method supports patch semantics.
+///
+/// This method is a variant of `update()`, taking data for upload.
+pub async fn update_resumable_upload<'client>(
+    &'client mut self, params: &FilesUpdateParams, req: &File) -> Result<ResumableUpload<'client, File>> {
+
+    let rel_path = "upload/drive/v3/files/{fileId}";
+    let path = "https://www.googleapis.com/".to_string() + &rel_path;
+    let tok;
+    if self.scopes.is_empty() {
+        let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string(),
+        ];
+        tok = self.authenticator.token(scopes).await?;
+    } else {
+        tok = self.authenticator.token(&self.scopes).await?;
+    }
+    let mut url_params = format!("?uploadType=resumable&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    if let Some(ref api_params) = &params.drive_params {
+        url_params.push_str(&format!("{}", api_params));
+    }
+
+    let full_uri = path + &url_params;
+
+    let opt_request: Option<EmptyRequest> = None;
+    let opt_request = Some(req);
+    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "PATCH", opt_request).await?;
+    if let Some(dest) = headers.get(hyper::header::LOCATION) {
+        use std::convert::TryFrom;
+        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 256*1024))
+    } else {
+        Err(Error::from(ApiError::RedirectError(format!("Resumable upload response didn't contain Location: {:?}", headers)))
+        .context(format!("{:?}", headers)))?
+    }
   }
 
 

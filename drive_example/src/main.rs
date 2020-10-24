@@ -26,27 +26,32 @@ fn https_client() -> common::TlsClient {
 
 /// Upload a local file `f` to your drive.
 async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()> {
-    cl.set_scopes(&[drive::DriveScopes::DriveFile]);
     let fname = f.file_name().unwrap().to_str().unwrap();
 
     let mut general_params = drive::DriveParams::default();
     general_params.fields = Some("*".to_string());
 
-    let data = hyper::body::Bytes::from(fs::read(&f)?);
     let mut params = drive::FilesCreateParams::default();
     params.drive_params = Some(general_params.clone());
     params.include_permissions_for_view = Some("published".to_string());
-    println!("{:?}", params);
     let mut file = drive::File::default();
     file.name = Some(fname.to_string());
 
     // Upload data using the upload version of create(). We obtain a `File` object.
     //
-    let resp = cl.create_upload(&params, &file, data).await?;
+    let resumable = cl.create_resumable_upload(&params, &file).await?;
+
+    let tokiofile = tokio::fs::OpenOptions::new().read(true).open(f).await?;
+    let resp = resumable.upload_file(tokiofile).await?;
 
     // If you used this method, no file content would be uploaded:
     // let resp = cl.create(&params, &file).await?;
-    println!("{:?}", resp);
+    println!(
+        "Uploaded file: {} (id = {}) with metadata: \n {:?}",
+        resp.name.as_ref().unwrap(),
+        resp.id.as_ref().unwrap(),
+        resp
+    );
 
     let file_id = resp.id.unwrap();
 
