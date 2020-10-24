@@ -13,7 +13,6 @@ use env_logger;
 
 use async_google_apis_common as common;
 
-use std::fs;
 use std::path::Path;
 use std::rc::Rc;
 
