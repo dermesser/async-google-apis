@@ -3315,8 +3315,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3367,8 +3366,7 @@ pub async fn get_start_page_token(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3394,8 +3392,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3421,8 +3418,7 @@ pub async fn watch(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3474,8 +3470,7 @@ pub async fn stop(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3527,8 +3522,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3555,8 +3549,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3582,8 +3575,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3609,8 +3601,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3636,8 +3627,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3689,8 +3679,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3717,8 +3706,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3744,8 +3732,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3771,8 +3758,7 @@ pub async fn hide(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3798,8 +3784,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3825,8 +3810,7 @@ pub async fn unhide(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3852,8 +3836,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3905,8 +3888,7 @@ pub async fn copy(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3933,8 +3915,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -3992,8 +3973,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4019,8 +3999,7 @@ pub async fn empty_trash(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4077,8 +4056,7 @@ pub async fn generate_ids(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4104,8 +4082,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4131,8 +4108,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4158,8 +4134,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4217,8 +4192,7 @@ pub async fn watch(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4270,8 +4244,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4298,8 +4271,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4325,8 +4297,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4352,8 +4323,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4379,8 +4349,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4432,8 +4401,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4460,8 +4428,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4487,8 +4454,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4514,8 +4480,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4541,8 +4506,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4594,8 +4558,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4621,8 +4584,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4648,8 +4610,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4675,8 +4636,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4728,8 +4688,7 @@ pub async fn create(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4756,8 +4715,7 @@ pub async fn delete(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4783,8 +4741,7 @@ pub async fn get(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4810,8 +4767,7 @@ pub async fn list(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }
@@ -4837,8 +4793,7 @@ pub async fn update(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     if let Some(ref api_params) = &params.drive_params {
         url_params.push_str(&format!("{}", api_params));
     }

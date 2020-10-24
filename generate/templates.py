@@ -131,8 +131,7 @@ pub async fn {{{name}}}(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?oauth_token={token}", token=tok.as_str());
-    url_params.push_str(&format!("{}", params));
+    let mut url_params = format!("?oauth_token={token}{params}", token=tok.as_str(), params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
