@@ -477,7 +477,7 @@ def generate_all(discdoc):
 def from_cache(apiId):
     try:
         with open(path.join('cache', apiId+'.json'), 'r') as f:
-            print('Found API description in cache!')
+            print('Found API description in cache for', apiId)
             return json.load(f)
     except Exception as e:
         print('Fetching description from cache failed:', e)
@@ -499,7 +499,10 @@ def fetch_discovery_base(url, apis):
     Returns:
         List of API JSON documents.
     """
-    doc = json.loads(requests.get(url).text)
+    doc = from_cache('_global_discovery')
+    if not doc:
+        doc = json.loads(requests.get(url).text)
+        to_cache('_global_discovery', doc)
     return [it for it in doc['items'] if (not apis or it['id'] in apis)]
 
 

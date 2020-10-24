@@ -170,9 +170,8 @@ pub async fn {{{name}}}_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
-    let mut url_params = format!("?uploadType=multipart&oauth_token={token}", token=tok.as_str());
+    let mut url_params = format!("?uploadType=multipart&oauth_token={token}{params}", token=tok.as_str(), params=params);
 
-    url_params.push_str(&format!("{}", params));
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
         url_params.push_str(&format!("{}", api_params));
@@ -186,6 +185,52 @@ pub async fn {{{name}}}_upload(
     {{/in_type}}
 
     do_upload_multipart(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request, data).await
+  }
+'''
+
+# Takes:
+# name, param_type, in_type, out_type
+# base_path, rel_path_expr
+# params: [{param, snake_param}]
+# http_method
+ResumableUploadMethodTmpl = '''
+/// {{{description}}}
+///
+/// This method is a variant of `{{{name}}}()`, taking data for upload.
+pub async fn {{{name}}}_resumable_upload<'client>(
+    &'client mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
+
+    let rel_path = {{{rel_path_expr}}};
+    let path = "{{{base_path}}}".to_string() + &rel_path;
+    let tok;
+    if self.scopes.is_empty() {
+        let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
+        {{/scopes}}];
+        tok = self.authenticator.token(scopes).await?;
+    } else {
+        tok = self.authenticator.token(&self.scopes).await?;
+    }
+    let mut url_params = format!("?uploadType=resumable&oauth_token={token}{params}", token=tok.as_str(), params=params);
+    {{#global_params_name}}
+    if let Some(ref api_params) = &params.{{{global_params_name}}} {
+        url_params.push_str(&format!("{}", api_params));
+    }
+    {{/global_params_name}}
+
+    let full_uri = path + &url_params;
+
+    let opt_request: Option<EmptyRequest> = None;
+    {{#in_type}}
+    let opt_request = Some(req);
+    {{/in_type}}
+    let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(&self.client, &full_uri, &[], "{{{http_method}}}", opt_request).await?;
+    if let Some(dest) = headers.get(hyper::header::LOCATION) {
+        use std::convert::TryFrom;
+        Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 256*1024))
+    } else {
+        Err(Error::from(ApiError::RedirectError(format!("Resumable upload response didn't contain Location: {:?}", headers)))
+        .context(format!("{:?}", headers)))?
+    }
   }
 '''
 
