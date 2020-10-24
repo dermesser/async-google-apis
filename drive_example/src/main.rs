@@ -69,12 +69,12 @@ async fn main() {
 
     let https = https_client();
     // Put your client secret in the working directory!
-    let sec = yup_oauth2::read_application_secret("client_secret.json")
+    let sec = common::yup_oauth2::read_application_secret("client_secret.json")
         .await
         .expect("client secret couldn't be read.");
-    let auth = yup_oauth2::InstalledFlowAuthenticator::builder(
+    let auth = common::yup_oauth2::InstalledFlowAuthenticator::builder(
         sec,
-        yup_oauth2::InstalledFlowReturnMethod::HTTPRedirect,
+        common::yup_oauth2::InstalledFlowReturnMethod::HTTPRedirect,
     )
     .persist_tokens_to_disk("tokencache.json")
     .hyper_client(https.clone())

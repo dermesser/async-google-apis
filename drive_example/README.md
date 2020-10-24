@@ -12,3 +12,7 @@ $ cargo run -- ~/some_file.txt
 ...
 ```
 
+Please note that you need a client secret to run this binary. Download it from
+[Developer Console](https://console.developers.google.com) and place it into the
+file `client_secret.json` in your working directory so that `drive_example` can
+find it.
