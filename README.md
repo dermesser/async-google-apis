@@ -28,7 +28,7 @@ APIs to gain insights on which code to generate.
   $ pipenv run ./generate.py --only_apis=storage:v1
   ```
   (install `pipenv` using `pip install --user pipenv` before, if you don't have it
-  yet)
+  yet). See more details in that directory.
 * Consult `drive_example` for a simple but useful example of using the generated
   code. As you can see, it is reasonably easy! Use `cargo doc` to generate the
   documentation for generated code, as the API comments is translated into Rust
