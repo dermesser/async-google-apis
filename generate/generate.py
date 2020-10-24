@@ -31,13 +31,16 @@ def capitalize_first(name):
     return name[0].upper() + name[1:]
 
 
-def snake_case(name):
+def rust_identifier(name):
+    def sanitize(s):
+        return s.replace('$', 'dollar').replace('#', 'hash').replace('.', '_')
+
     def r(c):
         if not c.isupper():
             return c
         return '_' + c.lower()
 
-    return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(name)])
+    return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize(name))])
 
 
 def global_params_name(api_name):
@@ -87,10 +90,10 @@ def parse_schema_types(name, schema, optional=True):
                     cleaned_pn = replace_keywords(pn)
                     if type(cleaned_pn) is tuple:
                         jsonname = cleaned_pn[1]
-                        cleaned_pn = snake_case(cleaned_pn[0])
+                        cleaned_pn = rust_identifier(cleaned_pn[0])
                     else:
                         jsonname = pn
-                        cleaned_pn = snake_case(cleaned_pn)
+                        cleaned_pn = rust_identifier(cleaned_pn)
                     struct['fields'].append({
                         'name':
                         cleaned_pn,
@@ -195,7 +198,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             req_query_parameters = []
             opt_query_parameters = []
             struct['fields'].append({
-                'name': snake_case(global_params),
+                'name': rust_identifier(global_params),
                 'typ': optionalize(global_params, True),
                 'attr': '#[serde(flatten)]',
                 'comment': 'General attributes applying to any API call'
@@ -205,7 +208,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
                 for paramname, param in method['parameters'].items():
                     (typ, desc), substructs = parse_schema_types('', param, optional=False)
                     field = {
-                        'name': snake_case(paramname),
+                        'name': rust_identifier(paramname),
                         'original_name': paramname,
                         'typ': optionalize(typ, not param.get('required', False)),
                         'comment': desc,
@@ -229,10 +232,11 @@ def generate_params_structs(resources, super_name='', global_params=None):
 def resolve_parameters(string, paramsname='params', suffix=''):
     """Returns a Rust syntax for formatting the given string with API
     parameters, and a list of (snake-case) API parameters that are used. """
-    pat = re.compile('\{(\w+)\}')
+    pat = re.compile('\{\+?(\w+)\}')
     params = re.findall(pat, string)
-    snakeparams = [snake_case(p) for p in params]
+    snakeparams = [rust_identifier(p) for p in params]
     format_params = ','.join(['{}={}.{}{}'.format(p, paramsname, sp, suffix) for (p, sp) in zip(params, snakeparams)])
+    string = string.replace('{+', '{')
     # Some required parameters are in the URL. This rust syntax formats the relative URL part appropriately.
     return 'format!("{}", {})'.format(string, format_params), snakeparams
 
@@ -259,12 +263,12 @@ def generate_service(resource, methods, discdoc):
         params_type_name = service + capitalize_first(methodname) + 'Params'
         # All parameters that are optional (as URL parameters)
         parameters = {
-            p: snake_case(p)
+            p: rust_identifier(p)
             for p, pp in method.get('parameters', {}).items() if ('required' not in pp and pp['location'] != 'path')
         }
         # All required parameters not represented in the path.
         required_parameters = {
-            p: snake_case(p)
+            p: rust_identifier(p)
             for p, pp in method.get('parameters', {}).items() if ('required' in pp and pp['location'] != 'path')
         }
         # Types of the function
@@ -286,7 +290,7 @@ def generate_service(resource, methods, discdoc):
         if is_download:
             assert out_type == '()'
             data_download = {
-                'name': snake_case(methodname),
+                'name': rust_identifier(methodname),
                 'param_type': params_type_name,
                 'in_type': in_type,
                 'out_type': out_type,
@@ -301,7 +305,7 @@ def generate_service(resource, methods, discdoc):
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
                 'global_params_name':
-                snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+                rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                 'scopes': [{
                     'scope': method.get('scopes', [''])[-1]
                 }],
@@ -313,7 +317,7 @@ def generate_service(resource, methods, discdoc):
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
         else:
             data_normal = {
-                'name': snake_case(methodname),
+                'name': rust_identifier(methodname),
                 'param_type': params_type_name,
                 'in_type': in_type,
                 'out_type': out_type,
@@ -324,7 +328,7 @@ def generate_service(resource, methods, discdoc):
                     'snake_param': sp
                 } for (p, sp) in parameters.items()],
                 'global_params_name':
-                snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+                rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                 'required_params': [{
                     'param': p,
                     'snake_param': sp
@@ -342,14 +346,14 @@ def generate_service(resource, methods, discdoc):
             # We generate an additional implementation with the option of uploading data.
             if is_upload:
                 data_upload = {
-                    'name': snake_case(methodname),
+                    'name': rust_identifier(methodname),
                     'param_type': params_type_name,
                     'in_type': in_type,
                     'out_type': out_type,
                     'base_path': discdoc['rootUrl'],
                     'rel_path_expr': '"' + upload_path.lstrip('/') + '"',
                     'global_params_name':
-                    snake_case(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+                    rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                     'params': [{
                         'param': p,
                         'snake_param': sp
@@ -455,9 +459,10 @@ def fetch_discovery_base(url, apis):
     return [it for it in doc['items'] if (not apis or it['id'] in apis)]
 
 
-def fetch_discovery_doc(api_doc):
+def fetch_discovery_doc(api_doc=None, url=None):
     """Fetch discovery document for a given (short) API doc from the overall discovery document."""
-    url = api_doc['discoveryRestUrl']
+    if api_doc:
+        url = api_doc['discoveryRestUrl']
     return json.loads(requests.get(url).text)
 
 
@@ -467,13 +472,32 @@ def main():
                    default='https://www.googleapis.com/discovery/v1/apis',
                    help='Base Discovery document.')
     p.add_argument('--only_apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
+    p.add_argument('--doc', default='', help='Directly process Discovery document from this URL')
+    p.add_argument('--list', default=False, help='List available APIs', action='store_true')
+
     args = p.parse_args()
+
     if args.only_apis:
         apilist = args.only_apis.split(',')
     else:
         apilist = []
 
+    if args.list:
+        docs = fetch_discovery_base(args.discovery_base, [])
+        for doc in docs:
+            print('API:', doc['title'], 'ID:', doc['id'])
+        return
+ 
+    if args.doc:
+        discdoc = fetch_discovery_doc(url=args.doc)
+        if 'error' in discdoc:
+            print('Error while fetching document for', doc['id'], ':', discdoc)
+            return
+        generate_all(discdoc)
+        return
+
     docs = fetch_discovery_base(args.discovery_base, apilist)
+
     for doc in docs:
         try:
             discdoc = fetch_discovery_doc(doc)

@@ -1,6 +1,7 @@
 // A manual client for a Google API (e.g. Drive), to test what makes sense and what doesn't.
 
 mod drive_v3_types;
+mod photoslibrary_v1_types;
 
 use drive_v3_types as drive;
 
@@ -86,22 +87,14 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
     let data = hyper::body::Bytes::from(fs::read(&f).unwrap());
     let mut params = drive::FilesCreateParams::default();
     params.include_permissions_for_view = Some("published".to_string());
+    let mut file = drive::File::default();
+    file.name = Some("profilepic.jpg".to_string());
 
-    let resp = cl.create_upload(&params, data).await.unwrap();
+    let resp = cl.create_upload(&params, &file, data).await.unwrap();
 
     println!("{:?}", resp);
 
     let file_id = resp.id.unwrap();
-
-    let mut params = drive::FilesUpdateParams::default();
-    println!("{:?}", params);
-    params.file_id = file_id.clone();
-    params.include_permissions_for_view = Some("published".to_string());
-    let mut file = drive::File::default();
-    file.name = Some("profilepic.jpg".to_string());
-    let update_resp = cl.update(&params, &file).await;
-    println!("{:?}", update_resp);
-
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
     println!("{:?}", cl.get(&params).await.unwrap());
