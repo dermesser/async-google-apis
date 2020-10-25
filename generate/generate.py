@@ -12,6 +12,7 @@ import requests
 
 import os
 from os import path
+import subprocess
 
 from templates import *
 
@@ -227,7 +228,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             struct['optional_fields'] = opt_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename))
+        frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename, global_params=global_params))
     return frags
 
 
@@ -243,7 +244,7 @@ def resolve_parameters(string, paramsname='params', suffix=''):
     return 'format!("{}", {})'.format(string, format_params), snakeparams
 
 
-def generate_service(resource, methods, discdoc):
+def generate_service(resource, methods, discdoc, generate_subresources=True):
     """Generate the code for all methods in a resource.
 
     Returns a rendered string with source code.
@@ -255,8 +256,9 @@ def generate_service(resource, methods, discdoc):
     subresource_fragments = []
 
     # Generate methods for subresources.
-    for subresname, subresource in methods.get('resources', {}).items():
-        subresource_fragments.append(generate_service(service + capitalize_first(subresname), subresource, discdoc))
+    if generate_subresources:
+        for subresname, subresource in methods.get('resources', {}).items():
+            subresource_fragments.append(generate_service(service + capitalize_first(subresname), subresource, discdoc))
 
     for methodname, method in methods.get('methods', {}).items():
         # Goal: Instantiate the templates for upload and non-upload methods.
@@ -439,7 +441,7 @@ def generate_all(discdoc):
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
     if 'methods' in discdoc:
-        services.append(generate_service('Global', discdoc, discdoc))
+        services.append(generate_service('Global', discdoc, discdoc, generate_subresources=False))
 
     # Generate schema types.
     structs = []
@@ -459,7 +461,8 @@ def generate_all(discdoc):
 
     # Assemble everything into a file.
     modname = (discdoc['id'] + '_types').replace(':', '_')
-    with open(path.join('gen', modname + '.rs'), 'w') as f:
+    out_path = path.join('gen', modname + '.rs')
+    with open(out_path, 'w') as f:
         f.write(RustHeader)
         f.write(scopes_type)
         # Render resource structs.
@@ -476,6 +479,10 @@ def generate_all(discdoc):
         # Render service impls.
         for s in services:
             f.write(s)
+    try:
+        subprocess.run(['rustfmt', out_path, '--edition=2018'])
+    except:
+        return
 
 
 def from_cache(apiId):
@@ -554,6 +561,9 @@ def main():
         if 'error' in discdoc:
             print('Error while fetching document for', doc['id'], ':', discdoc)
             return
+        if 'methods' in discdoc:
+            #raise NotImplementedError("top-level methods are not yet implemented properly. Please take care.")
+            pass
         generate_all(discdoc)
         return
 
