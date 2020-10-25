@@ -15,7 +15,7 @@ Google API.
 Consider the documentation of two exemplary APIs:
 
 * [`drive:v3`](https://borgac.net/~lbo/doc/target/doc/drive_example/drive_v3_types/) for Google Drive.
-* ['storage:v1'](https://borgac.net/~lbo/doc/target/doc/gcs_example/storage_v1_types/)
+* [`storage:v1`](https://borgac.net/~lbo/doc/target/doc/gcs_example/storage_v1_types/)
 for Google Cloud Storage.
 
 ## Parts
