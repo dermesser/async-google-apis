@@ -40,4 +40,5 @@ APIs to gain insights on which code to generate.
 
 ## To Do
 
-* Tests
+* Integration tests: E.g. by writing a custom JSON service description and an
+accompanying server binary to run test code against.
