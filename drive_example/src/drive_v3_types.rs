@@ -4007,7 +4007,7 @@ pub async fn create_upload(
 pub async fn create_resumable_upload<'client>(
     &'client mut self, params: &FilesCreateParams, req: &File) -> Result<ResumableUpload<'client, File>> {
 
-    let rel_path = "upload/drive/v3/files";
+    let rel_path = "resumable/upload/drive/v3/files";
     let path = "https://www.googleapis.com/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
@@ -4279,7 +4279,7 @@ pub async fn update_upload(
 pub async fn update_resumable_upload<'client>(
     &'client mut self, params: &FilesUpdateParams, req: &File) -> Result<ResumableUpload<'client, File>> {
 
-    let rel_path = "upload/drive/v3/files/{fileId}";
+    let rel_path = "resumable/upload/drive/v3/files/{fileId}";
     let path = "https://www.googleapis.com/".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {
