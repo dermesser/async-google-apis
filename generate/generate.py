@@ -228,9 +228,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             struct['optional_fields'] = opt_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(
-            generate_params_structs(resource.get('resources', {}), super_name=resourcename,
-                                    global_params=global_params))
+        frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename, global_params=global_params))
     return frags
 
 
@@ -299,6 +297,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         http_method = method['httpMethod']
         has_global_params = 'parameters' in discdoc
         formatted_path, required_params = resolve_parameters(method['path'])
+        formatted_simple_upload_path, required_params = resolve_parameters(simple_upload_path)
+        formatted_resumable_upload_path, required_params = resolve_parameters(resumable_upload_path)
 
         if is_download:
             data_download = {
@@ -378,8 +378,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             'in_type': in_type,
             'out_type': out_type,
             'base_path': discdoc['rootUrl'],
-            'simple_rel_path_expr': '"' + simple_upload_path.lstrip('/') + '"',
-            'resumable_rel_path_expr': '"' + resumable_upload_path.lstrip('/') + '"',
+            'simple_rel_path_expr': formatted_simple_upload_path.lstrip('/'),
+            'resumable_rel_path_expr': formatted_resumable_upload_path.lstrip('/'),
             'global_params_name':
             rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
             'params': [{
