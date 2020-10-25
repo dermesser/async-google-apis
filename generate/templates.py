@@ -250,7 +250,10 @@ pub async fn {{{name}}}_resumable_upload<'client>(
 DownloadMethodTmpl = '''
 /// {{{description}}}
 ///
-/// This method downloads data.
+/// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
+/// or a non-JSON type, the returned value indicates if a download took place or data was written to
+/// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
+/// is returned.
 pub async fn {{{name}}}(
     &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} dst: Option<&mut dyn std::io::Write>)
     -> Result<DownloadResponse<{{out_type}}>> {
