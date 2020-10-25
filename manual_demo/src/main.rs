@@ -76,7 +76,7 @@ async fn export(cl: TlsClient, auth: Authenticator) {
 
     let mut dst = fs::OpenOptions::new().write(true).create(true).open("test.odt").unwrap();
 
-    let resp = cl.export(&params, &mut dst).await.unwrap();
+    let resp = cl.export(&params, Some(&mut dst)).await.unwrap();
     println!("{:?}", resp);
 }
 
@@ -97,7 +97,7 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
     let file_id = resp.id.unwrap();
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
-    println!("{:?}", cl.get(&params).await.unwrap());
+    println!("{:?}", cl.get(&params, None).await.unwrap());
 }
 
 async fn get_about(cl: &mut TlsClient, auth: &mut Authenticator) {
