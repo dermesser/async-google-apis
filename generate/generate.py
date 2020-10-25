@@ -277,7 +277,7 @@ def generate_service(resource, methods, discdoc):
         in_type = method['request']['$ref'] if 'request' in method else '()'
         out_type = method['response']['$ref'] if 'response' in method else '()'
 
-        is_download = method.get('supportsMediaDownload', False) and method.get('useMediaDownloadService', False)
+        is_download = method.get('supportsMediaDownload', False)
 
         media_upload = method.get('mediaUpload', {})
         supported_uploads = []
