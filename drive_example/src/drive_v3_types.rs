@@ -4159,7 +4159,10 @@ impl CommentsService {
         params: &CommentsCreateParams,
         req: &Comment,
     ) -> Result<Comment> {
-        let rel_path = format!("files/{fileId}/comments", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/comments",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4194,8 +4197,8 @@ impl CommentsService {
     pub async fn delete(&mut self, params: &CommentsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}",
-            fileId = params.file_id,
-            commentId = params.comment_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -4230,8 +4233,8 @@ impl CommentsService {
     pub async fn get(&mut self, params: &CommentsGetParams) -> Result<Comment> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}",
-            fileId = params.file_id,
-            commentId = params.comment_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -4264,7 +4267,10 @@ impl CommentsService {
 
     /// Lists a file's comments.
     pub async fn list(&mut self, params: &CommentsListParams) -> Result<CommentList> {
-        let rel_path = format!("files/{fileId}/comments", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/comments",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4302,8 +4308,8 @@ impl CommentsService {
     ) -> Result<Comment> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}",
-            fileId = params.file_id,
-            commentId = params.comment_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -4405,7 +4411,10 @@ impl DrivesService {
 
     /// Permanently deletes a shared drive for which the user is an organizer. The shared drive cannot contain any untrashed items.
     pub async fn delete(&mut self, params: &DrivesDeleteParams) -> Result<()> {
-        let rel_path = format!("drives/{driveId}", driveId = params.drive_id);
+        let rel_path = format!(
+            "drives/{driveId}",
+            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4437,7 +4446,10 @@ impl DrivesService {
 
     /// Gets a shared drive's metadata by ID.
     pub async fn get(&mut self, params: &DrivesGetParams) -> Result<Drive> {
-        let rel_path = format!("drives/{driveId}", driveId = params.drive_id);
+        let rel_path = format!(
+            "drives/{driveId}",
+            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4469,7 +4481,10 @@ impl DrivesService {
 
     /// Hides a shared drive from the default view.
     pub async fn hide(&mut self, params: &DrivesHideParams) -> Result<Drive> {
-        let rel_path = format!("drives/{driveId}/hide", driveId = params.drive_id);
+        let rel_path = format!(
+            "drives/{driveId}/hide",
+            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4533,7 +4548,10 @@ impl DrivesService {
 
     /// Restores a shared drive to the default view.
     pub async fn unhide(&mut self, params: &DrivesUnhideParams) -> Result<Drive> {
-        let rel_path = format!("drives/{driveId}/unhide", driveId = params.drive_id);
+        let rel_path = format!(
+            "drives/{driveId}/unhide",
+            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4565,7 +4583,10 @@ impl DrivesService {
 
     /// Updates the metadate for a shared drive.
     pub async fn update(&mut self, params: &DrivesUpdateParams, req: &Drive) -> Result<Drive> {
-        let rel_path = format!("drives/{driveId}", driveId = params.drive_id);
+        let rel_path = format!(
+            "drives/{driveId}",
+            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4633,7 +4654,10 @@ impl FilesService {
 
     /// Creates a copy of a file and applies any requested updates with patch semantics. Folders cannot be copied.
     pub async fn copy(&mut self, params: &FilesCopyParams, req: &File) -> Result<File> {
-        let rel_path = format!("files/{fileId}/copy", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/copy",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4798,7 +4822,10 @@ impl FilesService {
 
     /// Permanently deletes a file owned by the user without moving it to the trash. If the file belongs to a shared drive the user must be an organizer on the parent. If the target is a folder, all descendants owned by the user are also deleted.
     pub async fn delete(&mut self, params: &FilesDeleteParams) -> Result<()> {
-        let rel_path = format!("files/{fileId}", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4869,9 +4896,12 @@ impl FilesService {
     pub async fn export(
         &mut self,
         params: &FilesExportParams,
-        dst: Option<&mut dyn std::io::Write>,
+        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
     ) -> Result<DownloadResponse<()>> {
-        let rel_path = format!("files/{fileId}/export", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/export",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
         let tok;
@@ -4944,9 +4974,12 @@ impl FilesService {
     pub async fn get(
         &mut self,
         params: &FilesGetParams,
-        dst: Option<&mut dyn std::io::Write>,
+        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
     ) -> Result<DownloadResponse<File>> {
-        let rel_path = format!("files/{fileId}", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
         let tok;
@@ -5012,7 +5045,10 @@ impl FilesService {
 
     /// Updates a file's metadata and/or content. This method supports patch semantics.
     pub async fn update(&mut self, params: &FilesUpdateParams, req: &File) -> Result<File> {
-        let rel_path = format!("files/{fileId}", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5052,7 +5088,10 @@ impl FilesService {
         req: &File,
         data: hyper::body::Bytes,
     ) -> Result<File> {
-        let rel_path = format!("/upload/drive/v3/files/{fileId}", fileId = params.file_id);
+        let rel_path = format!(
+            "/upload/drive/v3/files/{fileId}",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/".to_string() + &rel_path;
 
         let tok;
@@ -5099,7 +5138,7 @@ impl FilesService {
     ) -> Result<ResumableUpload<'client, File>> {
         let rel_path = format!(
             "/resumable/upload/drive/v3/files/{fileId}",
-            fileId = params.file_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/".to_string() + &rel_path;
         let tok;
@@ -5155,9 +5194,12 @@ impl FilesService {
         &mut self,
         params: &FilesWatchParams,
         req: &Channel,
-        dst: Option<&mut dyn std::io::Write>,
+        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
     ) -> Result<DownloadResponse<Channel>> {
-        let rel_path = format!("files/{fileId}/watch", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/watch",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
         let tok;
@@ -5231,7 +5273,10 @@ impl PermissionsService {
         params: &PermissionsCreateParams,
         req: &Permission,
     ) -> Result<Permission> {
-        let rel_path = format!("files/{fileId}/permissions", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/permissions",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5266,8 +5311,8 @@ impl PermissionsService {
     pub async fn delete(&mut self, params: &PermissionsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/permissions/{permissionId}",
-            fileId = params.file_id,
-            permissionId = params.permission_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5302,8 +5347,8 @@ impl PermissionsService {
     pub async fn get(&mut self, params: &PermissionsGetParams) -> Result<Permission> {
         let rel_path = format!(
             "files/{fileId}/permissions/{permissionId}",
-            fileId = params.file_id,
-            permissionId = params.permission_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5336,7 +5381,10 @@ impl PermissionsService {
 
     /// Lists a file's or shared drive's permissions.
     pub async fn list(&mut self, params: &PermissionsListParams) -> Result<PermissionList> {
-        let rel_path = format!("files/{fileId}/permissions", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/permissions",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5374,8 +5422,8 @@ impl PermissionsService {
     ) -> Result<Permission> {
         let rel_path = format!(
             "files/{fileId}/permissions/{permissionId}",
-            fileId = params.file_id,
-            permissionId = params.permission_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5446,8 +5494,8 @@ impl RepliesService {
     pub async fn create(&mut self, params: &RepliesCreateParams, req: &Reply) -> Result<Reply> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies",
-            fileId = params.file_id,
-            commentId = params.comment_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5483,9 +5531,9 @@ impl RepliesService {
     pub async fn delete(&mut self, params: &RepliesDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies/{replyId}",
-            fileId = params.file_id,
-            commentId = params.comment_id,
-            replyId = params.reply_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
+            replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5520,9 +5568,9 @@ impl RepliesService {
     pub async fn get(&mut self, params: &RepliesGetParams) -> Result<Reply> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies/{replyId}",
-            fileId = params.file_id,
-            commentId = params.comment_id,
-            replyId = params.reply_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
+            replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5557,8 +5605,8 @@ impl RepliesService {
     pub async fn list(&mut self, params: &RepliesListParams) -> Result<ReplyList> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies",
-            fileId = params.file_id,
-            commentId = params.comment_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5593,9 +5641,9 @@ impl RepliesService {
     pub async fn update(&mut self, params: &RepliesUpdateParams, req: &Reply) -> Result<Reply> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies/{replyId}",
-            fileId = params.file_id,
-            commentId = params.comment_id,
-            replyId = params.reply_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
+            replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5666,8 +5714,8 @@ impl RevisionsService {
     pub async fn delete(&mut self, params: &RevisionsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
-            fileId = params.file_id,
-            revisionId = params.revision_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5707,12 +5755,12 @@ impl RevisionsService {
     pub async fn get(
         &mut self,
         params: &RevisionsGetParams,
-        dst: Option<&mut dyn std::io::Write>,
+        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
     ) -> Result<DownloadResponse<Revision>> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
-            fileId = params.file_id,
-            revisionId = params.revision_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
@@ -5747,7 +5795,10 @@ impl RevisionsService {
 
     /// Lists a file's revisions.
     pub async fn list(&mut self, params: &RevisionsListParams) -> Result<RevisionList> {
-        let rel_path = format!("files/{fileId}/revisions", fileId = params.file_id);
+        let rel_path = format!(
+            "files/{fileId}/revisions",
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5785,8 +5836,8 @@ impl RevisionsService {
     ) -> Result<Revision> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
-            fileId = params.file_id,
-            revisionId = params.revision_id
+            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
+            revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5894,7 +5945,7 @@ impl TeamdrivesService {
     pub async fn delete(&mut self, params: &TeamdrivesDeleteParams) -> Result<()> {
         let rel_path = format!(
             "teamdrives/{teamDriveId}",
-            teamDriveId = params.team_drive_id
+            teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -5929,7 +5980,7 @@ impl TeamdrivesService {
     pub async fn get(&mut self, params: &TeamdrivesGetParams) -> Result<TeamDrive> {
         let rel_path = format!(
             "teamdrives/{teamDriveId}",
-            teamDriveId = params.team_drive_id
+            teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;
@@ -6000,7 +6051,7 @@ impl TeamdrivesService {
     ) -> Result<TeamDrive> {
         let rel_path = format!(
             "teamdrives/{teamDriveId}",
-            teamDriveId = params.team_drive_id
+            teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
         let tok;

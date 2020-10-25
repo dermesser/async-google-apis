@@ -234,7 +234,10 @@ def generate_params_structs(resources, super_name='', global_params=None):
 
 def resolve_parameters(string, paramsname='params'):
     """Returns a Rust syntax for formatting the given string with API
-    parameters, and a list of (snake-case) API parameters that are used. """
+    parameters, and a list of (snake-case) API parameters that are used. This
+    is typically used to format URL paths containing required parameters for an
+    API call.
+    """
     pat = re.compile('\{\+?(\w+)\}')
     params = re.findall(pat, string)
     snakeparams = [rust_identifier(p) for p in params]
@@ -296,6 +299,9 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
 
         http_method = method['httpMethod']
         has_global_params = 'parameters' in discdoc
+        # This relies on URL path parameters being required parameters (not
+        # optional). If this invariant is not fulfilled, the Rust code may not
+        # compile.
         formatted_path, required_params = resolve_parameters(method['path'])
         formatted_simple_upload_path, required_params = resolve_parameters(simple_upload_path)
         formatted_resumable_upload_path, required_params = resolve_parameters(resumable_upload_path)
