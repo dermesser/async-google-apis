@@ -232,13 +232,13 @@ def generate_params_structs(resources, super_name='', global_params=None):
     return frags
 
 
-def resolve_parameters(string, paramsname='params', suffix=''):
+def resolve_parameters(string, paramsname='params'):
     """Returns a Rust syntax for formatting the given string with API
     parameters, and a list of (snake-case) API parameters that are used. """
     pat = re.compile('\{\+?(\w+)\}')
     params = re.findall(pat, string)
     snakeparams = [rust_identifier(p) for p in params]
-    format_params = ','.join(['{}={}.{}{}'.format(p, paramsname, sp, suffix) for (p, sp) in zip(params, snakeparams)])
+    format_params = ','.join(['{}=percent_encode({}.{}.as_bytes(), NON_ALPHANUMERIC)'.format(p, paramsname, sp) for (p, sp) in zip(params, snakeparams)])
     string = string.replace('{+', '{')
     # Some required parameters are in the URL. This rust syntax formats the relative URL part appropriately.
     return 'format!("{}", {})'.format(string, format_params), snakeparams
@@ -276,7 +276,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             for p, pp in method.get('parameters', {}).items() if ('required' in pp and pp['location'] != 'path')
         }
         # Types of the function
-        in_type = method['request']['$ref'] if 'request' in method else '()'
+        in_type = method['request']['$ref'] if 'request' in method else None
         out_type = method['response']['$ref'] if 'response' in method else '()'
 
         is_download = method.get('supportsMediaDownload', False)
@@ -306,8 +306,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 rust_identifier(methodname),
                 'param_type':
                 params_type_name,
-                'in_type':
-                in_type,
+                'in_type': in_type,
                 'out_type':
                 out_type,
                 'base_path':
@@ -332,8 +331,6 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'http_method':
                 http_method
             }
-            if in_type == '()':
-                data_download.pop('in_type')
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
         else:
             data_normal = {
@@ -341,8 +338,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 rust_identifier(methodname),
                 'param_type':
                 params_type_name,
-                'in_type':
-                in_type,
+                'in_type': in_type,
                 'out_type':
                 out_type,
                 'base_path':
@@ -367,8 +363,6 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'http_method':
                 http_method
             }
-            if in_type == '()':
-                data_normal.pop('in_type')
             method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
         # We generate an additional implementation with the option of uploading data.

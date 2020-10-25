@@ -145,13 +145,16 @@ pub async fn do_upload_multipart<
     }
 }
 
-pub async fn do_download<Req: Serialize + std::fmt::Debug, Resp: DeserializeOwned + std::fmt::Debug>(
+pub async fn do_download<
+    Req: Serialize + std::fmt::Debug,
+    Resp: DeserializeOwned + std::fmt::Debug,
+>(
     cl: &TlsClient,
     path: &str,
     headers: &[(hyper::header::HeaderName, String)],
     http_method: &str,
     rq: Option<Req>,
-    dst: Option<&mut dyn std::io::Write>,
+    dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
 ) -> Result<DownloadResponse<Resp>> {
     let mut path = path.to_string();
     let mut http_response;
@@ -222,25 +225,22 @@ pub async fn do_download<Req: Serialize + std::fmt::Debug, Resp: DeserializeOwne
                 serde_json::from_reader(response_body.as_ref())
                     .map_err(|e| anyhow::Error::from(e).context(body_to_str(response_body)))
                     .map(DownloadResponse::Response)
-            }
+            };
         }
     }
-    let response_body = http_response.unwrap().into_body();
+
+    use tokio::io::AsyncWriteExt;
+    let mut response_body = http_response.unwrap().into_body();
     if let Some(dst) = dst {
-        let write_results = response_body
-            .map(move |chunk| {
-                dst.write(chunk?.as_ref())
-                    .map(|_| ())
-                    .map_err(anyhow::Error::from)
-            })
-            .collect::<Vec<Result<()>>>()
-            .await;
-        if let Some(e) = write_results.into_iter().find(|r| r.is_err()) {
-            return Err(e.unwrap_err());
+        while let Some(chunk) = tokio::stream::StreamExt::next(&mut response_body).await {
+            dst.write(chunk?.as_ref()).await?;
         }
         Ok(DownloadResponse::Downloaded)
     } else {
-        Err(ApiError::DataAvailableError("do_download: No destination for downloaded data was specified".into()).into())
+        Err(ApiError::DataAvailableError(
+            "do_download: No destination for downloaded data was specified".into(),
+        )
+        .into())
     }
 }
 
@@ -286,8 +286,11 @@ impl<'client, Response: DeserializeOwned> ResumableUpload<'client, Response> {
         }
     }
     pub fn set_max_chunksize(&mut self, size: usize) -> Result<&mut Self> {
-        if size % (1024*256) != 0 {
-            Err(ApiError::InputDataError("ResumableUpload: max_chunksize must be multiple of 256 KiB.".into()).into())
+        if size % (1024 * 256) != 0 {
+            Err(ApiError::InputDataError(
+                "ResumableUpload: max_chunksize must be multiple of 256 KiB.".into(),
+            )
+            .into())
         } else {
             self.max_chunksize = size;
             Ok(self)

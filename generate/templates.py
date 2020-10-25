@@ -261,7 +261,8 @@ DownloadMethodTmpl = '''
 /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
 /// is returned.
 pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} dst: Option<&mut dyn std::io::Write>)
+    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}}
+    dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>)
     -> Result<DownloadResponse<{{out_type}}>> {
 
     let rel_path = {{{rel_path_expr}}};

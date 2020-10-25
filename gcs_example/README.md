@@ -29,3 +29,6 @@ You can then find out more by running
 ```bash
 $ gcs_example --help
 ```
+
+Run with `RUST_LOG=debug` in order to see an accurate record of HTTP requests
+being sent and received.

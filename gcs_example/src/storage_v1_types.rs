@@ -4426,8 +4426,8 @@ impl BucketAccessControlsService {
     pub async fn delete(&mut self, params: &BucketAccessControlsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -4465,8 +4465,8 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -4503,7 +4503,10 @@ impl BucketAccessControlsService {
         params: &BucketAccessControlsInsertParams,
         req: &BucketAccessControl,
     ) -> Result<BucketAccessControl> {
-        let rel_path = format!("b/{bucket}/acl", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/acl",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4539,7 +4542,10 @@ impl BucketAccessControlsService {
         &mut self,
         params: &BucketAccessControlsListParams,
     ) -> Result<BucketAccessControls> {
-        let rel_path = format!("b/{bucket}/acl", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/acl",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4577,8 +4583,8 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -4618,8 +4624,8 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -4688,7 +4694,10 @@ impl BucketsService {
 
     /// Permanently deletes an empty bucket.
     pub async fn delete(&mut self, params: &BucketsDeleteParams) -> Result<()> {
-        let rel_path = format!("b/{bucket}", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4720,7 +4729,10 @@ impl BucketsService {
 
     /// Returns metadata for the specified bucket.
     pub async fn get(&mut self, params: &BucketsGetParams) -> Result<Bucket> {
-        let rel_path = format!("b/{bucket}", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4752,7 +4764,10 @@ impl BucketsService {
 
     /// Returns an IAM policy for the specified bucket.
     pub async fn get_iam_policy(&mut self, params: &BucketsGetIamPolicyParams) -> Result<Policy> {
-        let rel_path = format!("b/{bucket}/iam", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/iam",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4852,7 +4867,10 @@ impl BucketsService {
         &mut self,
         params: &BucketsLockRetentionPolicyParams,
     ) -> Result<Bucket> {
-        let rel_path = format!("b/{bucket}/lockRetentionPolicy", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/lockRetentionPolicy",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4884,7 +4902,10 @@ impl BucketsService {
 
     /// Patches a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
     pub async fn patch(&mut self, params: &BucketsPatchParams, req: &Bucket) -> Result<Bucket> {
-        let rel_path = format!("b/{bucket}", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4921,7 +4942,10 @@ impl BucketsService {
         params: &BucketsSetIamPolicyParams,
         req: &Policy,
     ) -> Result<Policy> {
-        let rel_path = format!("b/{bucket}/iam", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/iam",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4957,7 +4981,10 @@ impl BucketsService {
         &mut self,
         params: &BucketsTestIamPermissionsParams,
     ) -> Result<TestIamPermissionsResponse> {
-        let rel_path = format!("b/{bucket}/iam/testPermissions", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/iam/testPermissions",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -4989,7 +5016,10 @@ impl BucketsService {
 
     /// Updates a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
     pub async fn update(&mut self, params: &BucketsUpdateParams, req: &Bucket) -> Result<Bucket> {
-        let rel_path = format!("b/{bucket}", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5127,8 +5157,8 @@ impl DefaultObjectAccessControlsService {
     pub async fn delete(&mut self, params: &DefaultObjectAccessControlsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5166,8 +5196,8 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5204,7 +5234,10 @@ impl DefaultObjectAccessControlsService {
         params: &DefaultObjectAccessControlsInsertParams,
         req: &ObjectAccessControl,
     ) -> Result<ObjectAccessControl> {
-        let rel_path = format!("b/{bucket}/defaultObjectAcl", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/defaultObjectAcl",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5240,7 +5273,10 @@ impl DefaultObjectAccessControlsService {
         &mut self,
         params: &DefaultObjectAccessControlsListParams,
     ) -> Result<ObjectAccessControls> {
-        let rel_path = format!("b/{bucket}/defaultObjectAcl", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/defaultObjectAcl",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5278,8 +5314,8 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5319,8 +5355,8 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = params.bucket,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5391,8 +5427,8 @@ impl NotificationsService {
     pub async fn delete(&mut self, params: &NotificationsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/notificationConfigs/{notification}",
-            bucket = params.bucket,
-            notification = params.notification
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5427,8 +5463,8 @@ impl NotificationsService {
     pub async fn get(&mut self, params: &NotificationsGetParams) -> Result<Notification> {
         let rel_path = format!(
             "b/{bucket}/notificationConfigs/{notification}",
-            bucket = params.bucket,
-            notification = params.notification
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5465,7 +5501,10 @@ impl NotificationsService {
         params: &NotificationsInsertParams,
         req: &Notification,
     ) -> Result<Notification> {
-        let rel_path = format!("b/{bucket}/notificationConfigs", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/notificationConfigs",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5498,7 +5537,10 @@ impl NotificationsService {
 
     /// Retrieves a list of notification subscriptions for a given bucket.
     pub async fn list(&mut self, params: &NotificationsListParams) -> Result<Notifications> {
-        let rel_path = format!("b/{bucket}/notificationConfigs", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/notificationConfigs",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -5567,9 +5609,9 @@ impl ObjectAccessControlsService {
     pub async fn delete(&mut self, params: &ObjectAccessControlsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = params.bucket,
-            object = params.object,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5607,9 +5649,9 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = params.bucket,
-            object = params.object,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5648,8 +5690,8 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5688,8 +5730,8 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControls> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5728,9 +5770,9 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = params.bucket,
-            object = params.object,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5770,9 +5812,9 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = params.bucket,
-            object = params.object,
-            entity = params.entity
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5847,8 +5889,10 @@ impl ObjectsService {
     ) -> Result<Object> {
         let rel_path = format!(
             "b/{destinationBucket}/o/{destinationObject}/compose",
-            destinationBucket = params.destination_bucket,
-            destinationObject = params.destination_object
+            destinationBucket =
+                percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),
+            destinationObject =
+                percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5884,10 +5928,12 @@ impl ObjectsService {
     pub async fn copy(&mut self, params: &ObjectsCopyParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{sourceBucket}/o/{sourceObject}/copyTo/b/{destinationBucket}/o/{destinationObject}",
-            sourceBucket = params.source_bucket,
-            sourceObject = params.source_object,
-            destinationBucket = params.destination_bucket,
-            destinationObject = params.destination_object
+            sourceBucket = percent_encode(params.source_bucket.as_bytes(), NON_ALPHANUMERIC),
+            sourceObject = percent_encode(params.source_object.as_bytes(), NON_ALPHANUMERIC),
+            destinationBucket =
+                percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),
+            destinationObject =
+                percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5923,8 +5969,8 @@ impl ObjectsService {
     pub async fn delete(&mut self, params: &ObjectsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -5964,12 +6010,12 @@ impl ObjectsService {
     pub async fn get(
         &mut self,
         params: &ObjectsGetParams,
-        dst: Option<&mut dyn std::io::Write>,
+        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
     ) -> Result<DownloadResponse<Object>> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
 
@@ -6006,8 +6052,8 @@ impl ObjectsService {
     pub async fn get_iam_policy(&mut self, params: &ObjectsGetIamPolicyParams) -> Result<Policy> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/iam",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6040,7 +6086,10 @@ impl ObjectsService {
 
     /// Stores a new object and metadata.
     pub async fn insert(&mut self, params: &ObjectsInsertParams, req: &Object) -> Result<Object> {
-        let rel_path = format!("b/{bucket}/o", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/o",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -6080,7 +6129,10 @@ impl ObjectsService {
         req: &Object,
         data: hyper::body::Bytes,
     ) -> Result<Object> {
-        let rel_path = format!("/upload/storage/v1/b/{bucket}/o", bucket = params.bucket);
+        let rel_path = format!(
+            "/upload/storage/v1/b/{bucket}/o",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/".to_string() + &rel_path;
 
         let tok;
@@ -6127,7 +6179,7 @@ impl ObjectsService {
     ) -> Result<ResumableUpload<'client, Object>> {
         let rel_path = format!(
             "/resumable/upload/storage/v1/b/{bucket}/o",
-            bucket = params.bucket
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/".to_string() + &rel_path;
         let tok;
@@ -6175,7 +6227,10 @@ impl ObjectsService {
 
     /// Retrieves a list of objects matching the criteria.
     pub async fn list(&mut self, params: &ObjectsListParams) -> Result<Objects> {
-        let rel_path = format!("b/{bucket}/o", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/o",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -6209,8 +6264,8 @@ impl ObjectsService {
     pub async fn patch(&mut self, params: &ObjectsPatchParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6248,7 +6303,7 @@ impl ObjectsService {
         params: &ObjectsRewriteParams,
         req: &Object,
     ) -> Result<RewriteResponse> {
-        let rel_path = format!("b/{sourceBucket}/o/{sourceObject}/rewriteTo/b/{destinationBucket}/o/{destinationObject}", sourceBucket=params.source_bucket,sourceObject=params.source_object,destinationBucket=params.destination_bucket,destinationObject=params.destination_object);
+        let rel_path = format!("b/{sourceBucket}/o/{sourceObject}/rewriteTo/b/{destinationBucket}/o/{destinationObject}", sourceBucket=percent_encode(params.source_bucket.as_bytes(), NON_ALPHANUMERIC),sourceObject=percent_encode(params.source_object.as_bytes(), NON_ALPHANUMERIC),destinationBucket=percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),destinationObject=percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC));
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -6287,8 +6342,8 @@ impl ObjectsService {
     ) -> Result<Policy> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/iam",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6327,8 +6382,8 @@ impl ObjectsService {
     ) -> Result<TestIamPermissionsResponse> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/iam/testPermissions",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6363,8 +6418,8 @@ impl ObjectsService {
     pub async fn update(&mut self, params: &ObjectsUpdateParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = params.bucket,
-            object = params.object
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6402,7 +6457,10 @@ impl ObjectsService {
         params: &ObjectsWatchAllParams,
         req: &Channel,
     ) -> Result<Channel> {
-        let rel_path = format!("b/{bucket}/o/watch", bucket = params.bucket);
+        let rel_path = format!(
+            "b/{bucket}/o/watch",
+            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+        );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
         if self.scopes.is_empty() {
@@ -6507,7 +6565,7 @@ impl ProjectsHmacKeysService {
     pub async fn create(&mut self, params: &ProjectsHmacKeysCreateParams) -> Result<HmacKey> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys",
-            projectId = params.project_id
+            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6542,8 +6600,8 @@ impl ProjectsHmacKeysService {
     pub async fn delete(&mut self, params: &ProjectsHmacKeysDeleteParams) -> Result<()> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys/{accessId}",
-            projectId = params.project_id,
-            accessId = params.access_id
+            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
+            accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6578,8 +6636,8 @@ impl ProjectsHmacKeysService {
     pub async fn get(&mut self, params: &ProjectsHmacKeysGetParams) -> Result<HmacKeyMetadata> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys/{accessId}",
-            projectId = params.project_id,
-            accessId = params.access_id
+            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
+            accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6614,7 +6672,7 @@ impl ProjectsHmacKeysService {
     pub async fn list(&mut self, params: &ProjectsHmacKeysListParams) -> Result<HmacKeysMetadata> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys",
-            projectId = params.project_id
+            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6653,8 +6711,8 @@ impl ProjectsHmacKeysService {
     ) -> Result<HmacKeyMetadata> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys/{accessId}",
-            projectId = params.project_id,
-            accessId = params.access_id
+            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
+            accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
@@ -6728,7 +6786,7 @@ impl ProjectsServiceAccountService {
     ) -> Result<ServiceAccount> {
         let rel_path = format!(
             "projects/{projectId}/serviceAccount",
-            projectId = params.project_id
+            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
         let tok;
