@@ -161,7 +161,7 @@ UploadMethodTmpl = '''
 /// This method is a variant of `{{{name}}}()`, taking data for upload. It performs a multipart upload.
 pub async fn {{{name}}}_upload(
     &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
-    let rel_path = {{{rel_path_expr}}};
+    let rel_path = {{{simple_rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
 
     let tok;
@@ -207,7 +207,7 @@ ResumableUploadMethodTmpl = '''
 pub async fn {{{name}}}_resumable_upload<'client>(
     &'client mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
 
-    let rel_path = {{{rel_path_expr}}};
+    let rel_path = {{{resumable_rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
     let tok;
     if self.scopes.is_empty() {

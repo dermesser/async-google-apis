@@ -277,13 +277,20 @@ def generate_service(resource, methods, discdoc):
         out_type = method['response']['$ref'] if 'response' in method else '()'
 
         is_download = method.get('supportsMediaDownload', False) and not method.get('useMediaDownloadService', False)
-        is_upload = 'mediaUpload' in method
 
-        media_upload = method.get('mediaUpload', None)
-        if media_upload and 'simple' in media_upload['protocols']:
-            upload_path = media_upload['protocols']['simple']['path']
+        media_upload = method.get('mediaUpload', {})
+        supported_uploads = []
+        if 'simple' in media_upload.get('protocols', {}):
+            simple_upload_path = media_upload['protocols']['simple']['path']
+            supported_uploads.append('simple')
         else:
-            upload_path = ''
+            simple_upload_path = ''
+        if 'resumable' in media_upload.get('protocols', {}):
+            resumable_upload_path = media_upload['protocols']['resumable']['path']
+            supported_uploads.append('resumable')
+        else:
+            resumable_upload_path = ''
+
         http_method = method['httpMethod']
         has_global_params = 'parameters' in discdoc
         formatted_path, required_params = resolve_parameters(method['path'])
@@ -360,41 +367,44 @@ def generate_service(resource, methods, discdoc):
                 data_normal.pop('in_type')
             method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
-            # We generate an additional implementation with the option of uploading data.
-            if is_upload:
-                data_upload = {
-                    'name':
-                    rust_identifier(methodname),
-                    'param_type':
-                    params_type_name,
-                    'in_type':
-                    in_type,
-                    'out_type':
-                    out_type,
-                    'base_path':
-                    discdoc['rootUrl'],
-                    'rel_path_expr':
-                    '"' + upload_path.lstrip('/') + '"',
-                    'global_params_name':
-                    rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
-                    'params': [{
-                        'param': p,
-                        'snake_param': sp
-                    } for (p, sp) in parameters.items()],
-                    'required_params': [{
-                        'param': p,
-                        'snake_param': sp
-                    } for (p, sp) in required_parameters.items()],
-                    'scopes': [{
-                        'scope': method.get('scopes', [''])[-1]
-                    }],
-                    'description':
-                    method.get('description', ''),
-                    'http_method':
-                    http_method,
-                }
-                method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
-                method_fragments.append(chevron.render(ResumableUploadMethodTmpl, data_upload))
+        # We generate an additional implementation with the option of uploading data.
+        data_upload = {
+            'name':
+            rust_identifier(methodname),
+            'param_type':
+            params_type_name,
+            'in_type':
+            in_type,
+            'out_type':
+            out_type,
+            'base_path':
+            discdoc['rootUrl'],
+            'simple_rel_path_expr':
+            '"' + simple_upload_path.lstrip('/') + '"',
+            'resumable_rel_path_expr':
+            '"' + resumable_upload_path.lstrip('/') + '"',
+            'global_params_name':
+            rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
+            'params': [{
+                'param': p,
+                'snake_param': sp
+            } for (p, sp) in parameters.items()],
+            'required_params': [{
+                'param': p,
+                'snake_param': sp
+            } for (p, sp) in required_parameters.items()],
+            'scopes': [{
+                'scope': method.get('scopes', [''])[-1]
+            }],
+            'description':
+            method.get('description', ''),
+            'http_method':
+            http_method,
+        }
+        if 'simple' in supported_uploads:
+            method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
+        if 'resumable' in supported_uploads:
+            method_fragments.append(chevron.render(ResumableUploadMethodTmpl, data_upload))
 
     return chevron.render(
         ServiceImplementationTmpl, {
@@ -515,7 +525,11 @@ def fetch_discovery_doc(url):
     cached = from_cache(cachekey)
     if cached:
         return cached
-    js = json.loads(requests.get(url).text)
+    if url.startswith('http'):
+        js = json.loads(requests.get(url).text)
+    else:
+        with open(url, 'r') as f:
+            js = json.load(f)
     to_cache(cachekey, js)
     return js
 
