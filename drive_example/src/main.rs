@@ -59,11 +59,38 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
     params.drive_params = Some(general_params.clone());
+    params.drive_params.as_mut().unwrap().alt = Some("media".into());
+    let mut dest = vec![0 as u8; 128];
 
-    let get_file = cl.get(&params).await?;
+    // Get file contents.
+    let get_file = cl.get(&params, Some(&mut dest)).await?;
     println!("{:?}", get_file);
 
-    assert!(get_file.name == Some(fname.to_string()));
+    // get() returns a response type (Response(...)) if the server returned an application/json
+    // response, otherwise it will download to a Writer. If you don't supply a Writer and there is
+    // data to download, an error is returned (ApiError::DataAvailableError).
+    match get_file {
+        common::DownloadResponse::Response(_) => {
+            // We want download! No metadata.
+            assert!(false);
+        }
+        common::DownloadResponse::Downloaded => println!("Download success."),
+    }
+
+    // Get file metadata.
+    let mut params = drive::FilesGetParams::default();
+    params.file_id = file_id.clone();
+    let get_file = cl.get(&params, None).await?;
+    println!("{:?}", get_file);
+
+    match get_file {
+        common::DownloadResponse::Response(gf) => {
+            println!("Metadata success.");
+            assert!(gf.name == Some(fname.to_string()));
+        }
+        // We want metadata! No download.
+        common::DownloadResponse::Downloaded => assert!(false),
+    }
     Ok(())
 }
 

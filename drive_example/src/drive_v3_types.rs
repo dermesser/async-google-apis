@@ -4095,15 +4095,11 @@ pub async fn empty_trash(
 
 
 /// Exports a Google Doc to the requested MIME type and returns the exported content. Please note that the exported content is limited to 10MB.
-///
-/// This method downloads data.
 pub async fn export(
-    &mut self, params: &FilesExportParams,  dst: &mut dyn std::io::Write)
-    -> Result<()> {
+    &mut self, params: &FilesExportParams) -> Result<()> {
 
     let rel_path = format!("files/{fileId}/export", fileId=params.file_id);
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
-
     let tok;
     if self.scopes.is_empty() {
         let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
@@ -4118,10 +4114,11 @@ pub async fn export(
     }
 
     let full_uri = path + &url_params;
-    let opt_request: Option<EmptyRequest> = None;
 
-    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
-        "GET", opt_request, dst).await
+    let opt_request: Option<EmptyRequest> = None;
+    do_request(&self.client, &full_uri,
+        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request).await
   }
 
 
@@ -4154,11 +4151,15 @@ pub async fn generate_ids(
 
 
 /// Gets a file's metadata or content by ID.
+///
+/// This method downloads data.
 pub async fn get(
-    &mut self, params: &FilesGetParams) -> Result<File> {
+    &mut self, params: &FilesGetParams,  dst: Option<&mut dyn std::io::Write>)
+    -> Result<DownloadResponse<File>> {
 
     let rel_path = format!("files/{fileId}", fileId=params.file_id);
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
     let tok;
     if self.scopes.is_empty() {
         let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
@@ -4173,11 +4174,10 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri,
-        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
-        "GET", opt_request).await
+
+    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request, dst).await
   }
 
 
@@ -4311,11 +4311,15 @@ pub async fn update_resumable_upload<'client>(
 
 
 /// Subscribes to changes to a file
+///
+/// This method downloads data.
 pub async fn watch(
-    &mut self, params: &FilesWatchParams, req: &Channel) -> Result<Channel> {
+    &mut self, params: &FilesWatchParams, req: &Channel, dst: Option<&mut dyn std::io::Write>)
+    -> Result<DownloadResponse<Channel>> {
 
     let rel_path = format!("files/{fileId}/watch", fileId=params.file_id);
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
     let tok;
     if self.scopes.is_empty() {
         let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
@@ -4330,12 +4334,11 @@ pub async fn watch(
     }
 
     let full_uri = path + &url_params;
-
     let opt_request: Option<EmptyRequest> = None;
     let opt_request = Some(req);
-    do_request(&self.client, &full_uri,
-        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
-        "POST", opt_request).await
+
+    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "POST", opt_request, dst).await
   }
 
 }
@@ -4727,11 +4730,15 @@ pub async fn delete(
 
 
 /// Gets a revision's metadata or content by ID.
+///
+/// This method downloads data.
 pub async fn get(
-    &mut self, params: &RevisionsGetParams) -> Result<Revision> {
+    &mut self, params: &RevisionsGetParams,  dst: Option<&mut dyn std::io::Write>)
+    -> Result<DownloadResponse<Revision>> {
 
     let rel_path = format!("files/{fileId}/revisions/{revisionId}", fileId=params.file_id,revisionId=params.revision_id);
     let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
     let tok;
     if self.scopes.is_empty() {
         let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string(),
@@ -4746,11 +4753,10 @@ pub async fn get(
     }
 
     let full_uri = path + &url_params;
-
     let opt_request: Option<EmptyRequest> = None;
-    do_request(&self.client, &full_uri,
-        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
-        "GET", opt_request).await
+
+    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "GET", opt_request, dst).await
   }
 
 
