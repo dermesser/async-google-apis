@@ -285,8 +285,13 @@ impl<'client, Response: DeserializeOwned> ResumableUpload<'client, Response> {
             _resp: Default::default(),
         }
     }
-    pub fn set_max_chunksize(&mut self, size: usize) {
-        self.max_chunksize = size;
+    pub fn set_max_chunksize(&mut self, size: usize) -> Result<&mut Self> {
+        if size % (1024*256) != 0 {
+            Err(ApiError::InputDataError("ResumableUpload: max_chunksize must be multiple of 256 KiB.".into()).into())
+        } else {
+            self.max_chunksize = size;
+            Ok(self)
+        }
     }
 
     /// Upload data from a reader; use only if the reader cannot be seeked. Memory usage is higher,
