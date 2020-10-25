@@ -252,8 +252,8 @@ DownloadMethodTmpl = '''
 ///
 /// This method downloads data.
 pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} dst: &mut dyn std::io::Write)
-    -> Result<{{out_type}}> {
+    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} dst: Option<&mut dyn std::io::Write>)
+    -> Result<DownloadResponse<{{out_type}}>> {
 
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;

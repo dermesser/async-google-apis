@@ -198,12 +198,13 @@ def generate_params_structs(resources, super_name='', global_params=None):
             }
             req_query_parameters = []
             opt_query_parameters = []
-            struct['fields'].append({
-                'name': rust_identifier(global_params),
-                'typ': optionalize(global_params, True),
-                'attr': '#[serde(flatten)]',
-                'comment': 'General attributes applying to any API call'
-            })
+            if global_params:
+                struct['fields'].append({
+                    'name': rust_identifier(global_params),
+                    'typ': optionalize(global_params, True),
+                    'attr': '#[serde(flatten)]',
+                    'comment': 'General attributes applying to any API call'
+                })
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
@@ -276,7 +277,7 @@ def generate_service(resource, methods, discdoc):
         in_type = method['request']['$ref'] if 'request' in method else '()'
         out_type = method['response']['$ref'] if 'response' in method else '()'
 
-        is_download = method.get('supportsMediaDownload', False) and not method.get('useMediaDownloadService', False)
+        is_download = method.get('supportsMediaDownload', False) and method.get('useMediaDownloadService', False)
 
         media_upload = method.get('mediaUpload', {})
         supported_uploads = []
@@ -296,7 +297,6 @@ def generate_service(resource, methods, discdoc):
         formatted_path, required_params = resolve_parameters(method['path'])
 
         if is_download:
-            assert out_type == '()'
             data_download = {
                 'name':
                 rust_identifier(methodname),
@@ -369,20 +369,13 @@ def generate_service(resource, methods, discdoc):
 
         # We generate an additional implementation with the option of uploading data.
         data_upload = {
-            'name':
-            rust_identifier(methodname),
-            'param_type':
-            params_type_name,
-            'in_type':
-            in_type,
-            'out_type':
-            out_type,
-            'base_path':
-            discdoc['rootUrl'],
-            'simple_rel_path_expr':
-            '"' + simple_upload_path.lstrip('/') + '"',
-            'resumable_rel_path_expr':
-            '"' + resumable_upload_path.lstrip('/') + '"',
+            'name': rust_identifier(methodname),
+            'param_type': params_type_name,
+            'in_type': in_type,
+            'out_type': out_type,
+            'base_path': discdoc['rootUrl'],
+            'simple_rel_path_expr': '"' + simple_upload_path.lstrip('/') + '"',
+            'resumable_rel_path_expr': '"' + resumable_upload_path.lstrip('/') + '"',
             'global_params_name':
             rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
             'params': [{
@@ -396,10 +389,8 @@ def generate_service(resource, methods, discdoc):
             'scopes': [{
                 'scope': method.get('scopes', [''])[-1]
             }],
-            'description':
-            method.get('description', ''),
-            'http_method':
-            http_method,
+            'description': method.get('description', ''),
+            'http_method': http_method,
         }
         if 'simple' in supported_uploads:
             method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
@@ -447,6 +438,8 @@ def generate_all(discdoc):
     services = []
     for resource, methods in resources.items():
         services.append(generate_service(resource, methods, discdoc))
+    if 'methods' in discdoc:
+        services.append(generate_service('Global', discdoc, discdoc))
 
     # Generate schema types.
     structs = []
@@ -473,7 +466,7 @@ def generate_all(discdoc):
         for s in structs:
             for field in s['fields']:
                 if field.get('comment', None):
-                    field['comment'] = field['comment'].replace('\n', ' ')
+                    field['comment'] = field.get('comment', '').replace('\n', ' ')
             if not s['name']:
                 print('WARN', s)
             f.write(chevron.render(SchemaStructTmpl, s))
@@ -569,13 +562,15 @@ def main():
     for doc in docs:
         try:
             discdoc = fetch_discovery_doc(doc['discoveryRestUrl'])
+            if 'methods' in discdoc:
+                raise NotImplementedError("top-level methods are not yet implemented properly. Please take care.")
             if 'error' in discdoc:
                 print('Error while fetching document for', doc['id'], ':', discdoc)
                 continue
             generate_all(discdoc)
         except Exception as e:
             print("Error while processing", discdoc)
-            print(e)
+            raise e
             continue
 
 
