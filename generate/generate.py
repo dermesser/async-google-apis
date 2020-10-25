@@ -228,7 +228,9 @@ def generate_params_structs(resources, super_name='', global_params=None):
             struct['optional_fields'] = opt_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename, global_params=global_params))
+        frags.extend(
+            generate_params_structs(resource.get('resources', {}), super_name=resourcename,
+                                    global_params=global_params))
     return frags
 
 
