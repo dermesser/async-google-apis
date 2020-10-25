@@ -10,6 +10,14 @@ Drive v3, Sheets v4) usable APIs including types and documentation are generated
 successfully, this doesn't mean that it will work on any other current or future
 Google API.
 
+## What it looks like
+
+Consider the documentation of two exemplary APIs:
+
+* [`drive:v3`](https://borgac.net/~lbo/doc/target/doc/drive_example/drive_v3_types/) for Google Drive.
+* ['storage:v1'](https://borgac.net/~lbo/doc/target/doc/gcs_example/storage_v1_types/)
+for Google Cloud Storage.
+
 ## Parts
 
 * `manual_demo` is just a demo crate with some code for developers (well, me) to

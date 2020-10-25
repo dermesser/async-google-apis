@@ -3,6 +3,12 @@
 //!
 //! (c) 2020 Lewin Bormann <lbo@spheniscida.de>
 //!
+//! ## Getting started
+//!
+//! **Tip**: Take a look at those types ending in `...Service`. These represent API resources
+//! and contain methods to interact with an API. The remaining types are used by those methods
+//! and can be explored starting from a method you want to use.
+//!
 //! I'd be happy if you let me know about your use case of this code.
 //!
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
