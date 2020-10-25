@@ -3,6 +3,7 @@ pub enum ApiError {
     HTTPResponseError(hyper::StatusCode, String),
     RedirectError(String),
     InputDataError(String),
+    DataAvailableError(String),
 }
 
 impl std::error::Error for ApiError {}

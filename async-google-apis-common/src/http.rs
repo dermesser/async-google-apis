@@ -14,6 +14,15 @@ pub struct EmptyRequest {}
 #[derive(Debug, Deserialize, Clone, Default)]
 pub struct EmptyResponse {}
 
+/// Result of a method that can (but doesn't always) download data.
+#[derive(Debug)]
+pub enum DownloadResponse<T: DeserializeOwned + std::fmt::Debug> {
+    /// Downloaded data has been written to the supplied Writer.
+    Downloaded,
+    /// A structured response has been returned.
+    Response(T),
+}
+
 /// The Content-Type header is set automatically to application/json.
 pub async fn do_request<
     Req: Serialize + std::fmt::Debug,
@@ -136,14 +145,14 @@ pub async fn do_upload_multipart<
     }
 }
 
-pub async fn do_download<Req: Serialize + std::fmt::Debug>(
+pub async fn do_download<Req: Serialize + std::fmt::Debug, Resp: DeserializeOwned + std::fmt::Debug>(
     cl: &TlsClient,
     path: &str,
     headers: &[(hyper::header::HeaderName, String)],
     http_method: &str,
     rq: Option<Req>,
-    dst: &mut dyn std::io::Write,
-) -> Result<()> {
+    dst: Option<&mut dyn std::io::Write>,
+) -> Result<DownloadResponse<Resp>> {
     let mut path = path.to_string();
     let mut http_response;
     let mut i = 0;
@@ -201,19 +210,38 @@ pub async fn do_download<Req: Serialize + std::fmt::Debug>(
         }
     }
 
-    let response_body = http_response.unwrap().into_body();
-    let write_results = response_body
-        .map(move |chunk| {
-            dst.write(chunk?.as_ref())
-                .map(|_| ())
-                .map_err(anyhow::Error::from)
-        })
-        .collect::<Vec<Result<()>>>()
-        .await;
-    if let Some(e) = write_results.into_iter().find(|r| r.is_err()) {
-        return e;
+    let headers = http_response.as_ref().unwrap().headers();
+    if let Some(ct) = headers.get(hyper::header::CONTENT_TYPE) {
+        if ct.to_str()?.contains("application/json") {
+            let status = http_response.as_ref().unwrap().status();
+            let response_body = hyper::body::to_bytes(http_response.unwrap().into_body()).await?;
+
+            return if !status.is_success() {
+                Err(ApiError::HTTPResponseError(status, body_to_str(response_body)).into())
+            } else {
+                serde_json::from_reader(response_body.as_ref())
+                    .map_err(|e| anyhow::Error::from(e).context(body_to_str(response_body)))
+                    .map(DownloadResponse::Response)
+            }
+        }
     }
-    Ok(())
+    let response_body = http_response.unwrap().into_body();
+    if let Some(dst) = dst {
+        let write_results = response_body
+            .map(move |chunk| {
+                dst.write(chunk?.as_ref())
+                    .map(|_| ())
+                    .map_err(anyhow::Error::from)
+            })
+            .collect::<Vec<Result<()>>>()
+            .await;
+        if let Some(e) = write_results.into_iter().find(|r| r.is_err()) {
+            return Err(e.unwrap_err());
+        }
+        Ok(DownloadResponse::Downloaded)
+    } else {
+        Err(ApiError::DataAvailableError("do_download: No destination for downloaded data was specified".into()).into())
+    }
 }
 
 /// A resumable upload in progress, useful for sending large objects.
