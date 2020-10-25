@@ -1,11 +1,11 @@
 # `gcs_example`
 
-For demonstrating/testing file uploads (a bit like `drive_example`, after all --
-but the GCS API does some things differently than Drive).
+This example binary can upload/download/list objects in Google Cloud Storage
+buckets.
 
 ## Usage
 
-Uploads a file to a specified bucket. Expects a service account key in the
+Expects a service account key in the
 `client_secret.json` file. You can download it from the Cloud console, and it
 should look roughly like this:
 
