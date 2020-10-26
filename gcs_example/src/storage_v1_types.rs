@@ -4444,7 +4444,7 @@ impl BucketAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4483,7 +4483,7 @@ impl BucketAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4522,7 +4522,7 @@ impl BucketAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4561,7 +4561,7 @@ impl BucketAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4601,7 +4601,7 @@ impl BucketAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4642,7 +4642,7 @@ impl BucketAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4713,7 +4713,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4748,7 +4748,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4783,7 +4783,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4815,7 +4815,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4848,7 +4848,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4886,7 +4886,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4921,7 +4921,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4961,7 +4961,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5000,7 +5000,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5035,7 +5035,7 @@ impl BucketsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5103,7 +5103,7 @@ impl ChannelsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5175,7 +5175,7 @@ impl DefaultObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5214,7 +5214,7 @@ impl DefaultObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5253,7 +5253,7 @@ impl DefaultObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5292,7 +5292,7 @@ impl DefaultObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5332,7 +5332,7 @@ impl DefaultObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5373,7 +5373,7 @@ impl DefaultObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5445,7 +5445,7 @@ impl NotificationsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5481,7 +5481,7 @@ impl NotificationsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5520,7 +5520,7 @@ impl NotificationsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5556,7 +5556,7 @@ impl NotificationsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5628,7 +5628,7 @@ impl ObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5668,7 +5668,7 @@ impl ObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5708,7 +5708,7 @@ impl ObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5748,7 +5748,7 @@ impl ObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5789,7 +5789,7 @@ impl ObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5831,7 +5831,7 @@ impl ObjectAccessControlsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5909,7 +5909,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5950,7 +5950,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5987,7 +5987,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6007,11 +6007,10 @@ impl ObjectsService {
     /// or a non-JSON type, the returned value indicates if a download took place or data was written to
     /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
     /// is returned.
-    pub async fn get(
-        &mut self,
+    pub async fn get<'a>(
+        &'a mut self,
         params: &ObjectsGetParams,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
-    ) -> Result<DownloadResponse<Object>> {
+    ) -> Result<Download<'a, EmptyRequest, Object>> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
@@ -6032,18 +6031,17 @@ impl ObjectsService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
 
         do_download(
             &self.client,
             &full_uri,
-            &[(
+            vec![(
                 hyper::header::AUTHORIZATION,
                 format!("Bearer {token}", token = tok.as_str()),
             )],
-            "GET",
+            "GET".into(),
             opt_request,
-            dst,
         )
         .await
     }
@@ -6070,7 +6068,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6105,7 +6103,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6149,7 +6147,7 @@ impl ObjectsService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
         do_upload_multipart(
@@ -6196,7 +6194,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
             &self.client,
@@ -6246,7 +6244,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6282,7 +6280,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6319,7 +6317,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6360,7 +6358,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6400,7 +6398,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6436,7 +6434,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6476,7 +6474,7 @@ impl ObjectsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6582,7 +6580,7 @@ impl ProjectsHmacKeysService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6618,7 +6616,7 @@ impl ProjectsHmacKeysService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6654,7 +6652,7 @@ impl ProjectsHmacKeysService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6689,7 +6687,7 @@ impl ProjectsHmacKeysService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6729,7 +6727,7 @@ impl ProjectsHmacKeysService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -6803,7 +6801,7 @@ impl ProjectsServiceAccountService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,

@@ -2,7 +2,6 @@ mod storage_v1_types;
 
 use anyhow::Context;
 use async_google_apis_common as common;
-use chrono;
 use env_logger;
 
 use std::path::Path;
@@ -56,9 +55,14 @@ async fn download_file(
         .create(true)
         .open(id)
         .await?;
-    let result = cl.get(&params, Some(&mut f)).await?;
+    let mut download = cl.get(&params).await?;
 
-    println!("Downloaded object: {:?}", result);
+    // Now run the actual download.
+    let result = download.do_it(Some(&mut f)).await?;
+    match result {
+        common::DownloadResult::Downloaded => println!("Downloaded object successfully."),
+        common::DownloadResult::Response(_) => panic!("Received response but expected download."),
+    }
 
     Ok(())
 }
