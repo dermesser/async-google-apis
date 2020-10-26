@@ -129,6 +129,9 @@ pub async fn {{{name}}}(
 
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
+
+    let mut headers = vec![];
+    {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
         let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
@@ -137,6 +140,9 @@ pub async fn {{{name}}}(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
+    headers.push((hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str())));
+    {{/wants_auth}}
+
     let mut url_params = format!("?{params}", params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
@@ -151,7 +157,7 @@ pub async fn {{{name}}}(
     let opt_request = Some(req);
     {{/in_type}}
     do_request(&self.client, &full_uri,
-        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        &headers,
         "{{{http_method}}}", opt_request).await
   }
 '''
@@ -170,6 +176,8 @@ pub async fn {{{name}}}_upload(
     let rel_path = {{{simple_rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
 
+    let mut headers = vec![];
+    {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
         let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
@@ -178,6 +186,9 @@ pub async fn {{{name}}}_upload(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
+    headers.push((hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str())));
+    {{/wants_auth}}
+
     let mut url_params = format!("?uploadType=multipart{params}", params=params);
 
     {{#global_params_name}}
@@ -193,7 +204,7 @@ pub async fn {{{name}}}_upload(
     {{/in_type}}
 
     do_upload_multipart(&self.client, &full_uri,
-        &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        &headers,
         "{{{http_method}}}", opt_request, data).await
   }
 '''
@@ -215,6 +226,9 @@ pub async fn {{{name}}}_resumable_upload<'client>(
 
     let rel_path = {{{resumable_rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
+
+    let mut headers = vec![];
+    {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
         let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
@@ -223,6 +237,9 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
+    headers.push((hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str())));
+    {{/wants_auth}}
+
     let mut url_params = format!("?uploadType=resumable{params}", params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
@@ -237,7 +254,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     let opt_request = Some(req);
     {{/in_type}}
     let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
-        &self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))], "{{{http_method}}}", opt_request).await?;
+        &self.client, &full_uri, &headers, "{{{http_method}}}", opt_request).await?;
     if let Some(dest) = headers.get(hyper::header::LOCATION) {
         use std::convert::TryFrom;
         Ok(ResumableUpload::new(hyper::Uri::try_from(dest.to_str()?)?, &self.client, 5*1024*1024))
@@ -256,10 +273,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
 DownloadMethodTmpl = '''
 /// {{{description}}}
 ///
-/// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
-/// or a non-JSON type, the returned value indicates if a download took place or data was written to
-/// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
-/// is returned.
+/// This method potentially downloads data. See documentation of `Download`.
 pub async fn {{{name}}}<'a>(
     &'a mut self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
     -> Result<Download<'a, {{{download_in_type}}}, {{{out_type}}}>> {
@@ -267,6 +281,8 @@ pub async fn {{{name}}}<'a>(
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
 
+    let mut headers = vec![];
+    {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
         let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
@@ -275,6 +291,9 @@ pub async fn {{{name}}}<'a>(
     } else {
         tok = self.authenticator.token(&self.scopes).await?;
     }
+    headers.push((hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str())));
+    {{/wants_auth}}
+
     let mut url_params = format!("?{params}", params=params);
     {{#global_params_name}}
     if let Some(ref api_params) = &params.{{{global_params_name}}} {
@@ -289,7 +308,7 @@ pub async fn {{{name}}}<'a>(
     {{/in_type}}
 
     do_download(&self.client, &full_uri,
-        vec![(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        headers,
         "{{{http_method}}}".into(), opt_request).await
   }
 '''

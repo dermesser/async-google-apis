@@ -16,7 +16,6 @@ import subprocess
 
 from templates import *
 
-
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
@@ -24,6 +23,7 @@ def optionalize(name, optional=True):
 def replace_keywords(name):
     return {
         'type': ('typ', 'type'),
+        'enum': ('enums', 'enum'),
     }.get(name, name)
 
 
@@ -283,6 +283,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         out_type = method['response']['$ref'] if 'response' in method else '()'
 
         is_download = method.get('supportsMediaDownload', False)
+        is_authd = 'scopes' in method
 
         media_upload = method.get('mediaUpload', {})
         supported_uploads = []
@@ -336,7 +337,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'description':
                 method.get('description', ''),
                 'http_method':
-                http_method
+                http_method,
+                'wants_auth': is_authd,
             }
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
         else:
@@ -368,7 +370,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'description':
                 method.get('description', ''),
                 'http_method':
-                http_method
+                http_method,
+                'wants_auth': is_authd,
             }
             method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
@@ -396,6 +399,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             }],
             'description': method.get('description', ''),
             'http_method': http_method,
+            'wants_auth': is_authd,
         }
         if 'simple' in supported_uploads:
             method_fragments.append(chevron.render(UploadMethodTmpl, data_upload))
@@ -410,7 +414,6 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'text': t
             } for t in method_fragments]
         }) + '\n'.join(subresource_fragments)
-
 
 def generate_scopes_type(name, scopes):
     """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
