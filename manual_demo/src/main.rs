@@ -1,7 +1,7 @@
 // A manual client for a Google API (e.g. Drive), to test what makes sense and what doesn't.
 
+mod discovery_v1_types;
 mod drive_v3_types;
-mod photoslibrary_v1_types;
 
 use drive_v3_types as drive;
 
@@ -74,9 +74,20 @@ async fn export(cl: TlsClient, auth: Authenticator) {
     params.file_id = "1XW3lQaYRQz3GcCijaSIwCm1r5DIx30azjcRxjME0Rj8".to_string();
     params.mime_type = "application/vnd.oasis.opendocument.text".to_string();
 
-    let mut dst = fs::OpenOptions::new().write(true).create(true).open("test.odt").unwrap();
+    let mut dst = tokio::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("test.odt")
+        .await
+        .unwrap();
 
-    let resp = cl.export(&params, Some(&mut dst)).await.unwrap();
+    let resp = cl
+        .export(&params)
+        .await
+        .unwrap()
+        .do_it(Some(&mut dst))
+        .await
+        .unwrap();
     println!("{:?}", resp);
 }
 
@@ -97,7 +108,10 @@ async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
     let file_id = resp.id.unwrap();
     let mut params = drive::FilesGetParams::default();
     params.file_id = file_id.clone();
-    println!("{:?}", cl.get(&params, None).await.unwrap());
+    println!(
+        "{:?}",
+        cl.get(&params).await.unwrap().do_it(None).await.unwrap()
+    );
 }
 
 async fn get_about(cl: &mut TlsClient, auth: &mut Authenticator) {
