@@ -3901,7 +3901,7 @@ impl AboutService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -3971,7 +3971,7 @@ impl ChangesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4003,7 +4003,7 @@ impl ChangesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4035,7 +4035,7 @@ impl ChangesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4103,7 +4103,7 @@ impl ChannelsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4178,7 +4178,7 @@ impl CommentsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4215,7 +4215,7 @@ impl CommentsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4251,7 +4251,7 @@ impl CommentsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4286,7 +4286,7 @@ impl CommentsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4326,7 +4326,7 @@ impl CommentsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4394,7 +4394,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4430,7 +4430,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4465,7 +4465,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4500,7 +4500,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4532,7 +4532,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4567,7 +4567,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4602,7 +4602,7 @@ impl DrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4673,7 +4673,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4706,7 +4706,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -4747,7 +4747,7 @@ impl FilesService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
         do_upload_multipart(
@@ -4791,7 +4791,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
             &self.client,
@@ -4841,7 +4841,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4873,7 +4873,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4893,11 +4893,10 @@ impl FilesService {
     /// or a non-JSON type, the returned value indicates if a download took place or data was written to
     /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
     /// is returned.
-    pub async fn export(
-        &mut self,
+    pub async fn export<'a>(
+        &'a mut self,
         params: &FilesExportParams,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
-    ) -> Result<DownloadResponse<()>> {
+    ) -> Result<Download<'a, EmptyRequest, ()>> {
         let rel_path = format!(
             "files/{fileId}/export",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
@@ -4917,18 +4916,17 @@ impl FilesService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
 
         do_download(
             &self.client,
             &full_uri,
-            &[(
+            vec![(
                 hyper::header::AUTHORIZATION,
                 format!("Bearer {token}", token = tok.as_str()),
             )],
-            "GET",
+            "GET".into(),
             opt_request,
-            dst,
         )
         .await
     }
@@ -4951,7 +4949,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -4971,11 +4969,10 @@ impl FilesService {
     /// or a non-JSON type, the returned value indicates if a download took place or data was written to
     /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
     /// is returned.
-    pub async fn get(
-        &mut self,
+    pub async fn get<'a>(
+        &'a mut self,
         params: &FilesGetParams,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
-    ) -> Result<DownloadResponse<File>> {
+    ) -> Result<Download<'a, EmptyRequest, File>> {
         let rel_path = format!(
             "files/{fileId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
@@ -4995,18 +4992,17 @@ impl FilesService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
 
         do_download(
             &self.client,
             &full_uri,
-            &[(
+            vec![(
                 hyper::header::AUTHORIZATION,
                 format!("Bearer {token}", token = tok.as_str()),
             )],
-            "GET",
+            "GET".into(),
             opt_request,
-            dst,
         )
         .await
     }
@@ -5029,7 +5025,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5064,7 +5060,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5108,7 +5104,7 @@ impl FilesService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
         do_upload_multipart(
@@ -5155,7 +5151,7 @@ impl FilesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
             &self.client,
@@ -5190,12 +5186,11 @@ impl FilesService {
     /// or a non-JSON type, the returned value indicates if a download took place or data was written to
     /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
     /// is returned.
-    pub async fn watch(
-        &mut self,
+    pub async fn watch<'a>(
+        &'a mut self,
         params: &FilesWatchParams,
-        req: &Channel,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
-    ) -> Result<DownloadResponse<Channel>> {
+        req: &'a Channel,
+    ) -> Result<Download<'a, Channel, Channel>> {
         let rel_path = format!(
             "files/{fileId}/watch",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
@@ -5215,19 +5210,18 @@ impl FilesService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
         do_download(
             &self.client,
             &full_uri,
-            &[(
+            vec![(
                 hyper::header::AUTHORIZATION,
                 format!("Bearer {token}", token = tok.as_str()),
             )],
-            "POST",
+            "POST".into(),
             opt_request,
-            dst,
         )
         .await
     }
@@ -5292,7 +5286,7 @@ impl PermissionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5329,7 +5323,7 @@ impl PermissionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5365,7 +5359,7 @@ impl PermissionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5400,7 +5394,7 @@ impl PermissionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5440,7 +5434,7 @@ impl PermissionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5512,7 +5506,7 @@ impl RepliesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5550,7 +5544,7 @@ impl RepliesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5587,7 +5581,7 @@ impl RepliesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5623,7 +5617,7 @@ impl RepliesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5660,7 +5654,7 @@ impl RepliesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5732,7 +5726,7 @@ impl RevisionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5752,11 +5746,10 @@ impl RevisionsService {
     /// or a non-JSON type, the returned value indicates if a download took place or data was written to
     /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
     /// is returned.
-    pub async fn get(
-        &mut self,
+    pub async fn get<'a>(
+        &'a mut self,
         params: &RevisionsGetParams,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
-    ) -> Result<DownloadResponse<Revision>> {
+    ) -> Result<Download<'a, EmptyRequest, Revision>> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
@@ -5777,18 +5770,17 @@ impl RevisionsService {
         }
 
         let full_uri = path + &url_params;
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
 
         do_download(
             &self.client,
             &full_uri,
-            &[(
+            vec![(
                 hyper::header::AUTHORIZATION,
                 format!("Bearer {token}", token = tok.as_str()),
             )],
-            "GET",
+            "GET".into(),
             opt_request,
-            dst,
         )
         .await
     }
@@ -5814,7 +5806,7 @@ impl RevisionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5854,7 +5846,7 @@ impl RevisionsService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5926,7 +5918,7 @@ impl TeamdrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
@@ -5962,7 +5954,7 @@ impl TeamdrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -5997,7 +5989,7 @@ impl TeamdrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6029,7 +6021,7 @@ impl TeamdrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         do_request(
             &self.client,
             &full_uri,
@@ -6068,7 +6060,7 @@ impl TeamdrivesService {
 
         let full_uri = path + &url_params;
 
-        let opt_request: Option<EmptyRequest> = None;
+        let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
         do_request(
             &self.client,
