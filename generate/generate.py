@@ -49,7 +49,7 @@ def global_params_name(api_name):
     return capitalize_first(api_name) + 'Params'
 
 
-def parse_schema_types(name, schema, optional=True):
+def parse_schema_types(name, schema, optional=True, parents=[]):
     """Translate a JSON schema type into Rust types, recursively.
 
     This function takes a schema entry from the `schemas` section of a Discovery document,
@@ -74,7 +74,9 @@ def parse_schema_types(name, schema, optional=True):
     try:
         if '$ref' in schema:
             # We just assume that there is already a type generated for the reference.
-            return optionalize(schema['$ref'], optional), structs
+            if schema['$ref'] not in parents:
+                return optionalize(schema['$ref'], optional), structs
+            return optionalize('Box<'+schema['$ref']+'>', optional), structs
         if 'type' in schema and schema['type'] == 'object':
             # There are two types of objects: those with `properties` are translated into a Rust struct,
             # and those with `additionalProperties` into a HashMap<String, ...>.
@@ -84,7 +86,7 @@ def parse_schema_types(name, schema, optional=True):
                 typ = name
                 struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
-                    subtyp, substructs = parse_schema_types(name + capitalize_first(pn), pp, optional=True)
+                    subtyp, substructs = parse_schema_types(name + capitalize_first(pn), pp, optional=True, parents=parents+[name])
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -115,7 +117,7 @@ def parse_schema_types(name, schema, optional=True):
                 return (optionalize(typ, optional), schema.get('description', '')), structs
 
             if 'additionalProperties' in schema:
-                field, substructs = parse_schema_types(name, schema['additionalProperties'], optional=False)
+                field, substructs = parse_schema_types(name, schema['additionalProperties'], optional=False, parents=parents+[name])
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
@@ -124,7 +126,7 @@ def parse_schema_types(name, schema, optional=True):
                 return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs
 
         if schema['type'] == 'array':
-            typ, substructs = parse_schema_types(name, schema['items'], optional=False)
+            typ, substructs = parse_schema_types(name, schema['items'], optional=False, parents=parents+[name])
             if type(typ) is tuple:
                 typ = typ[0]
             return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs
@@ -209,7 +211,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
-                    (typ, desc), substructs = parse_schema_types('', param, optional=False)
+                    (typ, desc), substructs = parse_schema_types('', param, optional=False, parents=[])
                     field = {
                         'name': rust_identifier(paramname),
                         'original_name': paramname,
@@ -422,7 +424,7 @@ def generate_scopes_type(name, scopes):
     """
     name = capitalize_first(name)
     if len(scopes) == 0:
-        return chevron.render(OauthScopesType, {'name': name, 'scopes': []})
+        return ''
     parameters = {'name': name, 'scopes': []}
     for url, desc in scopes.items():
         rawname = url.split('/')[-1]
