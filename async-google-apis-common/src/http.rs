@@ -209,14 +209,14 @@ impl<'a, Request: Serialize + std::fmt::Debug, Response: DeserializeOwned + std:
 
             let http_request = reqb.body(body)?;
             debug!(
-                "do_download: Redirect {}, Launching HTTP request: {:?}",
+                "Download::do_it: Redirect {}, Launching HTTP request: {:?}",
                 n_redirects, http_request
             );
 
             http_response = Some(self.cl.request(http_request).await?);
             let status = http_response.as_ref().unwrap().status();
             debug!(
-                "do_download: Redirect {}, HTTP response with status {} received: {:?}",
+                "Download::do_it: Redirect {}, HTTP response with status {} received: {:?}",
                 n_redirects, status, http_response
             );
 
