@@ -146,7 +146,7 @@ pub async fn {{{name}}}(
 
     let full_uri = path + &url_params;
 
-    let opt_request: Option<EmptyRequest> = None;
+    let opt_request: Option<&EmptyRequest> = None;
     {{#in_type}}
     let opt_request = Some(req);
     {{/in_type}}
@@ -187,7 +187,7 @@ pub async fn {{{name}}}_upload(
     {{/global_params_name}}
 
     let full_uri = path + &url_params;
-    let opt_request: Option<EmptyRequest> = None;
+    let opt_request: Option<&EmptyRequest> = None;
     {{#in_type}}
     let opt_request = Some(req);
     {{/in_type}}
@@ -232,7 +232,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
 
     let full_uri = path + &url_params;
 
-    let opt_request: Option<EmptyRequest> = None;
+    let opt_request: Option<&EmptyRequest> = None;
     {{#in_type}}
     let opt_request = Some(req);
     {{/in_type}}
@@ -260,10 +260,9 @@ DownloadMethodTmpl = '''
 /// or a non-JSON type, the returned value indicates if a download took place or data was written to
 /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
 /// is returned.
-pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}}
-    dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>)
-    -> Result<DownloadResponse<{{out_type}}>> {
+pub async fn {{{name}}}<'a>(
+    &'a mut self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
+    -> Result<Download<'a, {{{download_in_type}}}, {{{out_type}}}>> {
 
     let rel_path = {{{rel_path_expr}}};
     let path = "{{{base_path}}}".to_string() + &rel_path;
@@ -284,12 +283,13 @@ pub async fn {{{name}}}(
     {{/global_params_name}}
 
     let full_uri = path + &url_params;
-    let opt_request: Option<EmptyRequest> = None;
+    let opt_request: Option<&EmptyRequest> = None;
     {{#in_type}}
     let opt_request = Some(req);
     {{/in_type}}
 
-    do_download(&self.client, &full_uri, &[(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
-        "{{{http_method}}}", opt_request, dst).await
+    do_download(&self.client, &full_uri,
+        vec![(hyper::header::AUTHORIZATION, format!("Bearer {token}", token=tok.as_str()))],
+        "{{{http_method}}}".into(), opt_request).await
   }
 '''

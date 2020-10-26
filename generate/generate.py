@@ -313,6 +313,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'param_type':
                 params_type_name,
                 'in_type': in_type,
+                'download_in_type': in_type if in_type else 'EmptyRequest',
                 'out_type':
                 out_type,
                 'base_path':
