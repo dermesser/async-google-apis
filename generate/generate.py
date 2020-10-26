@@ -410,6 +410,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         ServiceImplementationTmpl, {
             'service': service,
             'name': capitalize_first(discdoc.get('name', '')),
+            'wants_auth': 'auth' in discdoc,
             'methods': [{
                 'text': t
             } for t in method_fragments]

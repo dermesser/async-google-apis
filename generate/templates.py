@@ -91,18 +91,24 @@ ServiceImplementationTmpl = '''
 /// The {{{name}}} {{{service}}} service represents the {{{service}}} resource.
 pub struct {{{service}}}Service {
     client: TlsClient,
+    {{#wants_auth}}
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
     scopes: Vec<String>,
+    {{/wants_auth}}
 }
 
 impl {{{service}}}Service {
     /// Create a new {{service}}Service object. The easiest way to call this is wrapping the Authenticator
     /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
-    pub fn new<A: 'static + std::ops::Deref<Target=Authenticator>>(client: TlsClient, auth: A) -> {{service}}Service {
-        {{{service}}}Service { client: client, authenticator: Box::new(auth), scopes: vec![] }
+    pub fn new
+    {{#wants_auth}}<A: 'static + std::ops::Deref<Target=Authenticator>>
+    {{/wants_auth}}(client: TlsClient{{#wants_auth}}, auth: A{{/wants_auth}}) -> {{service}}Service {
+        {{{service}}}Service { client: client
+            {{#wants_auth}}, authenticator: Box::new(auth), scopes: vec![]{{/wants_auth}} }
     }
 
+    {{#wants_auth}}
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
     /// a possibly too large scope will be requested.
     ///
@@ -110,9 +116,10 @@ impl {{{service}}}Service {
     pub fn set_scopes<S: AsRef<str>, T: AsRef<[S]>>(&mut self, scopes: T) {
         self.scopes = scopes.as_ref().into_iter().map(|s| s.as_ref().to_string()).collect();
     }
+    {{/wants_auth}}
 
     {{#methods}}
-{{{text}}}
+    {{{text}}}
     {{/methods}}
 }
 '''
