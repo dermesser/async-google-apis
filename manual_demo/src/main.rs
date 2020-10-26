@@ -1,137 +1,19 @@
 // A manual client for a Google API (e.g. Drive), to test what makes sense and what doesn't.
 
+use async_google_apis_common as agac;
+
 mod discovery_v1_types;
 mod drive_v3_types;
 
+use discovery_v1_types as disc;
 use drive_v3_types as drive;
 
-use std::fs;
-use std::path::Path;
-use std::str::FromStr;
-use std::string::String;
 use yup_oauth2::InstalledFlowAuthenticator;
 
-use hyper::Uri;
-use hyper_rustls::HttpsConnector;
-
-type TlsConnr = HttpsConnector<hyper::client::HttpConnector>;
-type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
-type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
-
-fn https_client() -> TlsClient {
+fn https_client() -> agac::TlsClient {
     let conn = hyper_rustls::HttpsConnector::new();
     let cl = hyper::Client::builder().build(conn);
     cl
-}
-
-struct FilesService {
-    client: TlsClient,
-    authenticator: Authenticator,
-}
-
-impl FilesService {
-    fn create(
-        &mut self,
-        parameters: drive::FilesCreateParams,
-        file: drive::File,
-        data: &hyper::body::Bytes,
-    ) -> hyper::Result<drive::File> {
-        unimplemented!()
-    }
-}
-
-async fn upload_file(cl: &mut TlsClient, auth: &mut Authenticator, f: &Path) {
-    let posturl = "https://www.googleapis.com/upload/drive/v3/files?uploadType=media";
-    let tok = auth
-        .token(&["https://www.googleapis.com/auth/drive.file"])
-        .await
-        .unwrap();
-    let authtok = format!("&oauth_token={}&fields=*", tok.as_str());
-
-    let file = fs::OpenOptions::new().read(true).open(f).unwrap();
-    let len = file.metadata().unwrap().len();
-
-    let bytes = hyper::body::Bytes::from(fs::read(&f).unwrap());
-    let body = hyper::Body::from(bytes);
-    let req = hyper::Request::post(posturl.to_string() + &authtok)
-        .header("Content-Length", format!("{}", len))
-        .body(body)
-        .unwrap();
-    let resp = cl.request(req).await.unwrap();
-
-    let body = resp.into_body();
-    let body = hyper::body::to_bytes(body).await.unwrap();
-    let dec = String::from_utf8(body.to_vec()).unwrap();
-    let about: drive::File = serde_json::from_str(&dec).unwrap();
-    println!("{:?}", about);
-}
-
-async fn export(cl: TlsClient, auth: Authenticator) {
-    let mut cl = drive::FilesService::new(cl, std::rc::Rc::new(auth));
-    cl.set_scopes(&["https://www.googleapis.com/auth/drive"]);
-
-    let mut params = drive::FilesExportParams::default();
-    params.file_id = "1XW3lQaYRQz3GcCijaSIwCm1r5DIx30azjcRxjME0Rj8".to_string();
-    params.mime_type = "application/vnd.oasis.opendocument.text".to_string();
-
-    let mut dst = tokio::fs::OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("test.odt")
-        .await
-        .unwrap();
-
-    let resp = cl
-        .export(&params)
-        .await
-        .unwrap()
-        .do_it(Some(&mut dst))
-        .await
-        .unwrap();
-    println!("{:?}", resp);
-}
-
-async fn new_upload_file(cl: TlsClient, auth: Authenticator, f: &Path) {
-    let mut cl = drive::FilesService::new(cl, std::rc::Rc::new(auth));
-    cl.set_scopes(&["https://www.googleapis.com/auth/drive.file"]);
-
-    let data = hyper::body::Bytes::from(fs::read(&f).unwrap());
-    let mut params = drive::FilesCreateParams::default();
-    params.include_permissions_for_view = Some("published".to_string());
-    let mut file = drive::File::default();
-    file.name = Some("profilepic.jpg".to_string());
-
-    let resp = cl.create_upload(&params, &file, data).await.unwrap();
-
-    println!("{:?}", resp);
-
-    let file_id = resp.id.unwrap();
-    let mut params = drive::FilesGetParams::default();
-    params.file_id = file_id.clone();
-    println!(
-        "{:?}",
-        cl.get(&params).await.unwrap().do_it(None).await.unwrap()
-    );
-}
-
-async fn get_about(cl: &mut TlsClient, auth: &mut Authenticator) {
-    let baseurl = "https://www.googleapis.com/drive/v3/";
-    let path = "about";
-    let tok = auth
-        .token(&["https://www.googleapis.com/auth/drive.file"])
-        .await
-        .unwrap();
-    let authtok = format!("?oauth_token={}&fields=*", tok.as_str());
-
-    let resp = cl
-        .get(Uri::from_str(&(String::from(baseurl) + path + &authtok)).unwrap())
-        .await
-        .unwrap();
-    let body = resp.into_body();
-    let body = hyper::body::to_bytes(body).await.unwrap();
-    let dec = String::from_utf8(body.to_vec()).unwrap();
-    let about: drive::About = serde_json::from_str(&dec).unwrap();
-    println!("{:?}", about);
 }
 
 #[tokio::main]
@@ -152,14 +34,21 @@ async fn main() {
     let scopes = &["https://www.googleapis.com/auth/drive.file"];
 
     let mut cl = https_client();
+    let mut disc_svc = disc::ApisService::new(cl);
 
-    //get_about(&mut cl, &mut auth).await;
-    //upload_file(&mut cl, &mut auth, Path::new("pp.jpg")).await;
-    //new_upload_file(cl, auth, Path::new("pp.jpg")).await;
-    export(cl, auth).await;
+    let params = disc::ApisListParams::default();
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&disc_svc.list(&params).await.unwrap()).unwrap()
+    );
 
-    //match auth.token(scopes).await {
-    //    Ok(token) => println!("The token is {:?}", token),
-    //    Err(e) => println!("error: {:?}", e),
-    //}
+    let mut params = disc::ApisGetRestParams {
+        api: "drive".into(),
+        version: "v3".into(),
+        ..Default::default()
+    };
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&disc_svc.get_rest(&params).await.unwrap()).unwrap()
+    );
 }
