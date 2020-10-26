@@ -3887,6 +3887,8 @@ impl AboutService {
     pub async fn get(&mut self, params: &AboutGetParams) -> Result<About> {
         let rel_path = format!("about",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -3894,6 +3896,11 @@ impl AboutService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -3902,17 +3909,7 @@ impl AboutService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 }
 
@@ -3957,6 +3954,8 @@ impl ChangesService {
     ) -> Result<StartPageToken> {
         let rel_path = format!("changes/startPageToken",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -3964,6 +3963,11 @@ impl ChangesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -3972,23 +3976,15 @@ impl ChangesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Lists the changes for a user or shared drive.
     pub async fn list(&mut self, params: &ChangesListParams) -> Result<ChangeList> {
         let rel_path = format!("changes",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -3996,6 +3992,11 @@ impl ChangesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4004,23 +4005,15 @@ impl ChangesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Subscribes to changes for a user.
     pub async fn watch(&mut self, params: &ChangesWatchParams, req: &Channel) -> Result<Channel> {
         let rel_path = format!("changes/watch",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4028,6 +4021,11 @@ impl ChangesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4037,17 +4035,7 @@ impl ChangesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 }
 
@@ -4089,6 +4077,8 @@ impl ChannelsService {
     pub async fn stop(&mut self, params: &ChannelsStopParams, req: &Channel) -> Result<()> {
         let rel_path = format!("channels/stop",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4096,6 +4086,11 @@ impl ChannelsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4105,17 +4100,7 @@ impl ChannelsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 }
 
@@ -4164,6 +4149,8 @@ impl CommentsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4171,6 +4158,11 @@ impl CommentsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4180,17 +4172,7 @@ impl CommentsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Deletes a comment.
@@ -4201,6 +4183,8 @@ impl CommentsService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4208,6 +4192,11 @@ impl CommentsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4216,17 +4205,7 @@ impl CommentsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Gets a comment by ID.
@@ -4237,6 +4216,8 @@ impl CommentsService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4244,6 +4225,11 @@ impl CommentsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4252,17 +4238,7 @@ impl CommentsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Lists a file's comments.
@@ -4272,6 +4248,8 @@ impl CommentsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4279,6 +4257,11 @@ impl CommentsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4287,17 +4270,7 @@ impl CommentsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates a comment with patch semantics.
@@ -4312,6 +4285,8 @@ impl CommentsService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4319,6 +4294,11 @@ impl CommentsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4328,17 +4308,7 @@ impl CommentsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 }
 
@@ -4380,6 +4350,8 @@ impl DrivesService {
     pub async fn create(&mut self, params: &DrivesCreateParams, req: &Drive) -> Result<Drive> {
         let rel_path = format!("drives",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -4387,6 +4359,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4396,17 +4373,7 @@ impl DrivesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Permanently deletes a shared drive for which the user is an organizer. The shared drive cannot contain any untrashed items.
@@ -4416,6 +4383,8 @@ impl DrivesService {
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -4423,6 +4392,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4431,17 +4405,7 @@ impl DrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Gets a shared drive's metadata by ID.
@@ -4451,6 +4415,8 @@ impl DrivesService {
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4458,6 +4424,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4466,17 +4437,7 @@ impl DrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Hides a shared drive from the default view.
@@ -4486,6 +4447,8 @@ impl DrivesService {
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -4493,6 +4456,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4501,23 +4469,15 @@ impl DrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Lists the user's shared drives.
     pub async fn list(&mut self, params: &DrivesListParams) -> Result<DriveList> {
         let rel_path = format!("drives",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4525,6 +4485,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4533,17 +4498,7 @@ impl DrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Restores a shared drive to the default view.
@@ -4553,6 +4508,8 @@ impl DrivesService {
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -4560,6 +4517,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4568,17 +4530,7 @@ impl DrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Updates the metadate for a shared drive.
@@ -4588,6 +4540,8 @@ impl DrivesService {
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -4595,6 +4549,11 @@ impl DrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4604,17 +4563,7 @@ impl DrivesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 }
 
@@ -4659,6 +4608,8 @@ impl FilesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.photos.readonly".to_string()];
@@ -4666,6 +4617,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4675,23 +4631,15 @@ impl FilesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Creates a new file.
     pub async fn create(&mut self, params: &FilesCreateParams, req: &File) -> Result<File> {
         let rel_path = format!("files",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4699,6 +4647,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4708,17 +4661,7 @@ impl FilesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Creates a new file.
@@ -4733,6 +4676,7 @@ impl FilesService {
         let rel_path = format!("/upload/drive/v3/files",);
         let path = "https://www.googleapis.com/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4740,6 +4684,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?uploadType=multipart{params}", params = params);
 
         if let Some(ref api_params) = &params.drive_params {
@@ -4750,18 +4699,7 @@ impl FilesService {
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
-        do_upload_multipart(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-            data,
-        )
-        .await
+        do_upload_multipart(&self.client, &full_uri, &headers, "POST", opt_request, data).await
     }
 
     /// Creates a new file.
@@ -4777,6 +4715,8 @@ impl FilesService {
     ) -> Result<ResumableUpload<'client, File>> {
         let rel_path = format!("/resumable/upload/drive/v3/files",);
         let path = "https://www.googleapis.com/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4784,6 +4724,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?uploadType=resumable{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4793,17 +4738,8 @@ impl FilesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await?;
+        let (_resp, headers): (EmptyResponse, hyper::HeaderMap) =
+            do_request_with_headers(&self.client, &full_uri, &headers, "POST", opt_request).await?;
         if let Some(dest) = headers.get(hyper::header::LOCATION) {
             use std::convert::TryFrom;
             Ok(ResumableUpload::new(
@@ -4827,6 +4763,8 @@ impl FilesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4834,6 +4772,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4842,23 +4785,15 @@ impl FilesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Permanently deletes all of the user's trashed files.
     pub async fn empty_trash(&mut self, params: &FilesEmptyTrashParams) -> Result<()> {
         let rel_path = format!("files/trash",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -4866,6 +4801,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4874,25 +4814,12 @@ impl FilesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Exports a Google Doc to the requested MIME type and returns the exported content. Please note that the exported content is limited to 10MB.
     ///
-    /// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
-    /// or a non-JSON type, the returned value indicates if a download took place or data was written to
-    /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
-    /// is returned.
+    /// This method potentially downloads data. See documentation of `Download`.
     pub async fn export<'a>(
         &'a mut self,
         params: &FilesExportParams,
@@ -4903,6 +4830,7 @@ impl FilesService {
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4910,6 +4838,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4918,23 +4851,15 @@ impl FilesService {
         let full_uri = path + &url_params;
         let opt_request: Option<&EmptyRequest> = None;
 
-        do_download(
-            &self.client,
-            &full_uri,
-            vec![(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET".into(),
-            opt_request,
-        )
-        .await
+        do_download(&self.client, &full_uri, headers, "GET".into(), opt_request).await
     }
 
     /// Generates a set of file IDs which can be provided in create or copy requests.
     pub async fn generate_ids(&mut self, params: &FilesGenerateIdsParams) -> Result<GeneratedIds> {
         let rel_path = format!("files/generateIds",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -4942,6 +4867,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4950,25 +4880,12 @@ impl FilesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Gets a file's metadata or content by ID.
     ///
-    /// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
-    /// or a non-JSON type, the returned value indicates if a download took place or data was written to
-    /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
-    /// is returned.
+    /// This method potentially downloads data. See documentation of `Download`.
     pub async fn get<'a>(
         &'a mut self,
         params: &FilesGetParams,
@@ -4979,6 +4896,7 @@ impl FilesService {
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -4986,6 +4904,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4994,23 +4917,15 @@ impl FilesService {
         let full_uri = path + &url_params;
         let opt_request: Option<&EmptyRequest> = None;
 
-        do_download(
-            &self.client,
-            &full_uri,
-            vec![(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET".into(),
-            opt_request,
-        )
-        .await
+        do_download(&self.client, &full_uri, headers, "GET".into(), opt_request).await
     }
 
     /// Lists or searches files.
     pub async fn list(&mut self, params: &FilesListParams) -> Result<FileList> {
         let rel_path = format!("files",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5018,6 +4933,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5026,17 +4946,7 @@ impl FilesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates a file's metadata and/or content. This method supports patch semantics.
@@ -5046,6 +4956,8 @@ impl FilesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string()];
@@ -5053,6 +4965,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5062,17 +4979,7 @@ impl FilesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 
     /// Updates a file's metadata and/or content. This method supports patch semantics.
@@ -5090,6 +4997,7 @@ impl FilesService {
         );
         let path = "https://www.googleapis.com/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string()];
@@ -5097,6 +5005,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?uploadType=multipart{params}", params = params);
 
         if let Some(ref api_params) = &params.drive_params {
@@ -5110,10 +5023,7 @@ impl FilesService {
         do_upload_multipart(
             &self.client,
             &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
+            &headers,
             "PATCH",
             opt_request,
             data,
@@ -5137,6 +5047,8 @@ impl FilesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string()];
@@ -5144,6 +5056,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?uploadType=resumable{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5153,17 +5070,9 @@ impl FilesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await?;
+        let (_resp, headers): (EmptyResponse, hyper::HeaderMap) =
+            do_request_with_headers(&self.client, &full_uri, &headers, "PATCH", opt_request)
+                .await?;
         if let Some(dest) = headers.get(hyper::header::LOCATION) {
             use std::convert::TryFrom;
             Ok(ResumableUpload::new(
@@ -5182,10 +5091,7 @@ impl FilesService {
 
     /// Subscribes to changes to a file
     ///
-    /// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
-    /// or a non-JSON type, the returned value indicates if a download took place or data was written to
-    /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
-    /// is returned.
+    /// This method potentially downloads data. See documentation of `Download`.
     pub async fn watch<'a>(
         &'a mut self,
         params: &FilesWatchParams,
@@ -5197,6 +5103,7 @@ impl FilesService {
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5204,6 +5111,11 @@ impl FilesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5213,17 +5125,7 @@ impl FilesService {
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
-        do_download(
-            &self.client,
-            &full_uri,
-            vec![(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST".into(),
-            opt_request,
-        )
-        .await
+        do_download(&self.client, &full_uri, headers, "POST".into(), opt_request).await
     }
 }
 
@@ -5272,6 +5174,8 @@ impl PermissionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5279,6 +5183,11 @@ impl PermissionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5288,17 +5197,7 @@ impl PermissionsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Deletes a permission.
@@ -5309,6 +5208,8 @@ impl PermissionsService {
             permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5316,6 +5217,11 @@ impl PermissionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5324,17 +5230,7 @@ impl PermissionsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Gets a permission by ID.
@@ -5345,6 +5241,8 @@ impl PermissionsService {
             permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5352,6 +5250,11 @@ impl PermissionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5360,17 +5263,7 @@ impl PermissionsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Lists a file's or shared drive's permissions.
@@ -5380,6 +5273,8 @@ impl PermissionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5387,6 +5282,11 @@ impl PermissionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5395,17 +5295,7 @@ impl PermissionsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates a permission with patch semantics.
@@ -5420,6 +5310,8 @@ impl PermissionsService {
             permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5427,6 +5319,11 @@ impl PermissionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5436,17 +5333,7 @@ impl PermissionsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 }
 
@@ -5492,6 +5379,8 @@ impl RepliesService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5499,6 +5388,11 @@ impl RepliesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5508,17 +5402,7 @@ impl RepliesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Deletes a reply.
@@ -5530,6 +5414,8 @@ impl RepliesService {
             replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5537,6 +5423,11 @@ impl RepliesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5545,17 +5436,7 @@ impl RepliesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Gets a reply by ID.
@@ -5567,6 +5448,8 @@ impl RepliesService {
             replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5574,6 +5457,11 @@ impl RepliesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5582,17 +5470,7 @@ impl RepliesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Lists a comment's replies.
@@ -5603,6 +5481,8 @@ impl RepliesService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5610,6 +5490,11 @@ impl RepliesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5618,17 +5503,7 @@ impl RepliesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates a reply with patch semantics.
@@ -5640,6 +5515,8 @@ impl RepliesService {
             replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5647,6 +5524,11 @@ impl RepliesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5656,17 +5538,7 @@ impl RepliesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 }
 
@@ -5712,6 +5584,8 @@ impl RevisionsService {
             revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5719,6 +5593,11 @@ impl RevisionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5727,25 +5606,12 @@ impl RevisionsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Gets a revision's metadata or content by ID.
     ///
-    /// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
-    /// or a non-JSON type, the returned value indicates if a download took place or data was written to
-    /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
-    /// is returned.
+    /// This method potentially downloads data. See documentation of `Download`.
     pub async fn get<'a>(
         &'a mut self,
         params: &RevisionsGetParams,
@@ -5757,6 +5623,7 @@ impl RevisionsService {
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5764,6 +5631,11 @@ impl RevisionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5772,17 +5644,7 @@ impl RevisionsService {
         let full_uri = path + &url_params;
         let opt_request: Option<&EmptyRequest> = None;
 
-        do_download(
-            &self.client,
-            &full_uri,
-            vec![(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET".into(),
-            opt_request,
-        )
-        .await
+        do_download(&self.client, &full_uri, headers, "GET".into(), opt_request).await
     }
 
     /// Lists a file's revisions.
@@ -5792,6 +5654,8 @@ impl RevisionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5799,6 +5663,11 @@ impl RevisionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5807,17 +5676,7 @@ impl RevisionsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates a revision with patch semantics.
@@ -5832,6 +5691,8 @@ impl RevisionsService {
             revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
@@ -5839,6 +5700,11 @@ impl RevisionsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5848,17 +5714,7 @@ impl RevisionsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 }
 
@@ -5904,6 +5760,8 @@ impl TeamdrivesService {
     ) -> Result<TeamDrive> {
         let rel_path = format!("teamdrives",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -5911,6 +5769,11 @@ impl TeamdrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5920,17 +5783,7 @@ impl TeamdrivesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Deprecated use drives.delete instead.
@@ -5940,6 +5793,8 @@ impl TeamdrivesService {
             teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -5947,6 +5802,11 @@ impl TeamdrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5955,17 +5815,7 @@ impl TeamdrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Deprecated use drives.get instead.
@@ -5975,6 +5825,8 @@ impl TeamdrivesService {
             teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -5982,6 +5834,11 @@ impl TeamdrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5990,23 +5847,15 @@ impl TeamdrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Deprecated use drives.list instead.
     pub async fn list(&mut self, params: &TeamdrivesListParams) -> Result<TeamDriveList> {
         let rel_path = format!("teamdrives",);
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
@@ -6014,6 +5863,11 @@ impl TeamdrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6022,17 +5876,7 @@ impl TeamdrivesService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Deprecated use drives.update instead
@@ -6046,6 +5890,8 @@ impl TeamdrivesService {
             teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
@@ -6053,6 +5899,11 @@ impl TeamdrivesService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.drive_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6062,16 +5913,6 @@ impl TeamdrivesService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 }
