@@ -4430,6 +4430,8 @@ impl BucketAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4437,6 +4439,11 @@ impl BucketAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4445,17 +4452,7 @@ impl BucketAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Returns the ACL entry for the specified entity on the specified bucket.
@@ -4469,6 +4466,8 @@ impl BucketAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4476,6 +4475,11 @@ impl BucketAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4484,17 +4488,7 @@ impl BucketAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Creates a new ACL entry on the specified bucket.
@@ -4508,6 +4502,8 @@ impl BucketAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4515,6 +4511,11 @@ impl BucketAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4524,17 +4525,7 @@ impl BucketAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Retrieves ACL entries on the specified bucket.
@@ -4547,6 +4538,8 @@ impl BucketAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4554,6 +4547,11 @@ impl BucketAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4562,17 +4560,7 @@ impl BucketAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Patches an ACL entry on the specified bucket.
@@ -4587,6 +4575,8 @@ impl BucketAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4594,6 +4584,11 @@ impl BucketAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4603,17 +4598,7 @@ impl BucketAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 
     /// Updates an ACL entry on the specified bucket.
@@ -4628,6 +4613,8 @@ impl BucketAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4635,6 +4622,11 @@ impl BucketAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4644,17 +4636,7 @@ impl BucketAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 }
 
@@ -4699,6 +4681,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -4706,6 +4690,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4714,17 +4703,7 @@ impl BucketsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Returns metadata for the specified bucket.
@@ -4734,6 +4713,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -4741,6 +4722,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4749,17 +4735,7 @@ impl BucketsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Returns an IAM policy for the specified bucket.
@@ -4769,6 +4745,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4776,6 +4754,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4784,23 +4767,15 @@ impl BucketsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Creates a new bucket.
     pub async fn insert(&mut self, params: &BucketsInsertParams, req: &Bucket) -> Result<Bucket> {
         let rel_path = format!("b",);
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -4808,6 +4783,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4817,23 +4797,15 @@ impl BucketsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Retrieves a list of buckets for a given project.
     pub async fn list(&mut self, params: &BucketsListParams) -> Result<Buckets> {
         let rel_path = format!("b",);
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -4841,6 +4813,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4849,17 +4826,7 @@ impl BucketsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Locks retention policy on a bucket.
@@ -4872,6 +4839,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -4879,6 +4848,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4887,17 +4861,7 @@ impl BucketsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Patches a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
@@ -4907,6 +4871,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4914,6 +4880,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4923,17 +4894,7 @@ impl BucketsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 
     /// Updates an IAM policy for the specified bucket.
@@ -4947,6 +4908,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -4954,6 +4917,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -4963,17 +4931,7 @@ impl BucketsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 
     /// Tests a set of permissions on the given bucket to see which, if any, are held by the caller.
@@ -4986,6 +4944,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -4993,6 +4953,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5001,17 +4966,7 @@ impl BucketsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates a bucket. Changes to the bucket will be readable immediately after writing, but configuration changes may take time to propagate.
@@ -5021,6 +4976,8 @@ impl BucketsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5028,6 +4985,11 @@ impl BucketsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5037,17 +4999,7 @@ impl BucketsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 }
 
@@ -5089,6 +5041,8 @@ impl ChannelsService {
     pub async fn stop(&mut self, params: &ChannelsStopParams, req: &Channel) -> Result<()> {
         let rel_path = format!("channels/stop",);
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5096,6 +5050,11 @@ impl ChannelsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5105,17 +5064,7 @@ impl ChannelsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 }
 
@@ -5161,6 +5110,8 @@ impl DefaultObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5168,6 +5119,11 @@ impl DefaultObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5176,17 +5132,7 @@ impl DefaultObjectAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Returns the default object ACL entry for the specified entity on the specified bucket.
@@ -5200,6 +5146,8 @@ impl DefaultObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5207,6 +5155,11 @@ impl DefaultObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5215,17 +5168,7 @@ impl DefaultObjectAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Creates a new default object ACL entry on the specified bucket.
@@ -5239,6 +5182,8 @@ impl DefaultObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5246,6 +5191,11 @@ impl DefaultObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5255,17 +5205,7 @@ impl DefaultObjectAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Retrieves default object ACL entries on the specified bucket.
@@ -5278,6 +5218,8 @@ impl DefaultObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5285,6 +5227,11 @@ impl DefaultObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5293,17 +5240,7 @@ impl DefaultObjectAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Patches a default object ACL entry on the specified bucket.
@@ -5318,6 +5255,8 @@ impl DefaultObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5325,6 +5264,11 @@ impl DefaultObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5334,17 +5278,7 @@ impl DefaultObjectAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 
     /// Updates a default object ACL entry on the specified bucket.
@@ -5359,6 +5293,8 @@ impl DefaultObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5366,6 +5302,11 @@ impl DefaultObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5375,17 +5316,7 @@ impl DefaultObjectAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 }
 
@@ -5431,6 +5362,8 @@ impl NotificationsService {
             notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5438,6 +5371,11 @@ impl NotificationsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5446,17 +5384,7 @@ impl NotificationsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// View a notification configuration.
@@ -5467,6 +5395,8 @@ impl NotificationsService {
             notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5474,6 +5404,11 @@ impl NotificationsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5482,17 +5417,7 @@ impl NotificationsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Creates a notification subscription for a given bucket.
@@ -5506,6 +5431,8 @@ impl NotificationsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5513,6 +5440,11 @@ impl NotificationsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5522,17 +5454,7 @@ impl NotificationsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Retrieves a list of notification subscriptions for a given bucket.
@@ -5542,6 +5464,8 @@ impl NotificationsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5549,6 +5473,11 @@ impl NotificationsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5557,17 +5486,7 @@ impl NotificationsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 }
 
@@ -5614,6 +5533,8 @@ impl ObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5621,6 +5542,11 @@ impl ObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5629,17 +5555,7 @@ impl ObjectAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Returns the ACL entry for the specified entity on the specified object.
@@ -5654,6 +5570,8 @@ impl ObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5661,6 +5579,11 @@ impl ObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5669,17 +5592,7 @@ impl ObjectAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Creates a new ACL entry on the specified object.
@@ -5694,6 +5607,8 @@ impl ObjectAccessControlsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5701,6 +5616,11 @@ impl ObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5710,17 +5630,7 @@ impl ObjectAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Retrieves ACL entries on the specified object.
@@ -5734,6 +5644,8 @@ impl ObjectAccessControlsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5741,6 +5653,11 @@ impl ObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5749,17 +5666,7 @@ impl ObjectAccessControlsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Patches an ACL entry on the specified object.
@@ -5775,6 +5682,8 @@ impl ObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5782,6 +5691,11 @@ impl ObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5791,17 +5705,7 @@ impl ObjectAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 
     /// Updates an ACL entry on the specified object.
@@ -5817,6 +5721,8 @@ impl ObjectAccessControlsService {
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -5824,6 +5730,11 @@ impl ObjectAccessControlsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5833,17 +5744,7 @@ impl ObjectAccessControlsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 }
 
@@ -5895,6 +5796,8 @@ impl ObjectsService {
                 percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5902,6 +5805,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5911,17 +5819,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Copies a source object to a destination object. Optionally overrides metadata.
@@ -5936,6 +5834,8 @@ impl ObjectsService {
                 percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5943,6 +5843,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5952,17 +5857,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Deletes an object and its metadata. Deletions are permanent if versioning is not enabled for the bucket, or if the generation parameter is used.
@@ -5973,6 +5868,8 @@ impl ObjectsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -5980,6 +5877,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -5988,25 +5890,12 @@ impl ObjectsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Retrieves an object or its metadata.
     ///
-    /// This method downloads data. Depending on the server returning a `Content-Type` of `application/json`
-    /// or a non-JSON type, the returned value indicates if a download took place or data was written to
-    /// `dst`. If `dst` is `None` despite data being available for download, `ApiError::DataAvailableError`
-    /// is returned.
+    /// This method potentially downloads data. See documentation of `Download`.
     pub async fn get<'a>(
         &'a mut self,
         params: &ObjectsGetParams,
@@ -6018,6 +5907,7 @@ impl ObjectsService {
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6025,6 +5915,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6033,17 +5928,7 @@ impl ObjectsService {
         let full_uri = path + &url_params;
         let opt_request: Option<&EmptyRequest> = None;
 
-        do_download(
-            &self.client,
-            &full_uri,
-            vec![(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET".into(),
-            opt_request,
-        )
-        .await
+        do_download(&self.client, &full_uri, headers, "GET".into(), opt_request).await
     }
 
     /// Returns an IAM policy for the specified object.
@@ -6054,6 +5939,8 @@ impl ObjectsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6061,6 +5948,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6069,17 +5961,7 @@ impl ObjectsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Stores a new object and metadata.
@@ -6089,6 +5971,8 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6096,6 +5980,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6105,17 +5994,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Stores a new object and metadata.
@@ -6133,6 +6012,7 @@ impl ObjectsService {
         );
         let path = "https://storage.googleapis.com/".to_string() + &rel_path;
 
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6140,6 +6020,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?uploadType=multipart{params}", params = params);
 
         if let Some(ref api_params) = &params.storage_params {
@@ -6150,18 +6035,7 @@ impl ObjectsService {
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
 
-        do_upload_multipart(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-            data,
-        )
-        .await
+        do_upload_multipart(&self.client, &full_uri, &headers, "POST", opt_request, data).await
     }
 
     /// Stores a new object and metadata.
@@ -6180,6 +6054,8 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6187,6 +6063,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?uploadType=resumable{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6196,17 +6077,8 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        let (_resp, headers): (EmptyResponse, hyper::HeaderMap) = do_request_with_headers(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await?;
+        let (_resp, headers): (EmptyResponse, hyper::HeaderMap) =
+            do_request_with_headers(&self.client, &full_uri, &headers, "POST", opt_request).await?;
         if let Some(dest) = headers.get(hyper::header::LOCATION) {
             use std::convert::TryFrom;
             Ok(ResumableUpload::new(
@@ -6230,6 +6102,8 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6237,6 +6111,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6245,17 +6124,7 @@ impl ObjectsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Patches an object's metadata.
@@ -6266,6 +6135,8 @@ impl ObjectsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -6273,6 +6144,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6282,17 +6158,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PATCH",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PATCH", opt_request).await
     }
 
     /// Rewrites a source object to a destination object. Optionally overrides metadata.
@@ -6303,6 +6169,8 @@ impl ObjectsService {
     ) -> Result<RewriteResponse> {
         let rel_path = format!("b/{sourceBucket}/o/{sourceObject}/rewriteTo/b/{destinationBucket}/o/{destinationObject}", sourceBucket=percent_encode(params.source_bucket.as_bytes(), NON_ALPHANUMERIC),sourceObject=percent_encode(params.source_object.as_bytes(), NON_ALPHANUMERIC),destinationBucket=percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),destinationObject=percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC));
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6310,6 +6178,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6319,17 +6192,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Updates an IAM policy for the specified object.
@@ -6344,6 +6207,8 @@ impl ObjectsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6351,6 +6216,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6360,17 +6230,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 
     /// Tests a set of permissions on the given object to see which, if any, are held by the caller.
@@ -6384,6 +6244,8 @@ impl ObjectsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6391,6 +6253,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6399,17 +6266,7 @@ impl ObjectsService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates an object's metadata.
@@ -6420,6 +6277,8 @@ impl ObjectsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -6427,6 +6286,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6436,17 +6300,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 
     /// Watch for changes on all objects in a bucket.
@@ -6460,6 +6314,8 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6467,6 +6323,11 @@ impl ObjectsService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6476,17 +6337,7 @@ impl ObjectsService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 }
 
@@ -6566,6 +6417,8 @@ impl ProjectsHmacKeysService {
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -6573,6 +6426,11 @@ impl ProjectsHmacKeysService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6581,17 +6439,7 @@ impl ProjectsHmacKeysService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "POST",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "POST", opt_request).await
     }
 
     /// Deletes an HMAC key.
@@ -6602,6 +6450,8 @@ impl ProjectsHmacKeysService {
             accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6609,6 +6459,11 @@ impl ProjectsHmacKeysService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6617,17 +6472,7 @@ impl ProjectsHmacKeysService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "DELETE",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "DELETE", opt_request).await
     }
 
     /// Retrieves an HMAC key's metadata
@@ -6638,6 +6483,8 @@ impl ProjectsHmacKeysService {
             accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_only".to_string()];
@@ -6645,6 +6492,11 @@ impl ProjectsHmacKeysService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6653,17 +6505,7 @@ impl ProjectsHmacKeysService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Retrieves a list of HMAC keys matching the criteria.
@@ -6673,6 +6515,8 @@ impl ProjectsHmacKeysService {
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_only".to_string()];
@@ -6680,6 +6524,11 @@ impl ProjectsHmacKeysService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6688,17 +6537,7 @@ impl ProjectsHmacKeysService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 
     /// Updates the state of an HMAC key. See the HMAC Key resource descriptor for valid states.
@@ -6713,6 +6552,8 @@ impl ProjectsHmacKeysService {
             accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
@@ -6720,6 +6561,11 @@ impl ProjectsHmacKeysService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6729,17 +6575,7 @@ impl ProjectsHmacKeysService {
 
         let opt_request: Option<&EmptyRequest> = None;
         let opt_request = Some(req);
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "PUT",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "PUT", opt_request).await
     }
 }
 
@@ -6787,6 +6623,8 @@ impl ProjectsServiceAccountService {
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+
+        let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
             let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
@@ -6794,6 +6632,11 @@ impl ProjectsServiceAccountService {
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
         }
+        headers.push((
+            hyper::header::AUTHORIZATION,
+            format!("Bearer {token}", token = tok.as_str()),
+        ));
+
         let mut url_params = format!("?{params}", params = params);
         if let Some(ref api_params) = &params.storage_params {
             url_params.push_str(&format!("{}", api_params));
@@ -6802,16 +6645,6 @@ impl ProjectsServiceAccountService {
         let full_uri = path + &url_params;
 
         let opt_request: Option<&EmptyRequest> = None;
-        do_request(
-            &self.client,
-            &full_uri,
-            &[(
-                hyper::header::AUTHORIZATION,
-                format!("Bearer {token}", token = tok.as_str()),
-            )],
-            "GET",
-            opt_request,
-        )
-        .await
+        do_request(&self.client, &full_uri, &headers, "GET", opt_request).await
     }
 }

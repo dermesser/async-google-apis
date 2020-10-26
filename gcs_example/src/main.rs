@@ -87,7 +87,7 @@ fn print_objects(objs: &storage_v1_types::Objects) {
                     .entity
                     .as_ref()
                     .unwrap_or(&"".into()),
-                obj.self_link.as_ref().unwrap_or(&"(unknown link)".into())
+                obj.media_link.as_ref().unwrap_or(&"(unknown link)".into())
             );
         }
     }
