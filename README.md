@@ -37,10 +37,11 @@ APIs to gain insights on which code to generate.
   ```
   (install `pipenv` using `pip install --user pipenv` before, if you don't have it
   yet). See more details in that directory.
-* Consult `drive_example` for a simple but useful example of using the generated
-  code. As you can see, it is reasonably easy! Use `cargo doc` to generate the
-  documentation for generated code, as the API comments is translated into Rust
-  doc comments.
+* Consult `drive_example` or `gcs_example` for simple but useful examples of
+  using the generated code. As you can see, it is reasonably easy! Use `cargo doc`
+  to generate the documentation for generated code, as the API comments is
+  translated into Rust doc comments. I try keeping them up-to-date as the API of
+  the generated code occasionally changes.
 * `async-google-apis-common` contains shared code, for example the HTTP logic,
   used by the generated code, as well as some types (like errors) and as well as
   all imports. Include this crate in your dependencies when you are using
