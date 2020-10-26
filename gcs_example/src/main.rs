@@ -1,7 +1,8 @@
 mod storage_v1_types;
 
+use anyhow::Context;
 use async_google_apis_common as common;
-
+use chrono;
 use env_logger;
 
 use std::path::Path;
@@ -27,7 +28,7 @@ async fn upload_file(
     let result = cl
         .insert_resumable_upload(&params, &obj)
         .await?
-        .set_max_chunksize(1024 * 1024)?
+        .set_max_chunksize(1024 * 1024 * 5)?
         .upload_file(f)
         .await?;
 
@@ -62,6 +63,57 @@ async fn download_file(
     Ok(())
 }
 
+fn print_objects(objs: &storage_v1_types::Objects) {
+    if let Some(ref objs) = objs.items {
+        for obj in objs.iter() {
+            println!(
+                "{} ({} B), class {}. Created @ {} by {}. => {}",
+                obj.name.as_ref().unwrap_or(&"(unknown name)".into()),
+                obj.size.as_ref().unwrap_or(&"(unknown size)".into()),
+                obj.storage_class
+                    .as_ref()
+                    .unwrap_or(&"(unknown class)".into()),
+                obj.time_created
+                    .as_ref()
+                    .map(|dt| format!("{}", dt))
+                    .unwrap_or("(unknown time)".into()),
+                obj.owner
+                    .as_ref()
+                    .unwrap_or(&Default::default())
+                    .entity
+                    .as_ref()
+                    .unwrap_or(&"".into()),
+                obj.self_link.as_ref().unwrap_or(&"(unknown link)".into())
+            );
+        }
+    }
+}
+
+async fn list_objects(
+    mut cl: storage_v1_types::ObjectsService,
+    bucket: &str,
+    prefix: &str,
+) -> common::Result<()> {
+    let mut params = storage_v1_types::ObjectsListParams::default();
+    params.bucket = bucket.into();
+    params.prefix = Some(prefix.into());
+    params.storage_params = Some(storage_v1_types::StorageParams::default());
+    params.storage_params.as_mut().unwrap().fields = Some("*".into());
+
+    let mut npt = None;
+    loop {
+        params.page_token = npt.take();
+        let result = cl.list(&params).await?;
+        print_objects(&result);
+        if result.next_page_token.is_some() {
+            npt = result.next_page_token.clone();
+        } else {
+            break;
+        }
+    }
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() {
     env_logger::init();
@@ -87,6 +139,13 @@ async fn main() {
                 .takes_value(true),
         )
         .arg(
+            clap::Arg::with_name("PREFIX")
+                .help("When listing with -a list: Prefix of objects to list.")
+                .long("prefix")
+                .short("p")
+                .takes_value(true),
+        )
+        .arg(
             clap::Arg::with_name("FILE_OR_OBJECT")
                 .help("File to upload")
                 .index(1),
@@ -96,6 +155,8 @@ async fn main() {
     let https_client = https_client();
     let service_account_key = common::yup_oauth2::read_service_account_key("client_secret.json")
         .await
+        .map_err(anyhow::Error::from)
+        .context("client_secret.json")
         .unwrap();
     let authenticator =
         common::yup_oauth2::ServiceAccountAuthenticator::builder(service_account_key)
@@ -111,11 +172,12 @@ async fn main() {
         .value_of("BUCKET")
         .expect("--bucket is a mandatory argument.");
 
+    let cl = storage_v1_types::ObjectsService::new(https_client, authenticator);
+
     if action == "get" {
         let obj = matches
             .value_of("FILE_OR_OBJECT")
             .expect("OBJECT is a mandatory argument.");
-        let cl = storage_v1_types::ObjectsService::new(https_client, authenticator);
         download_file(cl, buck, obj)
             .await
             .expect("Download failed :(");
@@ -123,10 +185,16 @@ async fn main() {
         let fp = matches
             .value_of("FILE_OR_OBJECT")
             .expect("FILE is a mandatory argument.");
-        let cl = storage_v1_types::ObjectsService::new(https_client, authenticator);
+        println!("{}", fp);
         upload_file(cl, buck, Path::new(&fp))
             .await
             .expect("Upload failed :(");
+        return;
+    } else if action == "list" {
+        let prefix = matches.value_of("PREFIX").unwrap_or("");
+        list_objects(cl, buck, prefix)
+            .await
+            .expect("List failed :(");
         return;
     }
 }

@@ -10,6 +10,7 @@ edition = "2018"
 async-google-apis-common = { path = "../async-google-apis-common" }
 
 anyhow = "~1.0"
+chrono = "~0.4"
 clap = "~2.33"
 serde = "~1.0"
 env_logger = "~0.8"
