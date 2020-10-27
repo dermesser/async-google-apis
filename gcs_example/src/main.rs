@@ -21,7 +21,7 @@ async fn upload_file(
 ) -> common::Result<()> {
     let mut params = storage_v1_types::ObjectsInsertParams::default();
     params.bucket = bucket.into();
-    assert!(prefix.ends_with("/"));
+    assert!(prefix.ends_with("/") || prefix.is_empty());
     params.name = Some(prefix.to_string() + p.file_name().unwrap().to_str().unwrap());
     let obj = storage_v1_types::Object::default();
 
@@ -120,6 +120,18 @@ async fn list_objects(
     Ok(())
 }
 
+async fn rm_object(
+    mut cl: storage_v1_types::ObjectsService,
+    bucket: &str,
+    id: &str,
+) -> common::Result<()> {
+    let mut params = storage_v1_types::ObjectsDeleteParams::default();
+    params.bucket = bucket.into();
+    params.object = id.into();
+
+    cl.delete(&params).await
+}
+
 #[tokio::main]
 async fn main() {
     env_logger::init();
@@ -139,7 +151,7 @@ async fn main() {
             clap::Arg::with_name("ACTION")
                 .help("What to do.")
                 .long("action")
-                .possible_values(&["get", "list", "put"])
+                .possible_values(&["get", "list", "put", "rm"])
                 .required(true)
                 .short("a")
                 .takes_value(true),
@@ -191,9 +203,8 @@ async fn main() {
         let fp = matches
             .value_of("FILE_OR_OBJECT")
             .expect("FILE is a mandatory argument.");
-        let mut pre = matches
-            .value_of("PREFIX").unwrap_or("").to_string();
-        if !pre.ends_with("/") {
+        let mut pre = matches.value_of("PREFIX").unwrap_or("").to_string();
+        if !pre.ends_with("/") && !pre.is_empty() {
             pre = pre.to_string() + "/";
         }
         upload_file(cl, buck, Path::new(&fp), &pre)
@@ -205,6 +216,12 @@ async fn main() {
         list_objects(cl, buck, prefix)
             .await
             .expect("List failed :(");
+        return;
+    } else if action == "rm" {
+        let obj = matches
+            .value_of("FILE_OR_OBJECT")
+            .expect("OBJECT is a mandatory argument.");
+        rm_object(cl, buck, obj).await.expect("rm failed :(");
         return;
     }
 }
