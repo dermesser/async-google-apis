@@ -319,8 +319,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'download_in_type': in_type if in_type else 'EmptyRequest',
                 'out_type':
                 out_type,
-                'base_path':
-                discdoc['baseUrl'],
+                'base_path': discdoc['baseUrl'],
+                'root_path': discdoc['rootUrl'],
                 'rel_path_expr':
                 formatted_path,
                 'params': [{
@@ -352,8 +352,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'in_type': in_type,
                 'out_type':
                 out_type,
-                'base_path':
-                discdoc['baseUrl'],
+                'base_path': discdoc['baseUrl'],
+                'root_path': discdoc['rootUrl'],
                 'rel_path_expr':
                 formatted_path,
                 'params': [{
@@ -383,7 +383,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             'param_type': params_type_name,
             'in_type': in_type,
             'out_type': out_type,
-            'base_path': discdoc['rootUrl'],
+            'base_path': discdoc['baseUrl'],
+            'root_path': discdoc['rootUrl'],
             'simple_rel_path_expr': formatted_simple_upload_path.lstrip('/'),
             'resumable_rel_path_expr': formatted_resumable_upload_path.lstrip('/'),
             'global_params_name':
@@ -412,6 +413,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         ServiceImplementationTmpl, {
             'service': service,
             'name': capitalize_first(discdoc.get('name', '')),
+            'base_path': discdoc['baseUrl'],
+            'root_path': discdoc['rootUrl'],
             'wants_auth': 'auth' in discdoc,
             'methods': [{
                 'text': t

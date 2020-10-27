@@ -95,6 +95,9 @@ pub struct {{{service}}}Service {
     authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
     scopes: Vec<String>,
     {{/wants_auth}}
+
+    base_url: String,
+    root_url: String,
 }
 
 impl {{{service}}}Service {
@@ -105,7 +108,39 @@ impl {{{service}}}Service {
     {{#wants_auth}}<A: 'static + std::ops::Deref<Target=Authenticator>>
     {{/wants_auth}}(client: TlsClient{{#wants_auth}}, auth: A{{/wants_auth}}) -> {{service}}Service {
         {{{service}}}Service { client: client
-            {{#wants_auth}}, authenticator: Box::new(auth), scopes: vec![]{{/wants_auth}} }
+            {{#wants_auth}}, authenticator: Box::new(auth), scopes: vec![]{{/wants_auth}},
+            base_url: "{{{base_path}}}".into(), root_url: "{{{root_path}}}".into() }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     {{#wants_auth}}
@@ -135,7 +170,7 @@ pub async fn {{{name}}}(
     &mut self, params: &{{{param_type}}}{{#in_type}}, req: &{{{in_type}}}{{/in_type}}) -> Result<{{{out_type}}}> {
 
     let rel_path = {{{rel_path_expr}}};
-    let path = "{{{base_path}}}".to_string() + &rel_path;
+    let path = self.format_path(rel_path.as_str());
 
     let mut headers = vec![];
     {{#wants_auth}}
@@ -181,7 +216,7 @@ UploadMethodTmpl = '''
 pub async fn {{{name}}}_upload(
     &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
     let rel_path = {{{simple_rel_path_expr}}};
-    let path = "{{{base_path}}}".to_string() + &rel_path;
+    let path = self.format_path(rel_path.as_str());
 
     let mut headers = vec![];
     {{#wants_auth}}
@@ -232,7 +267,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     &'client mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
 
     let rel_path = {{{resumable_rel_path_expr}}};
-    let path = "{{{base_path}}}".to_string() + &rel_path;
+    let path = self.format_path(rel_path.as_str());
 
     let mut headers = vec![];
     {{#wants_auth}}
@@ -286,7 +321,7 @@ pub async fn {{{name}}}<'a>(
     -> Result<Download<'a, {{{download_in_type}}}, {{{out_type}}}>> {
 
     let rel_path = {{{rel_path_expr}}};
-    let path = "{{{base_path}}}".to_string() + &rel_path;
+    let path = self.format_path(rel_path.as_str());
 
     let mut headers = vec![];
     {{#wants_auth}}
