@@ -4393,6 +4393,9 @@ pub struct BucketAccessControlsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl BucketAccessControlsService {
@@ -4407,7 +4410,40 @@ impl BucketAccessControlsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -4429,7 +4465,7 @@ impl BucketAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4465,7 +4501,7 @@ impl BucketAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4501,7 +4537,7 @@ impl BucketAccessControlsService {
             "b/{bucket}/acl",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4537,7 +4573,7 @@ impl BucketAccessControlsService {
             "b/{bucket}/acl",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4574,7 +4610,7 @@ impl BucketAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4612,7 +4648,7 @@ impl BucketAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4645,6 +4681,9 @@ pub struct BucketsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl BucketsService {
@@ -4659,7 +4698,40 @@ impl BucketsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -4680,7 +4752,7 @@ impl BucketsService {
             "b/{bucket}",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4712,7 +4784,7 @@ impl BucketsService {
             "b/{bucket}",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4744,7 +4816,7 @@ impl BucketsService {
             "b/{bucket}/iam",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4773,7 +4845,7 @@ impl BucketsService {
     /// Creates a new bucket.
     pub async fn insert(&mut self, params: &BucketsInsertParams, req: &Bucket) -> Result<Bucket> {
         let rel_path = format!("b",);
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4803,7 +4875,7 @@ impl BucketsService {
     /// Retrieves a list of buckets for a given project.
     pub async fn list(&mut self, params: &BucketsListParams) -> Result<Buckets> {
         let rel_path = format!("b",);
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4838,7 +4910,7 @@ impl BucketsService {
             "b/{bucket}/lockRetentionPolicy",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4870,7 +4942,7 @@ impl BucketsService {
             "b/{bucket}",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4907,7 +4979,7 @@ impl BucketsService {
             "b/{bucket}/iam",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4943,7 +5015,7 @@ impl BucketsService {
             "b/{bucket}/iam/testPermissions",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4975,7 +5047,7 @@ impl BucketsService {
             "b/{bucket}",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5008,6 +5080,9 @@ pub struct ChannelsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ChannelsService {
@@ -5022,7 +5097,40 @@ impl ChannelsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5040,7 +5148,7 @@ impl ChannelsService {
     /// Stop watching resources through this channel
     pub async fn stop(&mut self, params: &ChannelsStopParams, req: &Channel) -> Result<()> {
         let rel_path = format!("channels/stop",);
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5073,6 +5181,9 @@ pub struct DefaultObjectAccessControlsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl DefaultObjectAccessControlsService {
@@ -5087,7 +5198,40 @@ impl DefaultObjectAccessControlsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5109,7 +5253,7 @@ impl DefaultObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5145,7 +5289,7 @@ impl DefaultObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5181,7 +5325,7 @@ impl DefaultObjectAccessControlsService {
             "b/{bucket}/defaultObjectAcl",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5217,7 +5361,7 @@ impl DefaultObjectAccessControlsService {
             "b/{bucket}/defaultObjectAcl",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5254,7 +5398,7 @@ impl DefaultObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5292,7 +5436,7 @@ impl DefaultObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5325,6 +5469,9 @@ pub struct NotificationsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl NotificationsService {
@@ -5339,7 +5486,40 @@ impl NotificationsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5361,7 +5541,7 @@ impl NotificationsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5394,7 +5574,7 @@ impl NotificationsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5430,7 +5610,7 @@ impl NotificationsService {
             "b/{bucket}/notificationConfigs",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5463,7 +5643,7 @@ impl NotificationsService {
             "b/{bucket}/notificationConfigs",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5495,6 +5675,9 @@ pub struct ObjectAccessControlsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ObjectAccessControlsService {
@@ -5509,7 +5692,40 @@ impl ObjectAccessControlsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5532,7 +5748,7 @@ impl ObjectAccessControlsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5569,7 +5785,7 @@ impl ObjectAccessControlsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5606,7 +5822,7 @@ impl ObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5643,7 +5859,7 @@ impl ObjectAccessControlsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5681,7 +5897,7 @@ impl ObjectAccessControlsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5720,7 +5936,7 @@ impl ObjectAccessControlsService {
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
             entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5753,6 +5969,9 @@ pub struct ObjectsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ObjectsService {
@@ -5767,7 +5986,40 @@ impl ObjectsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5795,7 +6047,7 @@ impl ObjectsService {
             destinationObject =
                 percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5833,7 +6085,7 @@ impl ObjectsService {
             destinationObject =
                 percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5867,7 +6119,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5905,7 +6157,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5938,7 +6190,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5970,7 +6222,7 @@ impl ObjectsService {
             "b/{bucket}/o",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6010,7 +6262,7 @@ impl ObjectsService {
             "/upload/storage/v1/b/{bucket}/o",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6053,7 +6305,7 @@ impl ObjectsService {
             "/resumable/upload/storage/v1/b/{bucket}/o",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6101,7 +6353,7 @@ impl ObjectsService {
             "b/{bucket}/o",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6134,7 +6386,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6168,7 +6420,7 @@ impl ObjectsService {
         req: &Object,
     ) -> Result<RewriteResponse> {
         let rel_path = format!("b/{sourceBucket}/o/{sourceObject}/rewriteTo/b/{destinationBucket}/o/{destinationObject}", sourceBucket=percent_encode(params.source_bucket.as_bytes(), NON_ALPHANUMERIC),sourceObject=percent_encode(params.source_object.as_bytes(), NON_ALPHANUMERIC),destinationBucket=percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),destinationObject=percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC));
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6206,7 +6458,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6243,7 +6495,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6276,7 +6528,7 @@ impl ObjectsService {
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
             object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6313,7 +6565,7 @@ impl ObjectsService {
             "b/{bucket}/o/watch",
             bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6346,6 +6598,9 @@ pub struct ProjectsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ProjectsService {
@@ -6360,7 +6615,40 @@ impl ProjectsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -6381,6 +6669,9 @@ pub struct ProjectsHmacKeysService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ProjectsHmacKeysService {
@@ -6395,7 +6686,40 @@ impl ProjectsHmacKeysService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -6416,7 +6740,7 @@ impl ProjectsHmacKeysService {
             "projects/{projectId}/hmacKeys",
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6449,7 +6773,7 @@ impl ProjectsHmacKeysService {
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
             accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6482,7 +6806,7 @@ impl ProjectsHmacKeysService {
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
             accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6514,7 +6838,7 @@ impl ProjectsHmacKeysService {
             "projects/{projectId}/hmacKeys",
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6551,7 +6875,7 @@ impl ProjectsHmacKeysService {
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
             accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -6584,6 +6908,9 @@ pub struct ProjectsServiceAccountService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ProjectsServiceAccountService {
@@ -6598,7 +6925,40 @@ impl ProjectsServiceAccountService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://storage.googleapis.com/storage/v1/".into(),
+            root_url: "https://storage.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -6622,7 +6982,7 @@ impl ProjectsServiceAccountService {
             "projects/{projectId}/serviceAccount",
             projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://storage.googleapis.com/storage/v1/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;

@@ -3854,6 +3854,9 @@ pub struct AboutService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl AboutService {
@@ -3868,7 +3871,40 @@ impl AboutService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -3886,7 +3922,7 @@ impl AboutService {
     /// Gets information about the user, the user's Drive, and system capabilities.
     pub async fn get(&mut self, params: &AboutGetParams) -> Result<About> {
         let rel_path = format!("about",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -3918,6 +3954,9 @@ pub struct ChangesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ChangesService {
@@ -3932,7 +3971,40 @@ impl ChangesService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -3953,7 +4025,7 @@ impl ChangesService {
         params: &ChangesGetStartPageTokenParams,
     ) -> Result<StartPageToken> {
         let rel_path = format!("changes/startPageToken",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -3982,7 +4054,7 @@ impl ChangesService {
     /// Lists the changes for a user or shared drive.
     pub async fn list(&mut self, params: &ChangesListParams) -> Result<ChangeList> {
         let rel_path = format!("changes",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4011,7 +4083,7 @@ impl ChangesService {
     /// Subscribes to changes for a user.
     pub async fn watch(&mut self, params: &ChangesWatchParams, req: &Channel) -> Result<Channel> {
         let rel_path = format!("changes/watch",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4044,6 +4116,9 @@ pub struct ChannelsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl ChannelsService {
@@ -4058,7 +4133,40 @@ impl ChannelsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -4076,7 +4184,7 @@ impl ChannelsService {
     /// Stop watching resources through this channel
     pub async fn stop(&mut self, params: &ChannelsStopParams, req: &Channel) -> Result<()> {
         let rel_path = format!("channels/stop",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4109,6 +4217,9 @@ pub struct CommentsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl CommentsService {
@@ -4123,7 +4234,40 @@ impl CommentsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -4148,7 +4292,7 @@ impl CommentsService {
             "files/{fileId}/comments",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4182,7 +4326,7 @@ impl CommentsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4215,7 +4359,7 @@ impl CommentsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4247,7 +4391,7 @@ impl CommentsService {
             "files/{fileId}/comments",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4284,7 +4428,7 @@ impl CommentsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4317,6 +4461,9 @@ pub struct DrivesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl DrivesService {
@@ -4331,7 +4478,40 @@ impl DrivesService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -4349,7 +4529,7 @@ impl DrivesService {
     /// Creates a new shared drive.
     pub async fn create(&mut self, params: &DrivesCreateParams, req: &Drive) -> Result<Drive> {
         let rel_path = format!("drives",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4382,7 +4562,7 @@ impl DrivesService {
             "drives/{driveId}",
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4414,7 +4594,7 @@ impl DrivesService {
             "drives/{driveId}",
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4446,7 +4626,7 @@ impl DrivesService {
             "drives/{driveId}/hide",
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4475,7 +4655,7 @@ impl DrivesService {
     /// Lists the user's shared drives.
     pub async fn list(&mut self, params: &DrivesListParams) -> Result<DriveList> {
         let rel_path = format!("drives",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4507,7 +4687,7 @@ impl DrivesService {
             "drives/{driveId}/unhide",
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4539,7 +4719,7 @@ impl DrivesService {
             "drives/{driveId}",
             driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4572,6 +4752,9 @@ pub struct FilesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl FilesService {
@@ -4586,7 +4769,40 @@ impl FilesService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -4607,7 +4823,7 @@ impl FilesService {
             "files/{fileId}/copy",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4637,7 +4853,7 @@ impl FilesService {
     /// Creates a new file.
     pub async fn create(&mut self, params: &FilesCreateParams, req: &File) -> Result<File> {
         let rel_path = format!("files",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4674,7 +4890,7 @@ impl FilesService {
         data: hyper::body::Bytes,
     ) -> Result<File> {
         let rel_path = format!("/upload/drive/v3/files",);
-        let path = "https://www.googleapis.com/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4714,7 +4930,7 @@ impl FilesService {
         req: &File,
     ) -> Result<ResumableUpload<'client, File>> {
         let rel_path = format!("/resumable/upload/drive/v3/files",);
-        let path = "https://www.googleapis.com/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4762,7 +4978,7 @@ impl FilesService {
             "files/{fileId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4791,7 +5007,7 @@ impl FilesService {
     /// Permanently deletes all of the user's trashed files.
     pub async fn empty_trash(&mut self, params: &FilesEmptyTrashParams) -> Result<()> {
         let rel_path = format!("files/trash",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4828,7 +5044,7 @@ impl FilesService {
             "files/{fileId}/export",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4857,7 +5073,7 @@ impl FilesService {
     /// Generates a set of file IDs which can be provided in create or copy requests.
     pub async fn generate_ids(&mut self, params: &FilesGenerateIdsParams) -> Result<GeneratedIds> {
         let rel_path = format!("files/generateIds",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4894,7 +5110,7 @@ impl FilesService {
             "files/{fileId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4923,7 +5139,7 @@ impl FilesService {
     /// Lists or searches files.
     pub async fn list(&mut self, params: &FilesListParams) -> Result<FileList> {
         let rel_path = format!("files",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4955,7 +5171,7 @@ impl FilesService {
             "files/{fileId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -4995,7 +5211,7 @@ impl FilesService {
             "/upload/drive/v3/files/{fileId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5046,7 +5262,7 @@ impl FilesService {
             "/resumable/upload/drive/v3/files/{fileId}",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5101,7 +5317,7 @@ impl FilesService {
             "files/{fileId}/watch",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5134,6 +5350,9 @@ pub struct PermissionsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl PermissionsService {
@@ -5148,7 +5367,40 @@ impl PermissionsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5173,7 +5425,7 @@ impl PermissionsService {
             "files/{fileId}/permissions",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5207,7 +5459,7 @@ impl PermissionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5240,7 +5492,7 @@ impl PermissionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5272,7 +5524,7 @@ impl PermissionsService {
             "files/{fileId}/permissions",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5309,7 +5561,7 @@ impl PermissionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5342,6 +5594,9 @@ pub struct RepliesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl RepliesService {
@@ -5356,7 +5611,40 @@ impl RepliesService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5378,7 +5666,7 @@ impl RepliesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5413,7 +5701,7 @@ impl RepliesService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
             replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5447,7 +5735,7 @@ impl RepliesService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
             replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5480,7 +5768,7 @@ impl RepliesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5514,7 +5802,7 @@ impl RepliesService {
             commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
             replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5547,6 +5835,9 @@ pub struct RevisionsService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl RevisionsService {
@@ -5561,7 +5852,40 @@ impl RevisionsService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5583,7 +5907,7 @@ impl RevisionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5621,7 +5945,7 @@ impl RevisionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5653,7 +5977,7 @@ impl RevisionsService {
             "files/{fileId}/revisions",
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5690,7 +6014,7 @@ impl RevisionsService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
             revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5723,6 +6047,9 @@ pub struct TeamdrivesService {
     client: TlsClient,
     authenticator: Box<dyn 'static + std::ops::Deref<Target = Authenticator>>,
     scopes: Vec<String>,
+
+    base_url: String,
+    root_url: String,
 }
 
 impl TeamdrivesService {
@@ -5737,7 +6064,40 @@ impl TeamdrivesService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
+            base_url: "https://www.googleapis.com/drive/v3/".into(),
+            root_url: "https://www.googleapis.com/".into(),
         }
+    }
+
+    /// Provide the base URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn base_url(&self) -> String {
+        if self.base_url.ends_with("/") {
+            return self.base_url.clone();
+        }
+        return self.base_url.clone() + "/";
+    }
+    /// Provide the root URL of this API. The returned URL is guaranteed to end with a '/'.
+    fn root_url(&self) -> String {
+        if self.root_url.ends_with("/") {
+            return self.root_url.clone();
+        }
+        return self.root_url.clone();
+    }
+    /// Returns appropriate URLs for relative and absolute paths.
+    fn format_path(&self, path: &str) -> String {
+        if path.starts_with("/") {
+            return self.root_url().trim_end_matches("/").to_string() + path;
+        } else {
+            return self.base_url() + path;
+        }
+    }
+
+    #[cfg(test)]
+    /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
+    /// whereas `root` is the URL relative to which absolute paths are interpreted.
+    fn set_urls(&mut self, base: String, root: String) {
+        self.base_url = base;
+        self.root_url = root;
     }
 
     /// Explicitly select which scopes should be requested for authorization. Otherwise,
@@ -5759,7 +6119,7 @@ impl TeamdrivesService {
         req: &TeamDrive,
     ) -> Result<TeamDrive> {
         let rel_path = format!("teamdrives",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5792,7 +6152,7 @@ impl TeamdrivesService {
             "teamdrives/{teamDriveId}",
             teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5824,7 +6184,7 @@ impl TeamdrivesService {
             "teamdrives/{teamDriveId}",
             teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5853,7 +6213,7 @@ impl TeamdrivesService {
     /// Deprecated use drives.list instead.
     pub async fn list(&mut self, params: &TeamdrivesListParams) -> Result<TeamDriveList> {
         let rel_path = format!("teamdrives",);
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
@@ -5889,7 +6249,7 @@ impl TeamdrivesService {
             "teamdrives/{teamDriveId}",
             teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
         );
-        let path = "https://www.googleapis.com/drive/v3/".to_string() + &rel_path;
+        let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
         let tok;
