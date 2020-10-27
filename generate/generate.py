@@ -20,6 +20,7 @@ from templates import *
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
+
 def replace_keywords(name):
     return {
         'type': ('typ', 'type'),
@@ -44,6 +45,7 @@ def rust_identifier(name):
 
     return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize(name))])
 
+
 def snake_to_camel(name):
     dest = []
     capitalize = True
@@ -57,6 +59,7 @@ def snake_to_camel(name):
             continue
         dest.append(c)
     return ''.join(dest)
+
 
 def global_params_name(api_name):
     return snake_to_camel(api_name + 'Params')
@@ -210,8 +213,8 @@ def generate_params_structs(resources, super_name='', global_params=None):
     frags = []
     for resourcename, resource in resources.items():
         for methodname, method in resource.get('methods', {}).items():
-            param_type_name = snake_to_camel(super_name + capitalize_first(resourcename) + capitalize_first(
-                methodname) + 'Params')
+            param_type_name = snake_to_camel(super_name + capitalize_first(resourcename) +
+                                             capitalize_first(methodname) + 'Params')
             print("processed:", resourcename, methodname, param_type_name)
             struct = {
                 'name': param_type_name,
