@@ -138,7 +138,7 @@ impl {{{service}}}Service {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
