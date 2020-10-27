@@ -21,39 +21,39 @@ pub enum StorageScopes {
     /// View and manage your data across Google Cloud Platform services
     ///
     /// URL: https://www.googleapis.com/auth/cloud-platform
-    Cloudplatform,
+    CloudPlatform,
     /// View your data across Google Cloud Platform services
     ///
     /// URL: https://www.googleapis.com/auth/cloud-platform.read-only
-    CloudplatformReadonly,
+    CloudPlatformReadOnly,
     /// Manage your data and permissions in Google Cloud Storage
     ///
     /// URL: https://www.googleapis.com/auth/devstorage.full_control
-    DevstorageFull_control,
+    DevstorageFullControl,
     /// View your data in Google Cloud Storage
     ///
     /// URL: https://www.googleapis.com/auth/devstorage.read_only
-    DevstorageRead_only,
+    DevstorageReadOnly,
     /// Manage your data in Google Cloud Storage
     ///
     /// URL: https://www.googleapis.com/auth/devstorage.read_write
-    DevstorageRead_write,
+    DevstorageReadWrite,
 }
 
 impl std::convert::AsRef<str> for StorageScopes {
     fn as_ref(&self) -> &'static str {
         match self {
-            StorageScopes::Cloudplatform => "https://www.googleapis.com/auth/cloud-platform",
-            StorageScopes::CloudplatformReadonly => {
+            StorageScopes::CloudPlatform => "https://www.googleapis.com/auth/cloud-platform",
+            StorageScopes::CloudPlatformReadOnly => {
                 "https://www.googleapis.com/auth/cloud-platform.read-only"
             }
-            StorageScopes::DevstorageFull_control => {
+            StorageScopes::DevstorageFullControl => {
                 "https://www.googleapis.com/auth/devstorage.full_control"
             }
-            StorageScopes::DevstorageRead_only => {
+            StorageScopes::DevstorageReadOnly => {
                 "https://www.googleapis.com/auth/devstorage.read_only"
             }
-            StorageScopes::DevstorageRead_write => {
+            StorageScopes::DevstorageReadWrite => {
                 "https://www.googleapis.com/auth/devstorage.read_write"
             }
         }
@@ -4441,7 +4441,7 @@ impl BucketAccessControlsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -4729,7 +4729,7 @@ impl BucketsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -5128,7 +5128,7 @@ impl ChannelsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -5229,7 +5229,7 @@ impl DefaultObjectAccessControlsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -5517,7 +5517,7 @@ impl NotificationsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -5723,7 +5723,7 @@ impl ObjectAccessControlsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -6017,7 +6017,7 @@ impl ObjectsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -6646,7 +6646,7 @@ impl ProjectsService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -6717,7 +6717,7 @@ impl ProjectsHmacKeysService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -6956,7 +6956,7 @@ impl ProjectsServiceAccountService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
