@@ -20,7 +20,6 @@ from templates import *
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
-
 def replace_keywords(name):
     return {
         'type': ('typ', 'type'),
@@ -45,9 +44,22 @@ def rust_identifier(name):
 
     return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize(name))])
 
+def snake_to_camel(name):
+    dest = []
+    capitalize = True
+    for c in name:
+        if c == '_':
+            capitalize = True
+            continue
+        if capitalize:
+            dest.append(c.upper())
+            capitalize = False
+            continue
+        dest.append(c)
+    return ''.join(dest)
 
 def global_params_name(api_name):
-    return capitalize_first(api_name) + 'Params'
+    return snake_to_camel(api_name + 'Params')
 
 
 def parse_schema_types(name, schema, optional=True, parents=[]):
@@ -198,8 +210,8 @@ def generate_params_structs(resources, super_name='', global_params=None):
     frags = []
     for resourcename, resource in resources.items():
         for methodname, method in resource.get('methods', {}).items():
-            param_type_name = capitalize_first(super_name) + capitalize_first(resourcename) + capitalize_first(
-                methodname) + 'Params'
+            param_type_name = snake_to_camel(super_name + capitalize_first(resourcename) + capitalize_first(
+                methodname) + 'Params')
             print("processed:", resourcename, methodname, param_type_name)
             struct = {
                 'name': param_type_name,
@@ -447,13 +459,13 @@ def generate_scopes_type(name, scopes):
     """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
     containing { scope_url: { description: "..." } }.
     """
-    name = capitalize_first(name)
+    name = snake_to_camel(name)
     if len(scopes) == 0:
         return ''
     parameters = {'name': name, 'scopes': []}
     for url, desc in scopes.items():
         rawname = url.split('/')[-1]
-        fancy_name = ''.join([capitalize_first(p) for p in rawname.split('.')]).replace('-', '')
+        fancy_name = snake_to_camel(rawname.replace('-', '_').replace('.', '_'))
         parameters['scopes'].append({'scope_name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
     return chevron.render(OauthScopesType, parameters)
 
@@ -467,7 +479,7 @@ def generate_all(discdoc):
     scopes_type = generate_scopes_type(discdoc['name'], discdoc.get('auth', {}).get('oauth2', {}).get('scopes', {}))
 
     # Generate parameter types (*Params - those are used as "side inputs" to requests)
-    params_struct_name = capitalize_first(discdoc['name']) + 'Params'
+    params_struct_name = global_params_name(discdoc.get('name'))
     parameter_types = generate_params_structs(resources, global_params=params_struct_name)
 
     # Generate service impls.
@@ -486,7 +498,7 @@ def generate_all(discdoc):
     # Generate global parameters struct and its Display impl.
     if 'parameters' in discdoc:
         schema = {'type': 'object', 'properties': discdoc['parameters']}
-        name = params_struct_name
+        name = snake_to_camel(params_struct_name)
         typ, substructs = parse_schema_types(name, schema)
         for s in substructs:
             s['optional_fields'] = s['fields']
