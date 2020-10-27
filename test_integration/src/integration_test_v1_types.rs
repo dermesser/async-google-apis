@@ -17,7 +17,7 @@ use async_google_apis_common::*;
 
 /// Scopes of this API. Convertible to their string representation with `AsRef`.
 #[derive(Debug, Clone, Copy)]
-pub enum Integration_testScopes {
+pub enum IntegrationTestScopes {
     /// See, edit, create, and delete all of your Google integrationtest files
     ///
     /// URL: https://example.borgac.net/auth/integrationtest
@@ -28,13 +28,13 @@ pub enum Integration_testScopes {
     IntegrationtestMetadata,
 }
 
-impl std::convert::AsRef<str> for Integration_testScopes {
+impl std::convert::AsRef<str> for IntegrationTestScopes {
     fn as_ref(&self) -> &'static str {
         match self {
-            Integration_testScopes::Integrationtest => {
+            IntegrationTestScopes::Integrationtest => {
                 "https://example.borgac.net/auth/integrationtest"
             }
-            Integration_testScopes::IntegrationtestMetadata => {
+            IntegrationTestScopes::IntegrationtestMetadata => {
                 "https://example.borgac.net/auth/integrationtest.metadata"
             }
         }
@@ -90,7 +90,7 @@ pub struct FileList {
 
 ///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-pub struct Integration_testParams {
+pub struct IntegrationTestParams {
     /// Data format for the response.
     #[serde(rename = "alt")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -126,7 +126,7 @@ pub struct Integration_testParams {
 pub struct FilesCopyParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
-    pub integration_test_params: Option<Integration_testParams>,
+    pub integration_test_params: Option<IntegrationTestParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -143,7 +143,7 @@ impl std::fmt::Display for FilesCopyParams {
 pub struct FilesCreateParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
-    pub integration_test_params: Option<Integration_testParams>,
+    pub integration_test_params: Option<IntegrationTestParams>,
     /// Whether to use the uploaded content as indexable text.
     #[serde(rename = "useContentAsIndexableText")]
     pub use_content_as_indexable_text: Option<bool>,
@@ -167,7 +167,7 @@ impl std::fmt::Display for FilesCreateParams {
 pub struct FilesDeleteParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
-    pub integration_test_params: Option<Integration_testParams>,
+    pub integration_test_params: Option<IntegrationTestParams>,
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
@@ -214,7 +214,7 @@ impl std::fmt::Display for FilesDeleteParams {
 pub struct FilesEmptyTrashParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
-    pub integration_test_params: Option<Integration_testParams>,
+    pub integration_test_params: Option<IntegrationTestParams>,
     /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
@@ -238,7 +238,7 @@ impl std::fmt::Display for FilesEmptyTrashParams {
 pub struct FilesExportParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
-    pub integration_test_params: Option<Integration_testParams>,
+    pub integration_test_params: Option<IntegrationTestParams>,
     /// The ID of the file.
     #[serde(rename = "fileId")]
     pub file_id: String,
@@ -258,7 +258,7 @@ impl std::fmt::Display for FilesExportParams {
     }
 }
 
-impl std::fmt::Display for Integration_testParams {
+impl std::fmt::Display for IntegrationTestParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(ref v) = self.alt {
             write!(
@@ -335,7 +335,7 @@ impl FilesService {
             client: client,
             authenticator: Box::new(auth),
             scopes: vec![],
-            base_url: "https://example.borgac.net/invalid".into(),
+            base_url: "https://example.borgac.net/integrationAPI".into(),
             root_url: "https://example.borgac.net/".into(),
         }
     }
@@ -366,7 +366,7 @@ impl FilesService {
     #[cfg(test)]
     /// Override API URLs. `base` is the base path relative to which (relative) method paths are interpreted,
     /// whereas `root` is the URL relative to which absolute paths are interpreted.
-    fn set_urls(&mut self, base: String, root: String) {
+    pub fn set_urls(&mut self, base: String, root: String) {
         self.base_url = base;
         self.root_url = root;
     }
@@ -390,6 +390,7 @@ impl FilesService {
             fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
+        println!("{}", path);
 
         let mut headers = vec![];
         let tok;
