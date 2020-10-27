@@ -120,7 +120,9 @@ mod tests {
         // Mandatory for token fetching.
         let _om = oauth_mock();
 
-        let mock = mockito::mock("PUT", "/integrationAPI/files/file_id_to_copy/copy").with_status(200).create();
+        let mock = mockito::mock("PUT", "/integrationAPI/files/file_id_to_copy/copy")
+            .with_status(200)
+            .create();
 
         let mut fsp = inttest::FilesCopyParams::default();
         fsp.file_id = "file_id_to_copy".into();
