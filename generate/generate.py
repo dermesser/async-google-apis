@@ -553,18 +553,19 @@ def fetch_discovery_base(url, apis):
     return [it for it in doc['items'] if (not apis or it['id'] in apis)]
 
 
-def fetch_discovery_doc(url):
+def fetch_discovery_doc(url_or_path):
     """Fetch discovery document for a given (short) API doc from the overall discovery document."""
-    cachekey = url.replace('/', '_')
+    cachekey = url_or_path.replace('/', '_')
     cached = from_cache(cachekey)
     if cached:
         return cached
-    if url.startswith('http'):
-        js = json.loads(requests.get(url).text)
+
+    if url_or_path.startswith('http'):
+        js = json.loads(requests.get(url_or_path).text)
+        to_cache(cachekey, js)
     else:
-        with open(url, 'r') as f:
+        with open(url_or_path, 'r') as f:
             js = json.load(f)
-    to_cache(cachekey, js)
     return js
 
 
