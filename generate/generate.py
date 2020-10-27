@@ -16,6 +16,7 @@ import subprocess
 
 from templates import *
 
+
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
@@ -76,7 +77,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
             # We just assume that there is already a type generated for the reference.
             if schema['$ref'] not in parents:
                 return optionalize(schema['$ref'], optional), structs
-            return optionalize('Box<'+schema['$ref']+'>', optional), structs
+            return optionalize('Box<' + schema['$ref'] + '>', optional), structs
         if 'type' in schema and schema['type'] == 'object':
             # There are two types of objects: those with `properties` are translated into a Rust struct,
             # and those with `additionalProperties` into a HashMap<String, ...>.
@@ -86,7 +87,10 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 typ = name
                 struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
-                    subtyp, substructs = parse_schema_types(name + capitalize_first(pn), pp, optional=True, parents=parents+[name])
+                    subtyp, substructs = parse_schema_types(name + capitalize_first(pn),
+                                                            pp,
+                                                            optional=True,
+                                                            parents=parents + [name])
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -117,7 +121,10 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 return (optionalize(typ, optional), schema.get('description', '')), structs
 
             if 'additionalProperties' in schema:
-                field, substructs = parse_schema_types(name, schema['additionalProperties'], optional=False, parents=parents+[name])
+                field, substructs = parse_schema_types(name,
+                                                       schema['additionalProperties'],
+                                                       optional=False,
+                                                       parents=parents + [name])
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
@@ -126,7 +133,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs
 
         if schema['type'] == 'array':
-            typ, substructs = parse_schema_types(name, schema['items'], optional=False, parents=parents+[name])
+            typ, substructs = parse_schema_types(name, schema['items'], optional=False, parents=parents + [name])
             if type(typ) is tuple:
                 typ = typ[0]
             return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs
@@ -230,7 +237,9 @@ def generate_params_structs(resources, super_name='', global_params=None):
             struct['optional_fields'] = opt_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(generate_params_structs(resource.get('resources', {}), super_name=resourcename, global_params=global_params))
+        frags.extend(
+            generate_params_structs(resource.get('resources', {}), super_name=resourcename,
+                                    global_params=global_params))
     return frags
 
 
@@ -243,7 +252,10 @@ def resolve_parameters(string, paramsname='params'):
     pat = re.compile('\{\+?(\w+)\}')
     params = re.findall(pat, string)
     snakeparams = [rust_identifier(p) for p in params]
-    format_params = ','.join(['{}=percent_encode({}.{}.as_bytes(), NON_ALPHANUMERIC)'.format(p, paramsname, sp) for (p, sp) in zip(params, snakeparams)])
+    format_params = ','.join([
+        '{}=percent_encode({}.{}.as_bytes(), NON_ALPHANUMERIC)'.format(p, paramsname, sp)
+        for (p, sp) in zip(params, snakeparams)
+    ])
     string = string.replace('{+', '{')
     # Some required parameters are in the URL. This rust syntax formats the relative URL part appropriately.
     return 'format!("{}", {})'.format(string, format_params), snakeparams
@@ -315,12 +327,16 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 rust_identifier(methodname),
                 'param_type':
                 params_type_name,
-                'in_type': in_type,
-                'download_in_type': in_type if in_type else 'EmptyRequest',
+                'in_type':
+                in_type,
+                'download_in_type':
+                in_type if in_type else 'EmptyRequest',
                 'out_type':
                 out_type,
-                'base_path': discdoc['baseUrl'],
-                'root_path': discdoc['rootUrl'],
+                'base_path':
+                discdoc['baseUrl'],
+                'root_path':
+                discdoc['rootUrl'],
                 'rel_path_expr':
                 formatted_path,
                 'params': [{
@@ -340,7 +356,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 method.get('description', ''),
                 'http_method':
                 http_method,
-                'wants_auth': is_authd,
+                'wants_auth':
+                is_authd,
             }
             method_fragments.append(chevron.render(DownloadMethodTmpl, data_download))
         else:
@@ -349,11 +366,14 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 rust_identifier(methodname),
                 'param_type':
                 params_type_name,
-                'in_type': in_type,
+                'in_type':
+                in_type,
                 'out_type':
                 out_type,
-                'base_path': discdoc['baseUrl'],
-                'root_path': discdoc['rootUrl'],
+                'base_path':
+                discdoc['baseUrl'],
+                'root_path':
+                discdoc['rootUrl'],
                 'rel_path_expr':
                 formatted_path,
                 'params': [{
@@ -373,7 +393,8 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 method.get('description', ''),
                 'http_method':
                 http_method,
-                'wants_auth': is_authd,
+                'wants_auth':
+                is_authd,
             }
             method_fragments.append(chevron.render(NormalMethodTmpl, data_normal))
 
@@ -420,6 +441,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'text': t
             } for t in method_fragments]
         }) + '\n'.join(subresource_fragments)
+
 
 def generate_scopes_type(name, scopes):
     """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
