@@ -17,10 +17,12 @@ async fn upload_file(
     mut cl: storage_v1_types::ObjectsService,
     bucket: &str,
     p: &Path,
+    prefix: &str,
 ) -> common::Result<()> {
     let mut params = storage_v1_types::ObjectsInsertParams::default();
     params.bucket = bucket.into();
-    params.name = Some(p.file_name().unwrap().to_str().unwrap().into());
+    assert!(prefix.ends_with("/"));
+    params.name = Some(prefix.to_string() + p.file_name().unwrap().to_str().unwrap());
     let obj = storage_v1_types::Object::default();
 
     let f = tokio::fs::OpenOptions::new().read(true).open(p).await?;
@@ -144,7 +146,7 @@ async fn main() {
         )
         .arg(
             clap::Arg::with_name("PREFIX")
-                .help("When listing with -a list: Prefix of objects to list.")
+                .help("When listing with -a list: Prefix of objects to list. When uploading with -a put: Prefix to prepend to filename.")
                 .long("prefix")
                 .short("p")
                 .takes_value(true),
@@ -189,8 +191,12 @@ async fn main() {
         let fp = matches
             .value_of("FILE_OR_OBJECT")
             .expect("FILE is a mandatory argument.");
-        println!("{}", fp);
-        upload_file(cl, buck, Path::new(&fp))
+        let mut pre = matches
+            .value_of("PREFIX").unwrap_or("").to_string();
+        if !pre.ends_with("/") {
+            pre = pre.to_string() + "/";
+        }
+        upload_file(cl, buck, Path::new(&fp), &pre)
             .await
             .expect("Upload failed :(");
         return;
