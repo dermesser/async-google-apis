@@ -35,9 +35,21 @@ mod tests {
         appsec
     }
 
+    fn hyper_client() -> agac::TlsClient {
+        hyper::Client::builder().build(hyper_rustls::HttpsConnector::new())
+    }
+
     #[tokio::test]
     async fn it_works() {
-        println!("{}", mockito::server_url());
-        println!("{:?}", read_client_secret().await);
+        mockito::start();
+        println!("Mockito running at {}", mockito::server_url());
+        let appsec = read_client_secret().await;
+        let cl = hyper_client();
+        let auth = agac::yup_oauth2::InstalledFlowAuthenticator::builder(
+            appsec,
+            agac::yup_oauth2::InstalledFlowReturnMethod::Interactive,
+        )
+        .hyper_client(cl.clone())
+        .build();
     }
 }
