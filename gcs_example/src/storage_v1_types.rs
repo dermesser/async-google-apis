@@ -4470,7 +4470,7 @@ impl BucketAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4506,7 +4506,7 @@ impl BucketAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4542,7 +4542,7 @@ impl BucketAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4578,7 +4578,7 @@ impl BucketAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4615,7 +4615,7 @@ impl BucketAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4653,7 +4653,7 @@ impl BucketAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4757,7 +4757,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4789,7 +4789,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4821,7 +4821,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4850,7 +4850,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4880,7 +4880,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4915,7 +4915,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4947,7 +4947,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4984,7 +4984,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5020,7 +5020,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5052,7 +5052,7 @@ impl BucketsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5153,7 +5153,7 @@ impl ChannelsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5258,7 +5258,7 @@ impl DefaultObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5294,7 +5294,7 @@ impl DefaultObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5330,7 +5330,7 @@ impl DefaultObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5366,7 +5366,7 @@ impl DefaultObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5403,7 +5403,7 @@ impl DefaultObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5441,7 +5441,7 @@ impl DefaultObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5546,7 +5546,7 @@ impl NotificationsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5579,7 +5579,7 @@ impl NotificationsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5615,7 +5615,7 @@ impl NotificationsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5648,7 +5648,7 @@ impl NotificationsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5753,7 +5753,7 @@ impl ObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5790,7 +5790,7 @@ impl ObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5827,7 +5827,7 @@ impl ObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5864,7 +5864,7 @@ impl ObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5902,7 +5902,7 @@ impl ObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5941,7 +5941,7 @@ impl ObjectAccessControlsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6052,7 +6052,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6090,7 +6090,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6124,7 +6124,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6162,7 +6162,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6195,7 +6195,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6227,7 +6227,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6267,7 +6267,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6310,7 +6310,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6358,7 +6358,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6391,7 +6391,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6425,7 +6425,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6463,7 +6463,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6500,7 +6500,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6533,7 +6533,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6570,7 +6570,7 @@ impl ObjectsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6745,7 +6745,7 @@ impl ProjectsHmacKeysService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6778,7 +6778,7 @@ impl ProjectsHmacKeysService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6811,7 +6811,7 @@ impl ProjectsHmacKeysService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_only".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadOnly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6843,7 +6843,7 @@ impl ProjectsHmacKeysService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_only".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadOnly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6880,7 +6880,7 @@ impl ProjectsHmacKeysService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.full_control".to_string()];
+            let scopes = &[StorageScopes::DevstorageFullControl.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6987,7 +6987,7 @@ impl ProjectsServiceAccountService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/devstorage.read_write".to_string()];
+            let scopes = &[StorageScopes::DevstorageReadWrite.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;

@@ -24,7 +24,7 @@ use async_google_apis_common::*;
 OauthScopesType = '''
 /// Scopes of this API. Convertible to their string representation with `AsRef`.
 #[derive(Debug, Clone, Copy)]
-pub enum {{{name}}}Scopes {
+pub enum {{{name}}} {
     {{#scopes}}
     /// {{{desc}}}
     ///
@@ -33,11 +33,11 @@ pub enum {{{name}}}Scopes {
     {{/scopes}}
 }
 
-impl std::convert::AsRef<str> for {{{name}}}Scopes {
+impl std::convert::AsRef<str> for {{{name}}} {
     fn as_ref(&self) -> &'static str {
         match self {
             {{#scopes}}
-            {{{name}}}Scopes::{{{scope_name}}} => "{{{url}}}",
+            {{{name}}}::{{{scope_name}}} => "{{{url}}}",
             {{/scopes}}
         }
     }
@@ -176,7 +176,7 @@ pub async fn {{{name}}}(
     {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
+        let scopes = &[{{#scopes}}{{{scope}}}.as_ref().to_string(),
         {{/scopes}}];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -222,7 +222,7 @@ pub async fn {{{name}}}_upload(
     {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
+        let scopes = &[{{#scopes}}{{{scope}}}.as_ref().to_string(),
         {{/scopes}}];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -273,7 +273,7 @@ pub async fn {{{name}}}_resumable_upload<'client>(
     {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
+        let scopes = &[{{#scopes}}{{{scope}}}.as_ref().to_string(),
         {{/scopes}}];
         tok = self.authenticator.token(scopes).await?;
     } else {
@@ -327,7 +327,7 @@ pub async fn {{{name}}}<'a>(
     {{#wants_auth}}
     let tok;
     if self.scopes.is_empty() {
-        let scopes = &[{{#scopes}}"{{{scope}}}".to_string(),
+        let scopes = &[{{#scopes}}{{{scope}}}.as_ref().to_string(),
         {{/scopes}}];
         tok = self.authenticator.token(scopes).await?;
     } else {

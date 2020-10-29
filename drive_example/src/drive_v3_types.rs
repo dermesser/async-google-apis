@@ -3927,7 +3927,7 @@ impl AboutService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4030,7 +4030,7 @@ impl ChangesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4059,7 +4059,7 @@ impl ChangesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4088,7 +4088,7 @@ impl ChangesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4189,7 +4189,7 @@ impl ChannelsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4297,7 +4297,7 @@ impl CommentsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4331,7 +4331,7 @@ impl CommentsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4364,7 +4364,7 @@ impl CommentsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4396,7 +4396,7 @@ impl CommentsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4433,7 +4433,7 @@ impl CommentsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4534,7 +4534,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4567,7 +4567,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4599,7 +4599,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4631,7 +4631,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4660,7 +4660,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4692,7 +4692,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4724,7 +4724,7 @@ impl DrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4828,7 +4828,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.photos.readonly".to_string()];
+            let scopes = &[DriveScopes::DrivePhotosReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4858,7 +4858,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4895,7 +4895,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4935,7 +4935,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -4983,7 +4983,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5012,7 +5012,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5049,7 +5049,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5078,7 +5078,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5115,7 +5115,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5144,7 +5144,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5176,7 +5176,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string()];
+            let scopes = &[DriveScopes::DriveScripts.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5216,7 +5216,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string()];
+            let scopes = &[DriveScopes::DriveScripts.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5267,7 +5267,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.scripts".to_string()];
+            let scopes = &[DriveScopes::DriveScripts.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5322,7 +5322,7 @@ impl FilesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5430,7 +5430,7 @@ impl PermissionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5464,7 +5464,7 @@ impl PermissionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5497,7 +5497,7 @@ impl PermissionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5529,7 +5529,7 @@ impl PermissionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5566,7 +5566,7 @@ impl PermissionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5671,7 +5671,7 @@ impl RepliesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5706,7 +5706,7 @@ impl RepliesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5740,7 +5740,7 @@ impl RepliesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5773,7 +5773,7 @@ impl RepliesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5807,7 +5807,7 @@ impl RepliesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5912,7 +5912,7 @@ impl RevisionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5950,7 +5950,7 @@ impl RevisionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -5982,7 +5982,7 @@ impl RevisionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6019,7 +6019,7 @@ impl RevisionsService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.file".to_string()];
+            let scopes = &[DriveScopes::DriveFile.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6124,7 +6124,7 @@ impl TeamdrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6157,7 +6157,7 @@ impl TeamdrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6189,7 +6189,7 @@ impl TeamdrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6218,7 +6218,7 @@ impl TeamdrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive.readonly".to_string()];
+            let scopes = &[DriveScopes::DriveReadonly.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;
@@ -6254,7 +6254,7 @@ impl TeamdrivesService {
         let mut headers = vec![];
         let tok;
         if self.scopes.is_empty() {
-            let scopes = &["https://www.googleapis.com/auth/drive".to_string()];
+            let scopes = &[DriveScopes::Drive.as_ref().to_string()];
             tok = self.authenticator.token(scopes).await?;
         } else {
             tok = self.authenticator.token(&self.scopes).await?;

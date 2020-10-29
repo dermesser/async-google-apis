@@ -333,6 +333,9 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         formatted_simple_upload_path, required_params = resolve_parameters(simple_upload_path)
         formatted_resumable_upload_path, required_params = resolve_parameters(resumable_upload_path)
 
+        scopetype, scopeval = scopes_url_to_enum_val(discdoc['name'], method.get('scopes', [''])[-1])
+        scope_enum = scopetype + '::' + scopeval
+
         if is_download:
             data_download = {
                 'name':
@@ -362,7 +365,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'global_params_name':
                 rust_identifier(global_params_name(discdoc.get('name', ''))) if has_global_params else None,
                 'scopes': [{
-                    'scope': method.get('scopes', [''])[-1]
+                    'scope': scope_enum,
                 }],
                 'description':
                 method.get('description', ''),
@@ -399,7 +402,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                     'snake_param': sp
                 } for (p, sp) in required_parameters.items()],
                 'scopes': [{
-                    'scope': method.get('scopes', [''])[-1]
+                    'scope': scope_enum,
                 }],
                 'description':
                 method.get('description', ''),
@@ -431,7 +434,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 'snake_param': sp
             } for (p, sp) in required_parameters.items()],
             'scopes': [{
-                'scope': method.get('scopes', [''])[-1]
+                'scope': scope_enum,
             }],
             'description': method.get('description', ''),
             'http_method': http_method,
@@ -454,18 +457,21 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             } for t in method_fragments]
         }) + '\n'.join(subresource_fragments)
 
+def scopes_url_to_enum_val(apiname, url):
+    rawname = url.split('/')[-1]
+    fancy_name = snake_to_camel(rawname.replace('-', '_').replace('.', '_'))
+    return (snake_to_camel(apiname)+'Scopes', fancy_name)
 
 def generate_scopes_type(name, scopes):
     """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
     containing { scope_url: { description: "..." } }.
     """
-    name = snake_to_camel(name)
     if len(scopes) == 0:
         return ''
-    parameters = {'name': name, 'scopes': []}
+    parameters = {'scopes': []}
     for url, desc in scopes.items():
-        rawname = url.split('/')[-1]
-        fancy_name = snake_to_camel(rawname.replace('-', '_').replace('.', '_'))
+        enum_type_name, fancy_name = scopes_url_to_enum_val(name, url)
+        parameters['name'] = enum_type_name
         parameters['scopes'].append({'scope_name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
     return chevron.render(OauthScopesType, parameters)
 
