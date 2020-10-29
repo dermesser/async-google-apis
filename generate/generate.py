@@ -23,8 +23,8 @@ def optionalize(name, optional=True):
 
 def replace_keywords(name):
     return {
-        'type': ('typ', 'type'),
-        'enum': ('enums', 'enum'),
+        'type': 'typ',
+        'enum': 'enums',
     }.get(name, name)
 
 
@@ -99,6 +99,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
 
             # Structs are represented as dicts that can be used to render the SchemaStructTmpl.
             if 'properties' in schema:
+                name = replace_keywords(name)
                 typ = name
                 struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
@@ -111,12 +112,8 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     else:
                         comment = None
                     cleaned_pn = replace_keywords(pn)
-                    if type(cleaned_pn) is tuple:
-                        jsonname = cleaned_pn[1]
-                        cleaned_pn = rust_identifier(cleaned_pn[0])
-                    else:
-                        jsonname = pn
-                        cleaned_pn = rust_identifier(cleaned_pn)
+                    jsonname = pn
+                    cleaned_pn = rust_identifier(cleaned_pn)
                     struct['fields'].append({
                         'name':
                         cleaned_pn,
@@ -225,7 +222,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             opt_query_parameters = []
             if global_params:
                 struct['fields'].append({
-                    'name': rust_identifier(global_params),
+                    'name': replace_keywords(rust_identifier(global_params)),
                     'typ': optionalize(global_params, True),
                     'attr': '#[serde(flatten)]',
                     'comment': 'General attributes applying to any API call'
@@ -235,7 +232,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
                 for paramname, param in method['parameters'].items():
                     (typ, desc), substructs = parse_schema_types('', param, optional=False, parents=[])
                     field = {
-                        'name': rust_identifier(paramname),
+                        'name': replace_keywords(rust_identifier(paramname)),
                         'original_name': paramname,
                         'typ': optionalize(typ, not param.get('required', False)),
                         'comment': desc,
@@ -501,7 +498,7 @@ def generate_all(discdoc):
     # Generate global parameters struct and its Display impl.
     if 'parameters' in discdoc:
         schema = {'type': 'object', 'properties': discdoc['parameters']}
-        name = snake_to_camel(params_struct_name)
+        name = replace_keywords(snake_to_camel(params_struct_name))
         typ, substructs = parse_schema_types(name, schema)
         for s in substructs:
             s['optional_fields'] = s['fields']
