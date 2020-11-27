@@ -5,6 +5,8 @@ use async_google_apis_common as agac;
 mod discovery_v1_types;
 mod drive_v3_types;
 
+mod gmail_v1_types;
+
 use discovery_v1_types as disc;
 use drive_v3_types as drive;
 
