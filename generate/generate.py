@@ -250,7 +250,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
         frags.extend(
-            generate_params_structs(resource.get('resources', {}), super_name=resourcename,
+            generate_params_structs(resource.get('resources', {}), super_name=super_name+'_'+resourcename,
                                     global_params=global_params))
     return frags
 
@@ -333,6 +333,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         formatted_simple_upload_path, required_params = resolve_parameters(simple_upload_path)
         formatted_resumable_upload_path, required_params = resolve_parameters(resumable_upload_path)
 
+        # Guess default scope.
         scopetype, scopeval = scopes_url_to_enum_val(discdoc['name'], method.get('scopes', [''])[-1])
         scope_enum = scopetype + '::' + scopeval
 
