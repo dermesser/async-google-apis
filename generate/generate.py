@@ -458,7 +458,10 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         }) + '\n'.join(subresource_fragments)
 
 def scopes_url_to_enum_val(apiname, url):
-    rawname = url.split('/')[-1]
+    split = url.split('/')
+    rawname = split[-1]
+    if len(rawname) == 0:
+        rawname = split[-2]
     fancy_name = snake_to_camel(rawname.replace('-', '_').replace('.', '_'))
     return (snake_to_camel(apiname)+'Scopes', fancy_name)
 
