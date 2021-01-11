@@ -1,6 +1,6 @@
 use crate::*;
-
 use anyhow::Context;
+use tokio::io::AsyncSeekExt;
 
 fn body_to_str(b: hyper::body::Bytes) -> String {
     String::from_utf8(b.to_vec()).unwrap_or("[UTF-8 decode failed]".into())
@@ -238,7 +238,7 @@ impl<'a, Request: Serialize + std::fmt::Debug, Response: DeserializeOwned + std:
                 if let Some(dst) = dst {
                     use tokio::io::AsyncWriteExt;
                     let mut response_body = http_response.unwrap().into_body();
-                    while let Some(chunk) = tokio::stream::StreamExt::next(&mut response_body).await
+                    while let Some(chunk) = tokio_stream::StreamExt::next(&mut response_body).await
                     {
                         let chunk = chunk?;
                         // Chunks often contain just a few kilobytes.

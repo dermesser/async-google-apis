@@ -19,7 +19,7 @@ pub use chrono::{DateTime, Utc};
 pub use percent_encoding::{percent_encode, NON_ALPHANUMERIC};
 pub use serde::{de::DeserializeOwned, Deserialize, Serialize};
 pub use std::collections::HashMap;
-pub use tokio::stream::StreamExt;
+pub use tokio_stream::StreamExt;
 
 pub type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
 pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
