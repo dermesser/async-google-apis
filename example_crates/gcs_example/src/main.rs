@@ -8,7 +8,7 @@ use std::path::Path;
 
 /// Create a new HTTPS client.
 fn https_client() -> common::TlsClient {
-    let conn = hyper_rustls::HttpsConnector::new();
+    let conn = hyper_rustls::HttpsConnector::with_native_roots();
     let cl = hyper::Client::builder().build(conn);
     cl
 }
