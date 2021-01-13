@@ -1,6 +1,6 @@
 [package]
 name = "async-google-apis-common"
-version = "0.1.7"
+version = "0.2.0"
 authors = ["Lewin Bormann <lewin@lewin-bormann.info>"]
 edition = "2018"
 keywords = ["rest", "google", "async", "api"]
