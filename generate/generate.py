@@ -265,7 +265,7 @@ def resolve_parameters(string, paramsname='params'):
     params = re.findall(pat, string)
     snakeparams = [rust_identifier(p) for p in params]
     format_params = ','.join([
-        '{}=percent_encode({}.{}.as_bytes(), NON_ALPHANUMERIC)'.format(p, paramsname, sp)
+        '{}=percent_encode(format!("{{}}", {}.{}).as_bytes(), NON_ALPHANUMERIC)'.format(p, paramsname, sp)
         for (p, sp) in zip(params, snakeparams)
     ])
     string = string.replace('{+', '{')
