@@ -194,7 +194,6 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     'desc': schema.get('enumDescriptions', [''] * (i))[i]
                 } for (i, ev) in enumerate(schema.get('enum', []))]
                 templ_params = {'name': name_, 'values': values}
-                print('Emitted enum', name_, 'with', len(values), 'fields')
                 return (optionalize(name_, optional), schema.get('description', '')), structs, [templ_params]
 
             return (optionalize('String', optional), schema.get('description', '')), structs, enums
@@ -257,7 +256,6 @@ def generate_params_structs(resources, super_name='', global_params=None):
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
-                    print(paramname, param)
                     (typ, desc), substructs, enums = parse_schema_types('', param, optional=False, parents=[])
                     field = {
                         'name': replace_keywords(rust_identifier(paramname)),
@@ -564,7 +562,6 @@ def generate_all(discdoc):
                 print('WARN', s)
             f.write(chevron.render(SchemaStructTmpl, s))
         for e in enums:
-            print('enum', e)
             f.write(chevron.render(SchemaEnumTmpl, e))
         # Render *Params structs.
         for pt in parameter_types:
