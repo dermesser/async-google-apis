@@ -1092,7 +1092,7 @@ pub struct StorageParams {
     /// Data format for the response.
     #[serde(rename = "alt")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub alt: Option<String>,
+    pub alt: Option<StorageParamsAlt>,
     /// Selector specifying which fields to include in a partial response.
     #[serde(rename = "fields")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1117,6 +1117,30 @@ pub struct StorageParams {
     #[serde(rename = "userIp")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user_ip: Option<String>,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum StorageParamsAlt {
+    Undefined,
+    /// Responses with Content-Type of application/json
+    #[serde(rename = "json")]
+    Json,
+}
+
+impl std::default::Default for StorageParamsAlt {
+    fn default() -> StorageParamsAlt {
+        StorageParamsAlt::Undefined
+    }
+}
+
+impl std::fmt::Display for StorageParamsAlt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            StorageParamsAlt::Undefined => write!(f, "undefined"),
+            StorageParamsAlt::Json => write!(f, "json"),
+        };
+        Ok(())
+    }
 }
 
 /// Parameters for the `bucketAccessControls.delete` method.
@@ -4462,8 +4486,8 @@ impl BucketAccessControlsService {
     pub async fn delete(&mut self, params: &BucketAccessControlsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4498,8 +4522,8 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4535,7 +4559,7 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4571,7 +4595,7 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControls> {
         let rel_path = format!(
             "b/{bucket}/acl",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4607,8 +4631,8 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4645,8 +4669,8 @@ impl BucketAccessControlsService {
     ) -> Result<BucketAccessControl> {
         let rel_path = format!(
             "b/{bucket}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4750,7 +4774,7 @@ impl BucketsService {
     pub async fn delete(&mut self, params: &BucketsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4782,7 +4806,7 @@ impl BucketsService {
     pub async fn get(&mut self, params: &BucketsGetParams) -> Result<Bucket> {
         let rel_path = format!(
             "b/{bucket}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4814,7 +4838,7 @@ impl BucketsService {
     pub async fn get_iam_policy(&mut self, params: &BucketsGetIamPolicyParams) -> Result<Policy> {
         let rel_path = format!(
             "b/{bucket}/iam",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4908,7 +4932,7 @@ impl BucketsService {
     ) -> Result<Bucket> {
         let rel_path = format!(
             "b/{bucket}/lockRetentionPolicy",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4940,7 +4964,7 @@ impl BucketsService {
     pub async fn patch(&mut self, params: &BucketsPatchParams, req: &Bucket) -> Result<Bucket> {
         let rel_path = format!(
             "b/{bucket}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4977,7 +5001,7 @@ impl BucketsService {
     ) -> Result<Policy> {
         let rel_path = format!(
             "b/{bucket}/iam",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5013,7 +5037,7 @@ impl BucketsService {
     ) -> Result<TestIamPermissionsResponse> {
         let rel_path = format!(
             "b/{bucket}/iam/testPermissions",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5045,7 +5069,7 @@ impl BucketsService {
     pub async fn update(&mut self, params: &BucketsUpdateParams, req: &Bucket) -> Result<Bucket> {
         let rel_path = format!(
             "b/{bucket}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5250,8 +5274,8 @@ impl DefaultObjectAccessControlsService {
     pub async fn delete(&mut self, params: &DefaultObjectAccessControlsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5286,8 +5310,8 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5323,7 +5347,7 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5359,7 +5383,7 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControls> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5395,8 +5419,8 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5433,8 +5457,8 @@ impl DefaultObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/defaultObjectAcl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5538,8 +5562,11 @@ impl NotificationsService {
     pub async fn delete(&mut self, params: &NotificationsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/notificationConfigs/{notification}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            notification = percent_encode(
+                format!("{}", params.notification).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5571,8 +5598,11 @@ impl NotificationsService {
     pub async fn get(&mut self, params: &NotificationsGetParams) -> Result<Notification> {
         let rel_path = format!(
             "b/{bucket}/notificationConfigs/{notification}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            notification = percent_encode(params.notification.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            notification = percent_encode(
+                format!("{}", params.notification).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5608,7 +5638,7 @@ impl NotificationsService {
     ) -> Result<Notification> {
         let rel_path = format!(
             "b/{bucket}/notificationConfigs",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5641,7 +5671,7 @@ impl NotificationsService {
     pub async fn list(&mut self, params: &NotificationsListParams) -> Result<Notifications> {
         let rel_path = format!(
             "b/{bucket}/notificationConfigs",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5744,9 +5774,9 @@ impl ObjectAccessControlsService {
     pub async fn delete(&mut self, params: &ObjectAccessControlsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5781,9 +5811,9 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5819,8 +5849,8 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5856,8 +5886,8 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControls> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5893,9 +5923,9 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5932,9 +5962,9 @@ impl ObjectAccessControlsService {
     ) -> Result<ObjectAccessControl> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/acl/{entity}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC),
-            entity = percent_encode(params.entity.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC),
+            entity = percent_encode(format!("{}", params.entity).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6042,10 +6072,14 @@ impl ObjectsService {
     ) -> Result<Object> {
         let rel_path = format!(
             "b/{destinationBucket}/o/{destinationObject}/compose",
-            destinationBucket =
-                percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),
-            destinationObject =
-                percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
+            destinationBucket = percent_encode(
+                format!("{}", params.destination_bucket).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            destinationObject = percent_encode(
+                format!("{}", params.destination_object).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6078,12 +6112,22 @@ impl ObjectsService {
     pub async fn copy(&mut self, params: &ObjectsCopyParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{sourceBucket}/o/{sourceObject}/copyTo/b/{destinationBucket}/o/{destinationObject}",
-            sourceBucket = percent_encode(params.source_bucket.as_bytes(), NON_ALPHANUMERIC),
-            sourceObject = percent_encode(params.source_object.as_bytes(), NON_ALPHANUMERIC),
-            destinationBucket =
-                percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),
-            destinationObject =
-                percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC)
+            sourceBucket = percent_encode(
+                format!("{}", params.source_bucket).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            sourceObject = percent_encode(
+                format!("{}", params.source_object).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            destinationBucket = percent_encode(
+                format!("{}", params.destination_bucket).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            destinationObject = percent_encode(
+                format!("{}", params.destination_object).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6116,8 +6160,8 @@ impl ObjectsService {
     pub async fn delete(&mut self, params: &ObjectsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6154,8 +6198,8 @@ impl ObjectsService {
     ) -> Result<Download<'a, EmptyRequest, Object>> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6187,8 +6231,8 @@ impl ObjectsService {
     pub async fn get_iam_policy(&mut self, params: &ObjectsGetIamPolicyParams) -> Result<Policy> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/iam",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6220,7 +6264,7 @@ impl ObjectsService {
     pub async fn insert(&mut self, params: &ObjectsInsertParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{bucket}/o",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6260,7 +6304,7 @@ impl ObjectsService {
     ) -> Result<Object> {
         let rel_path = format!(
             "/upload/storage/v1/b/{bucket}/o",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6303,7 +6347,7 @@ impl ObjectsService {
     ) -> Result<ResumableUpload<'client, Object>> {
         let rel_path = format!(
             "/resumable/upload/storage/v1/b/{bucket}/o",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6351,7 +6395,7 @@ impl ObjectsService {
     pub async fn list(&mut self, params: &ObjectsListParams) -> Result<Objects> {
         let rel_path = format!(
             "b/{bucket}/o",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6383,8 +6427,8 @@ impl ObjectsService {
     pub async fn patch(&mut self, params: &ObjectsPatchParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6419,7 +6463,7 @@ impl ObjectsService {
         params: &ObjectsRewriteParams,
         req: &Object,
     ) -> Result<RewriteResponse> {
-        let rel_path = format!("b/{sourceBucket}/o/{sourceObject}/rewriteTo/b/{destinationBucket}/o/{destinationObject}", sourceBucket=percent_encode(params.source_bucket.as_bytes(), NON_ALPHANUMERIC),sourceObject=percent_encode(params.source_object.as_bytes(), NON_ALPHANUMERIC),destinationBucket=percent_encode(params.destination_bucket.as_bytes(), NON_ALPHANUMERIC),destinationObject=percent_encode(params.destination_object.as_bytes(), NON_ALPHANUMERIC));
+        let rel_path = format!("b/{sourceBucket}/o/{sourceObject}/rewriteTo/b/{destinationBucket}/o/{destinationObject}", sourceBucket=percent_encode(format!("{}", params.source_bucket).as_bytes(), NON_ALPHANUMERIC),sourceObject=percent_encode(format!("{}", params.source_object).as_bytes(), NON_ALPHANUMERIC),destinationBucket=percent_encode(format!("{}", params.destination_bucket).as_bytes(), NON_ALPHANUMERIC),destinationObject=percent_encode(format!("{}", params.destination_object).as_bytes(), NON_ALPHANUMERIC));
         let path = self.format_path(rel_path.as_str());
 
         let mut headers = vec![];
@@ -6455,8 +6499,8 @@ impl ObjectsService {
     ) -> Result<Policy> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/iam",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6492,8 +6536,8 @@ impl ObjectsService {
     ) -> Result<TestIamPermissionsResponse> {
         let rel_path = format!(
             "b/{bucket}/o/{object}/iam/testPermissions",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6525,8 +6569,8 @@ impl ObjectsService {
     pub async fn update(&mut self, params: &ObjectsUpdateParams, req: &Object) -> Result<Object> {
         let rel_path = format!(
             "b/{bucket}/o/{object}",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC),
-            object = percent_encode(params.object.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC),
+            object = percent_encode(format!("{}", params.object).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6563,7 +6607,7 @@ impl ObjectsService {
     ) -> Result<Channel> {
         let rel_path = format!(
             "b/{bucket}/o/watch",
-            bucket = percent_encode(params.bucket.as_bytes(), NON_ALPHANUMERIC)
+            bucket = percent_encode(format!("{}", params.bucket).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6738,7 +6782,10 @@ impl ProjectsHmacKeysService {
     pub async fn create(&mut self, params: &ProjectsHmacKeysCreateParams) -> Result<HmacKey> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys",
-            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
+            projectId = percent_encode(
+                format!("{}", params.project_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6770,8 +6817,11 @@ impl ProjectsHmacKeysService {
     pub async fn delete(&mut self, params: &ProjectsHmacKeysDeleteParams) -> Result<()> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys/{accessId}",
-            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
-            accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
+            projectId = percent_encode(
+                format!("{}", params.project_id).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            accessId = percent_encode(format!("{}", params.access_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6803,8 +6853,11 @@ impl ProjectsHmacKeysService {
     pub async fn get(&mut self, params: &ProjectsHmacKeysGetParams) -> Result<HmacKeyMetadata> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys/{accessId}",
-            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
-            accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
+            projectId = percent_encode(
+                format!("{}", params.project_id).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            accessId = percent_encode(format!("{}", params.access_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6836,7 +6889,10 @@ impl ProjectsHmacKeysService {
     pub async fn list(&mut self, params: &ProjectsHmacKeysListParams) -> Result<HmacKeysMetadata> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys",
-            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
+            projectId = percent_encode(
+                format!("{}", params.project_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6872,8 +6928,11 @@ impl ProjectsHmacKeysService {
     ) -> Result<HmacKeyMetadata> {
         let rel_path = format!(
             "projects/{projectId}/hmacKeys/{accessId}",
-            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC),
-            accessId = percent_encode(params.access_id.as_bytes(), NON_ALPHANUMERIC)
+            projectId = percent_encode(
+                format!("{}", params.project_id).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            accessId = percent_encode(format!("{}", params.access_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6980,7 +7039,10 @@ impl ProjectsServiceAccountService {
     ) -> Result<ServiceAccount> {
         let rel_path = format!(
             "projects/{projectId}/serviceAccount",
-            projectId = percent_encode(params.project_id.as_bytes(), NON_ALPHANUMERIC)
+            projectId = percent_encode(
+                format!("{}", params.project_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
