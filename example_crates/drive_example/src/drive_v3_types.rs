@@ -1643,7 +1643,7 @@ pub struct DriveParams {
     /// Data format for the response.
     #[serde(rename = "alt")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub alt: Option<String>,
+    pub alt: Option<DriveParamsAlt>,
     /// Selector specifying which fields to include in a partial response.
     #[serde(rename = "fields")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1668,6 +1668,33 @@ pub struct DriveParams {
     #[serde(rename = "userIp")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user_ip: Option<String>,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum DriveParamsAlt {
+    Undefined,
+    /// Responses with Content-Type of application/json
+    #[serde(rename = "json")]
+    Json,
+    #[serde(rename = "media")]
+    Media,
+}
+
+impl std::default::Default for DriveParamsAlt {
+    fn default() -> DriveParamsAlt {
+        DriveParamsAlt::Undefined
+    }
+}
+
+impl std::fmt::Display for DriveParamsAlt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            DriveParamsAlt::Undefined => write!(f, "undefined"),
+            DriveParamsAlt::Json => write!(f, "json"),
+            DriveParamsAlt::Media => write!(f, "media"),
+        };
+        Ok(())
+    }
 }
 
 /// Parameters for the `about.get` method.
@@ -4290,7 +4317,7 @@ impl CommentsService {
     ) -> Result<Comment> {
         let rel_path = format!(
             "files/{fileId}/comments",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4323,8 +4350,11 @@ impl CommentsService {
     pub async fn delete(&mut self, params: &CommentsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4356,8 +4386,11 @@ impl CommentsService {
     pub async fn get(&mut self, params: &CommentsGetParams) -> Result<Comment> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4389,7 +4422,7 @@ impl CommentsService {
     pub async fn list(&mut self, params: &CommentsListParams) -> Result<CommentList> {
         let rel_path = format!(
             "files/{fileId}/comments",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4425,8 +4458,11 @@ impl CommentsService {
     ) -> Result<Comment> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4560,7 +4596,7 @@ impl DrivesService {
     pub async fn delete(&mut self, params: &DrivesDeleteParams) -> Result<()> {
         let rel_path = format!(
             "drives/{driveId}",
-            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+            driveId = percent_encode(format!("{}", params.drive_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4592,7 +4628,7 @@ impl DrivesService {
     pub async fn get(&mut self, params: &DrivesGetParams) -> Result<Drive> {
         let rel_path = format!(
             "drives/{driveId}",
-            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+            driveId = percent_encode(format!("{}", params.drive_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4624,7 +4660,7 @@ impl DrivesService {
     pub async fn hide(&mut self, params: &DrivesHideParams) -> Result<Drive> {
         let rel_path = format!(
             "drives/{driveId}/hide",
-            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+            driveId = percent_encode(format!("{}", params.drive_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4685,7 +4721,7 @@ impl DrivesService {
     pub async fn unhide(&mut self, params: &DrivesUnhideParams) -> Result<Drive> {
         let rel_path = format!(
             "drives/{driveId}/unhide",
-            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+            driveId = percent_encode(format!("{}", params.drive_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4717,7 +4753,7 @@ impl DrivesService {
     pub async fn update(&mut self, params: &DrivesUpdateParams, req: &Drive) -> Result<Drive> {
         let rel_path = format!(
             "drives/{driveId}",
-            driveId = percent_encode(params.drive_id.as_bytes(), NON_ALPHANUMERIC)
+            driveId = percent_encode(format!("{}", params.drive_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4821,7 +4857,7 @@ impl FilesService {
     pub async fn copy(&mut self, params: &FilesCopyParams, req: &File) -> Result<File> {
         let rel_path = format!(
             "files/{fileId}/copy",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -4976,7 +5012,7 @@ impl FilesService {
     pub async fn delete(&mut self, params: &FilesDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5042,7 +5078,7 @@ impl FilesService {
     ) -> Result<Download<'a, EmptyRequest, ()>> {
         let rel_path = format!(
             "files/{fileId}/export",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5108,7 +5144,7 @@ impl FilesService {
     ) -> Result<Download<'a, EmptyRequest, File>> {
         let rel_path = format!(
             "files/{fileId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5169,7 +5205,7 @@ impl FilesService {
     pub async fn update(&mut self, params: &FilesUpdateParams, req: &File) -> Result<File> {
         let rel_path = format!(
             "files/{fileId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5209,7 +5245,7 @@ impl FilesService {
     ) -> Result<File> {
         let rel_path = format!(
             "/upload/drive/v3/files/{fileId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5260,7 +5296,7 @@ impl FilesService {
     ) -> Result<ResumableUpload<'client, File>> {
         let rel_path = format!(
             "/resumable/upload/drive/v3/files/{fileId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5315,7 +5351,7 @@ impl FilesService {
     ) -> Result<Download<'a, Channel, Channel>> {
         let rel_path = format!(
             "files/{fileId}/watch",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5423,7 +5459,7 @@ impl PermissionsService {
     ) -> Result<Permission> {
         let rel_path = format!(
             "files/{fileId}/permissions",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5456,8 +5492,11 @@ impl PermissionsService {
     pub async fn delete(&mut self, params: &PermissionsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/permissions/{permissionId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            permissionId = percent_encode(
+                format!("{}", params.permission_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5489,8 +5528,11 @@ impl PermissionsService {
     pub async fn get(&mut self, params: &PermissionsGetParams) -> Result<Permission> {
         let rel_path = format!(
             "files/{fileId}/permissions/{permissionId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            permissionId = percent_encode(
+                format!("{}", params.permission_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5522,7 +5564,7 @@ impl PermissionsService {
     pub async fn list(&mut self, params: &PermissionsListParams) -> Result<PermissionList> {
         let rel_path = format!(
             "files/{fileId}/permissions",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5558,8 +5600,11 @@ impl PermissionsService {
     ) -> Result<Permission> {
         let rel_path = format!(
             "files/{fileId}/permissions/{permissionId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            permissionId = percent_encode(params.permission_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            permissionId = percent_encode(
+                format!("{}", params.permission_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5663,8 +5708,11 @@ impl RepliesService {
     pub async fn create(&mut self, params: &RepliesCreateParams, req: &Reply) -> Result<Reply> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5697,9 +5745,12 @@ impl RepliesService {
     pub async fn delete(&mut self, params: &RepliesDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies/{replyId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
-            replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            replyId = percent_encode(format!("{}", params.reply_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5731,9 +5782,12 @@ impl RepliesService {
     pub async fn get(&mut self, params: &RepliesGetParams) -> Result<Reply> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies/{replyId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
-            replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            replyId = percent_encode(format!("{}", params.reply_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5765,8 +5819,11 @@ impl RepliesService {
     pub async fn list(&mut self, params: &RepliesListParams) -> Result<ReplyList> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5798,9 +5855,12 @@ impl RepliesService {
     pub async fn update(&mut self, params: &RepliesUpdateParams, req: &Reply) -> Result<Reply> {
         let rel_path = format!(
             "files/{fileId}/comments/{commentId}/replies/{replyId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            commentId = percent_encode(params.comment_id.as_bytes(), NON_ALPHANUMERIC),
-            replyId = percent_encode(params.reply_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            commentId = percent_encode(
+                format!("{}", params.comment_id).as_bytes(),
+                NON_ALPHANUMERIC
+            ),
+            replyId = percent_encode(format!("{}", params.reply_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5904,8 +5964,11 @@ impl RevisionsService {
     pub async fn delete(&mut self, params: &RevisionsDeleteParams) -> Result<()> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            revisionId = percent_encode(
+                format!("{}", params.revision_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5942,8 +6005,11 @@ impl RevisionsService {
     ) -> Result<Download<'a, EmptyRequest, Revision>> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            revisionId = percent_encode(
+                format!("{}", params.revision_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -5975,7 +6041,7 @@ impl RevisionsService {
     pub async fn list(&mut self, params: &RevisionsListParams) -> Result<RevisionList> {
         let rel_path = format!(
             "files/{fileId}/revisions",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC)
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6011,8 +6077,11 @@ impl RevisionsService {
     ) -> Result<Revision> {
         let rel_path = format!(
             "files/{fileId}/revisions/{revisionId}",
-            fileId = percent_encode(params.file_id.as_bytes(), NON_ALPHANUMERIC),
-            revisionId = percent_encode(params.revision_id.as_bytes(), NON_ALPHANUMERIC)
+            fileId = percent_encode(format!("{}", params.file_id).as_bytes(), NON_ALPHANUMERIC),
+            revisionId = percent_encode(
+                format!("{}", params.revision_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6150,7 +6219,10 @@ impl TeamdrivesService {
     pub async fn delete(&mut self, params: &TeamdrivesDeleteParams) -> Result<()> {
         let rel_path = format!(
             "teamdrives/{teamDriveId}",
-            teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
+            teamDriveId = percent_encode(
+                format!("{}", params.team_drive_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6182,7 +6254,10 @@ impl TeamdrivesService {
     pub async fn get(&mut self, params: &TeamdrivesGetParams) -> Result<TeamDrive> {
         let rel_path = format!(
             "teamdrives/{teamDriveId}",
-            teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
+            teamDriveId = percent_encode(
+                format!("{}", params.team_drive_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 
@@ -6247,7 +6322,10 @@ impl TeamdrivesService {
     ) -> Result<TeamDrive> {
         let rel_path = format!(
             "teamdrives/{teamDriveId}",
-            teamDriveId = percent_encode(params.team_drive_id.as_bytes(), NON_ALPHANUMERIC)
+            teamDriveId = percent_encode(
+                format!("{}", params.team_drive_id).as_bytes(),
+                NON_ALPHANUMERIC
+            )
         );
         let path = self.format_path(rel_path.as_str());
 

@@ -60,7 +60,7 @@ async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()
     params.file_id = file_id.clone();
     params.drive_params = Some(general_params.clone());
     // This parameter will trigger the download.
-    params.drive_params.as_mut().unwrap().alt = Some("media".into());
+    params.drive_params.as_mut().unwrap().alt = Some(drive::DriveParamsAlt::Media);
     let mut dest = vec![0 as u8; 128];
 
     // Get file contents.
