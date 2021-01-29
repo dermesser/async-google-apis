@@ -45,6 +45,19 @@ impl std::convert::AsRef<str> for {{{name}}} {
 
 '''
 
+# An API enum.
+#
+# fields: {name, values: [{desc, line}]}
+SchemaEnumTmpl = '''
+#[derive(Debug, Clone, Copy)]
+pub enum {{{name}}} {
+    {{#values}}
+    /// {{{desc}}}
+    {{{line}}},
+    {{/values}}
+}
+'''
+
 # A struct for parameters or input/output API types.
 # Dict contents --
 # name

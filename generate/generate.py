@@ -76,7 +76,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
         schema: A JSON object from a discovery document representing a type.
 
     Returns:
-        (tuple, [dict])
+        (tuple, [dict], enums)
 
         where type is a tuple where the first element is a Rust type and the
         second element is a comment detailing the use of the field. The list of
@@ -87,12 +87,13 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
     typ = ''
     comment = ''
     structs = []
+    enums = []
     try:
         if '$ref' in schema:
             # We just assume that there is already a type generated for the reference.
             if schema['$ref'] not in parents:
-                return optionalize(schema['$ref'], optional), structs
-            return optionalize('Box<' + schema['$ref'] + '>', optional), structs
+                return optionalize(schema['$ref'], optional), structs, enums
+            return optionalize('Box<' + schema['$ref'] + '>', optional), structs, enums
         if 'type' in schema and schema['type'] == 'object':
             # There are two types of objects: those with `properties` are translated into a Rust struct,
             # and those with `additionalProperties` into a HashMap<String, ...>.
@@ -103,10 +104,10 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 typ = name
                 struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
-                    subtyp, substructs = parse_schema_types(name + capitalize_first(pn),
-                                                            pp,
-                                                            optional=True,
-                                                            parents=parents + [name])
+                    subtyp, substructs, subenums = parse_schema_types(name + capitalize_first(pn),
+                            pp,
+                            optional=True,
+                            parents=parents + [name])
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -129,11 +130,12 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                         comment
                     })
                     structs.extend(substructs)
+                    enums.extend(subenums)
                 structs.append(struct)
-                return (optionalize(typ, optional), schema.get('description', '')), structs
+                return (optionalize(typ, optional), schema.get('description', '')), structs, enums
 
             if 'additionalProperties' in schema:
-                field, substructs = parse_schema_types(name,
+                field, substructs, subenums = parse_schema_types(name,
                                                        schema['additionalProperties'],
                                                        optional=False,
                                                        parents=parents + [name])
@@ -142,18 +144,19 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     typ = field[0]
                 else:
                     typ = field
-                return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs
+                return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs, subenums
 
         if schema['type'] == 'array':
-            typ, substructs = parse_schema_types(name, schema['items'], optional=False, parents=parents + [name])
+            typ, substructs, subenums = parse_schema_types(name, schema['items'], optional=False, parents=parents + [name])
             if type(typ) is tuple:
                 typ = typ[0]
-            return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs
+            return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs, subenums
 
         if schema['type'] == 'string':
 
+            # Builds a line of a rust type
             def build(intt, typ='String'):
-                return (optionalize(typ, optional), intt + ': ' + schema.get('description', '')), structs
+                return (optionalize(typ, optional), intt + ': ' + schema.get('description', '')), structs, enums
 
             if 'format' in schema:
                 if schema['format'] == 'int64':
@@ -170,15 +173,31 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     return build('f32')
                 if schema['format'] == 'date-time':
                     return build('DateTime', typ='DateTime<Utc>')
-            return (optionalize('String', optional), schema.get('description', '')), structs
+
+            if 'enum' in schema and name:
+                name_ = snake_to_camel(rust_identifier(name))
+                def sanitize_enum_value(v):
+                    if v[0].isnumeric():
+                        return '_'+v
+                    return snake_to_camel(v)
+
+                values = [{
+                    'line': sanitize_enum_value(ev),
+                    'desc': schema.get('enumDescriptions', ['']*(i))[i]}
+                    for (i, ev) in enumerate(schema.get('enum', []))]
+                templ_params = {'name': name_, 'values': values}
+                print('Emitted enum', name_, 'with', len(values), 'fields')
+                return (name_, schema.get('description', '')), structs, [templ_params]
+
+            return (optionalize('String', optional), schema.get('description', '')), structs, enums
 
         if schema['type'] == 'boolean':
-            return (optionalize('bool', optional), schema.get('description', '')), structs
+            return (optionalize('bool', optional), schema.get('description', '')), structs, enums
 
         if schema['type'] in ('number', 'integer'):
 
             def build(intt):
-                return (optionalize(intt, optional), schema.get('description', '')), structs
+                return (optionalize(intt, optional), schema.get('description', '')), structs, enums
 
             if schema['format'] == 'float':
                 return build('f32')
@@ -194,11 +213,11 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 return build('u64')
 
         if schema['type'] == 'any':
-            return (optionalize('String', optional), 'ANY data: ' + schema.get('description', '')), structs
+            return (optionalize('String', optional), 'ANY data: ' + schema.get('description', '')), structs, enums
 
-        raise Exception('unimplemented schema type!', name, schema)
+        raise Exception('unimplemented schema type!', name)
     except KeyError as e:
-        print('KeyError while processing:', name, schema)
+        print('KeyError while processing:', name)
         raise e
 
 
@@ -230,7 +249,8 @@ def generate_params_structs(resources, super_name='', global_params=None):
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
-                    (typ, desc), substructs = parse_schema_types('', param, optional=False, parents=[])
+                    print(paramname, param)
+                    (typ, desc), substructs, enums = parse_schema_types('', param, optional=False, parents=[])
                     field = {
                         'name': replace_keywords(rust_identifier(paramname)),
                         'original_name': paramname,
@@ -501,19 +521,22 @@ def generate_all(discdoc):
 
     # Generate schema types.
     structs = []
+    enums = []
     for name, desc in schemas.items():
-        typ, substructs = parse_schema_types(name, desc)
+        typ, substructs, subenums = parse_schema_types(name, desc)
         structs.extend(substructs)
+        enums.extend(subenums)
 
     # Generate global parameters struct and its Display impl.
     if 'parameters' in discdoc:
         schema = {'type': 'object', 'properties': discdoc['parameters']}
         name = replace_keywords(snake_to_camel(params_struct_name))
-        typ, substructs = parse_schema_types(name, schema)
+        typ, substructs, subenums = parse_schema_types(name, schema)
         for s in substructs:
             s['optional_fields'] = s['fields']
             parameter_types.append(chevron.render(SchemaDisplayTmpl, s))
         structs.extend(substructs)
+        enums.extend(subenums)
 
     # Assemble everything into a file.
     modname = (discdoc['id'] + '_types').replace(':', '_')
@@ -529,6 +552,9 @@ def generate_all(discdoc):
             if not s['name']:
                 print('WARN', s)
             f.write(chevron.render(SchemaStructTmpl, s))
+        for e in enums:
+            print('enum', e)
+            f.write(chevron.render(SchemaEnumTmpl, e))
         # Render *Params structs.
         for pt in parameter_types:
             f.write(pt)
@@ -636,7 +662,7 @@ def main():
                 continue
             generate_all(discdoc)
         except Exception as e:
-            print("Error while processing", discdoc)
+            print("Error while processing discovery doc")
             raise e
             continue
 
