@@ -49,12 +49,32 @@ impl std::convert::AsRef<str> for {{{name}}} {
 #
 # fields: {name, values: [{desc, line}]}
 SchemaEnumTmpl = '''
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum {{{name}}} {
+    Undefined,
     {{#values}}
     /// {{{desc}}}
+    #[serde(rename = "{{{jsonvalue}}}")]
     {{{line}}},
     {{/values}}
+}
+
+impl std::default::Default for {{{name}}} {
+    fn default() -> {{{name}}} {
+        {{{name}}}::Undefined
+    }
+}
+
+impl std::fmt::Display for {{{name}}} {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            {{{name}}}::Undefined => write!(f, "undefined"),
+            {{#values}}
+            {{{name}}}::{{{line}}} => write!(f, "{{{jsonvalue}}}"),
+            {{/values}}
+        };
+        Ok(())
+    }
 }
 '''
 

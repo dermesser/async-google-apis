@@ -34,16 +34,17 @@ def capitalize_first(name):
     return name[0].upper() + name[1:]
 
 
-def rust_identifier(name):
-    def sanitize(s):
-        return s.replace('$', 'dollar').replace('#', 'hash').replace('.', '_')
+def sanitize_id(s):
+    return s.replace('$', 'dollar').replace('#', 'hash').replace('.', '_')
 
+
+def rust_identifier(name):
     def r(c):
         if not c.isupper():
             return c
         return '_' + c.lower()
 
-    return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize(name))])
+    return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize_id(name))])
 
 
 def snake_to_camel(name):
@@ -175,19 +176,20 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     return build('DateTime', typ='DateTime<Utc>')
 
             if 'enum' in schema and name:
-                name_ = snake_to_camel(rust_identifier(name))
+                name_ = (sanitize_id(name))
                 def sanitize_enum_value(v):
                     if v[0].isnumeric():
                         return '_'+v
-                    return snake_to_camel(v)
+                    return v[0].upper() + v[1:]
 
                 values = [{
                     'line': sanitize_enum_value(ev),
+                    'jsonvalue': ev,
                     'desc': schema.get('enumDescriptions', ['']*(i))[i]}
                     for (i, ev) in enumerate(schema.get('enum', []))]
                 templ_params = {'name': name_, 'values': values}
                 print('Emitted enum', name_, 'with', len(values), 'fields')
-                return (name_, schema.get('description', '')), structs, [templ_params]
+                return (optionalize(name_, optional), schema.get('description', '')), structs, [templ_params]
 
             return (optionalize('String', optional), schema.get('description', '')), structs, enums
 
