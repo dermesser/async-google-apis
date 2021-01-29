@@ -106,9 +106,9 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
                     subtyp, substructs, subenums = parse_schema_types(name + capitalize_first(pn),
-                            pp,
-                            optional=True,
-                            parents=parents + [name])
+                                                                      pp,
+                                                                      optional=True,
+                                                                      parents=parents + [name])
                     if type(subtyp) is tuple:
                         subtyp, comment = subtyp
                     else:
@@ -137,21 +137,26 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
 
             if 'additionalProperties' in schema:
                 field, substructs, subenums = parse_schema_types(name,
-                                                       schema['additionalProperties'],
-                                                       optional=False,
-                                                       parents=parents + [name])
+                                                                 schema['additionalProperties'],
+                                                                 optional=False,
+                                                                 parents=parents + [name])
                 structs.extend(substructs)
                 if type(field) is tuple:
                     typ = field[0]
                 else:
                     typ = field
-                return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description', '')), structs, subenums
+                return (optionalize('HashMap<String,' + typ + '>', optional), schema.get('description',
+                                                                                         '')), structs, subenums
 
         if schema['type'] == 'array':
-            typ, substructs, subenums = parse_schema_types(name, schema['items'], optional=False, parents=parents + [name])
+            typ, substructs, subenums = parse_schema_types(name,
+                                                           schema['items'],
+                                                           optional=False,
+                                                           parents=parents + [name])
             if type(typ) is tuple:
                 typ = typ[0]
-            return (optionalize('Vec<' + typ + '>', optional), schema.get('description', '')), structs + substructs, subenums
+            return (optionalize('Vec<' + typ + '>', optional), schema.get('description',
+                                                                          '')), structs + substructs, subenums
 
         if schema['type'] == 'string':
 
@@ -177,16 +182,17 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
 
             if 'enum' in schema and name:
                 name_ = (sanitize_id(name))
+
                 def sanitize_enum_value(v):
                     if v[0].isnumeric():
-                        return '_'+v
+                        return '_' + v
                     return v[0].upper() + v[1:]
 
                 values = [{
                     'line': sanitize_enum_value(ev),
                     'jsonvalue': ev,
-                    'desc': schema.get('enumDescriptions', ['']*(i))[i]}
-                    for (i, ev) in enumerate(schema.get('enum', []))]
+                    'desc': schema.get('enumDescriptions', [''] * (i))[i]
+                } for (i, ev) in enumerate(schema.get('enum', []))]
                 templ_params = {'name': name_, 'values': values}
                 print('Emitted enum', name_, 'with', len(values), 'fields')
                 return (optionalize(name_, optional), schema.get('description', '')), structs, [templ_params]
@@ -272,7 +278,8 @@ def generate_params_structs(resources, super_name='', global_params=None):
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
         frags.extend(
-            generate_params_structs(resource.get('resources', {}), super_name=super_name+'_'+resourcename,
+            generate_params_structs(resource.get('resources', {}),
+                                    super_name=super_name + '_' + resourcename,
                                     global_params=global_params))
     return frags
 
@@ -480,13 +487,15 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             } for t in method_fragments]
         }) + '\n'.join(subresource_fragments)
 
+
 def scopes_url_to_enum_val(apiname, url):
     split = url.split('/')
     rawname = split[-1]
     if len(rawname) == 0 and len(split) > 1:
         rawname = split[-2]
     fancy_name = snake_to_camel(rawname.replace('-', '_').replace('.', '_'))
-    return (snake_to_camel(apiname)+'Scopes', fancy_name)
+    return (snake_to_camel(apiname) + 'Scopes', fancy_name)
+
 
 def generate_scopes_type(name, scopes):
     """Generate types for the `scopes` dictionary (path: auth.oauth2.scopes in a discovery document),
