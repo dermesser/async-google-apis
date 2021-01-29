@@ -11,6 +11,9 @@ RustHeader = '''
 //! and contain methods to interact with an API. The remaining types are used by those methods
 //! and can be explored starting from a method you want to use.
 //!
+//! The generated code's dependencies are in the `async-google-apis-common` crate. The main
+//! dependencies are hyper, yup-oauth2 (for OAuth authentication), and serde.
+//!
 //! I'd be happy if you let me know about your use case of this code.
 //!
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
