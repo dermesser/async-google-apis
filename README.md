@@ -46,6 +46,11 @@ APIs to gain insights on which code to generate.
   used by the generated code, as well as some types (like errors) and as well as
   all imports. Include this crate in your dependencies when you are using
   the generated code in your project.
+* NOTE: some parts of the API -- for example: URL query parameters that are not
+  represented as enums -- may require small manual adjustments to the generated
+  code. If possible, this should be solved automatically, but sometimes it isn't
+  yet. Refer to the example crates for more details.
+
 
 ## To Do
 

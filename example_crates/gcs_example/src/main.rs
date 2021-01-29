@@ -45,7 +45,7 @@ async fn download_file(
 ) -> common::Result<()> {
     // Set alt=media for download.
     let mut gparams = storage_v1_types::StorageParams::default();
-    gparams.alt = Some("media".into());
+    gparams.alt = Some(storage_v1_types::StorageParamsAlt::Media);
     let mut params = storage_v1_types::ObjectsGetParams::default();
     params.storage_params = Some(gparams);
     params.bucket = bucket.into();

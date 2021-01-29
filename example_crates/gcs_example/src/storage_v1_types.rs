@@ -1125,6 +1125,8 @@ pub enum StorageParamsAlt {
     /// Responses with Content-Type of application/json
     #[serde(rename = "json")]
     Json,
+    #[serde(rename = "media")]
+    Media,
 }
 
 impl std::default::Default for StorageParamsAlt {
@@ -1138,6 +1140,7 @@ impl std::fmt::Display for StorageParamsAlt {
         let s = match self {
             StorageParamsAlt::Undefined => write!(f, "undefined"),
             StorageParamsAlt::Json => write!(f, "json"),
+            StorageParamsAlt::Media => write!(f, "media"),
         };
         Ok(())
     }
