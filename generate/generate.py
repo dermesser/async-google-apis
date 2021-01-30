@@ -105,7 +105,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 typ = name
                 struct = {'name': name, 'description': schema.get('description', ''), 'fields': []}
                 for pn, pp in schema['properties'].items():
-                    subtyp, substructs, subenums = parse_schema_types(name + capitalize_first(pn),
+                    subtyp, substructs, subenums = parse_schema_types(capitalize_first(pn),
                                                                       pp,
                                                                       optional=True,
                                                                       parents=parents + [name])
@@ -193,7 +193,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     'jsonvalue': ev,
                     'desc': schema.get('enumDescriptions', [''] * (i))[i]
                 } for (i, ev) in enumerate(schema.get('enum', []))]
-                templ_params = {'name': name_, 'values': values}
+                templ_params = (name_, values)
                 return (optionalize(name_, optional), schema.get('description', '')), structs, [templ_params]
 
             return (optionalize('String', optional), schema.get('description', '')), structs, enums
@@ -231,9 +231,10 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
 def generate_params_structs(resources, super_name='', global_params=None):
     """Generate parameter structs from the resources list.
 
-    Returns a list of source code strings.
+    Returns a list of source code strings, set of enums to be defined
     """
     frags = []
+    enums_results = []
     for resourcename, resource in resources.items():
         for methodname, method in resource.get('methods', {}).items():
             param_type_name = snake_to_camel(super_name + capitalize_first(resourcename) +
@@ -256,7 +257,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
-                    (typ, desc), substructs, enums = parse_schema_types('', param, optional=False, parents=[])
+                    (typ, desc), substructs, enums = parse_schema_types(capitalize_first(paramname), param, optional=False, parents=[])
                     field = {
                         'name': replace_keywords(rust_identifier(paramname)),
                         'original_name': paramname,
@@ -270,16 +271,19 @@ def generate_params_structs(resources, super_name='', global_params=None):
                             req_query_parameters.append(field)
                         else:
                             opt_query_parameters.append(field)
+                    enums_results.extend(enums)
             frags.append(chevron.render(SchemaStructTmpl, struct))
             struct['required_fields'] = req_query_parameters
             struct['optional_fields'] = opt_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
         # Generate parameter types for subresources.
-        frags.extend(
+        fs, enums = \
             generate_params_structs(resource.get('resources', {}),
                                     super_name=super_name + '_' + resourcename,
-                                    global_params=global_params))
-    return frags
+                                    global_params=global_params)
+        frags.extend(fs)
+        enums_results.extend(enums)
+    return frags, enums_results
 
 
 def resolve_parameters(string, paramsname='params'):
@@ -519,7 +523,7 @@ def generate_all(discdoc):
 
     # Generate parameter types (*Params - those are used as "side inputs" to requests)
     params_struct_name = global_params_name(discdoc.get('name'))
-    parameter_types = generate_params_structs(resources, global_params=params_struct_name)
+    parameter_types, enums = generate_params_structs(resources, global_params=params_struct_name)
 
     # Generate service impls.
     services = []
@@ -530,7 +534,6 @@ def generate_all(discdoc):
 
     # Generate schema types.
     structs = []
-    enums = []
     for name, desc in schemas.items():
         typ, substructs, subenums = parse_schema_types(name, desc)
         structs.extend(substructs)
@@ -561,8 +564,9 @@ def generate_all(discdoc):
             if not s['name']:
                 print('WARN', s)
             f.write(chevron.render(SchemaStructTmpl, s))
-        for e in enums:
-            f.write(chevron.render(SchemaEnumTmpl, e))
+        # Write only unique enum definitions. Safe to assume a type won't be defined differently?
+        for n, v in dict(enums).items():
+            f.write(chevron.render(SchemaEnumTmpl, {"name" : n, "values": v}))
         # Render *Params structs.
         for pt in parameter_types:
             f.write(pt)
