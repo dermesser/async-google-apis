@@ -10948,6 +10948,978 @@ impl std::fmt::Display for YoutubeParamsdollar_xgafv {
     }
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum CommentsListTextFormat {
+    Undefined,
+    ///
+    #[serde(rename = "textFormatUnspecified")]
+    TextFormatUnspecified,
+    /// Returns the comments in HTML format. This is the default value.
+    #[serde(rename = "html")]
+    Html,
+    /// Returns the comments in plain text format.
+    #[serde(rename = "plainText")]
+    PlainText,
+}
+
+impl std::default::Default for CommentsListTextFormat {
+    fn default() -> CommentsListTextFormat {
+        CommentsListTextFormat::Undefined
+    }
+}
+
+impl std::fmt::Display for CommentsListTextFormat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            CommentsListTextFormat::Undefined => write!(f, "undefined"),
+            CommentsListTextFormat::TextFormatUnspecified => write!(f, "textFormatUnspecified"),
+            CommentsListTextFormat::Html => write!(f, "html"),
+            CommentsListTextFormat::PlainText => write!(f, "plainText"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum CommentsSetModerationStatusModerationStatus {
+    Undefined,
+    /// The comment is available for public display.
+    #[serde(rename = "published")]
+    Published,
+    /// The comment is awaiting review by a moderator.
+    #[serde(rename = "heldForReview")]
+    HeldForReview,
+    ///
+    #[serde(rename = "likelySpam")]
+    LikelySpam,
+    /// The comment is unfit for display.
+    #[serde(rename = "rejected")]
+    Rejected,
+}
+
+impl std::default::Default for CommentsSetModerationStatusModerationStatus {
+    fn default() -> CommentsSetModerationStatusModerationStatus {
+        CommentsSetModerationStatusModerationStatus::Undefined
+    }
+}
+
+impl std::fmt::Display for CommentsSetModerationStatusModerationStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            CommentsSetModerationStatusModerationStatus::Undefined => write!(f, "undefined"),
+            CommentsSetModerationStatusModerationStatus::Published => write!(f, "published"),
+            CommentsSetModerationStatusModerationStatus::HeldForReview => {
+                write!(f, "heldForReview")
+            }
+            CommentsSetModerationStatusModerationStatus::LikelySpam => write!(f, "likelySpam"),
+            CommentsSetModerationStatusModerationStatus::Rejected => write!(f, "rejected"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum VideosListMyRating {
+    Undefined,
+    ///
+    #[serde(rename = "none")]
+    None,
+    /// The entity is liked.
+    #[serde(rename = "like")]
+    Like,
+    /// The entity is disliked.
+    #[serde(rename = "dislike")]
+    Dislike,
+}
+
+impl std::default::Default for VideosListMyRating {
+    fn default() -> VideosListMyRating {
+        VideosListMyRating::Undefined
+    }
+}
+
+impl std::fmt::Display for VideosListMyRating {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            VideosListMyRating::Undefined => write!(f, "undefined"),
+            VideosListMyRating::None => write!(f, "none"),
+            VideosListMyRating::Like => write!(f, "like"),
+            VideosListMyRating::Dislike => write!(f, "dislike"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum VideosListChart {
+    Undefined,
+    ///
+    #[serde(rename = "chartUnspecified")]
+    ChartUnspecified,
+    /// Return the most popular videos for the specified content region and video category.
+    #[serde(rename = "mostPopular")]
+    MostPopular,
+}
+
+impl std::default::Default for VideosListChart {
+    fn default() -> VideosListChart {
+        VideosListChart::Undefined
+    }
+}
+
+impl std::fmt::Display for VideosListChart {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            VideosListChart::Undefined => write!(f, "undefined"),
+            VideosListChart::ChartUnspecified => write!(f, "chartUnspecified"),
+            VideosListChart::MostPopular => write!(f, "mostPopular"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum VideosRateRating {
+    Undefined,
+    ///
+    #[serde(rename = "none")]
+    None,
+    /// The entity is liked.
+    #[serde(rename = "like")]
+    Like,
+    /// The entity is disliked.
+    #[serde(rename = "dislike")]
+    Dislike,
+}
+
+impl std::default::Default for VideosRateRating {
+    fn default() -> VideosRateRating {
+        VideosRateRating::Undefined
+    }
+}
+
+impl std::fmt::Display for VideosRateRating {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            VideosRateRating::Undefined => write!(f, "undefined"),
+            VideosRateRating::None => write!(f, "none"),
+            VideosRateRating::Like => write!(f, "like"),
+            VideosRateRating::Dislike => write!(f, "dislike"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ThirdPartyLinksDeleteType {
+    Undefined,
+    ///
+    #[serde(rename = "linkUnspecified")]
+    LinkUnspecified,
+    /// A link that is connecting (or about to connect) a channel with a store on a merchandising platform in order to enable retail commerce capabilities for that channel on YouTube.
+    #[serde(rename = "channelToStoreLink")]
+    ChannelToStoreLink,
+}
+
+impl std::default::Default for ThirdPartyLinksDeleteType {
+    fn default() -> ThirdPartyLinksDeleteType {
+        ThirdPartyLinksDeleteType::Undefined
+    }
+}
+
+impl std::fmt::Display for ThirdPartyLinksDeleteType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ThirdPartyLinksDeleteType::Undefined => write!(f, "undefined"),
+            ThirdPartyLinksDeleteType::LinkUnspecified => write!(f, "linkUnspecified"),
+            ThirdPartyLinksDeleteType::ChannelToStoreLink => write!(f, "channelToStoreLink"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ThirdPartyLinksListType {
+    Undefined,
+    ///
+    #[serde(rename = "linkUnspecified")]
+    LinkUnspecified,
+    /// A link that is connecting (or about to connect) a channel with a store on a merchandising platform in order to enable retail commerce capabilities for that channel on YouTube.
+    #[serde(rename = "channelToStoreLink")]
+    ChannelToStoreLink,
+}
+
+impl std::default::Default for ThirdPartyLinksListType {
+    fn default() -> ThirdPartyLinksListType {
+        ThirdPartyLinksListType::Undefined
+    }
+}
+
+impl std::fmt::Display for ThirdPartyLinksListType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ThirdPartyLinksListType::Undefined => write!(f, "undefined"),
+            ThirdPartyLinksListType::LinkUnspecified => write!(f, "linkUnspecified"),
+            ThirdPartyLinksListType::ChannelToStoreLink => write!(f, "channelToStoreLink"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum CommentThreadsListTextFormat {
+    Undefined,
+    ///
+    #[serde(rename = "textFormatUnspecified")]
+    TextFormatUnspecified,
+    /// Returns the comments in HTML format. This is the default value.
+    #[serde(rename = "html")]
+    Html,
+    /// Returns the comments in plain text format.
+    #[serde(rename = "plainText")]
+    PlainText,
+}
+
+impl std::default::Default for CommentThreadsListTextFormat {
+    fn default() -> CommentThreadsListTextFormat {
+        CommentThreadsListTextFormat::Undefined
+    }
+}
+
+impl std::fmt::Display for CommentThreadsListTextFormat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            CommentThreadsListTextFormat::Undefined => write!(f, "undefined"),
+            CommentThreadsListTextFormat::TextFormatUnspecified => {
+                write!(f, "textFormatUnspecified")
+            }
+            CommentThreadsListTextFormat::Html => write!(f, "html"),
+            CommentThreadsListTextFormat::PlainText => write!(f, "plainText"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum CommentThreadsListOrder {
+    Undefined,
+    ///
+    #[serde(rename = "orderUnspecified")]
+    OrderUnspecified,
+    /// Order by time.
+    #[serde(rename = "time")]
+    Time,
+    /// Order by relevance.
+    #[serde(rename = "relevance")]
+    Relevance,
+}
+
+impl std::default::Default for CommentThreadsListOrder {
+    fn default() -> CommentThreadsListOrder {
+        CommentThreadsListOrder::Undefined
+    }
+}
+
+impl std::fmt::Display for CommentThreadsListOrder {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            CommentThreadsListOrder::Undefined => write!(f, "undefined"),
+            CommentThreadsListOrder::OrderUnspecified => write!(f, "orderUnspecified"),
+            CommentThreadsListOrder::Time => write!(f, "time"),
+            CommentThreadsListOrder::Relevance => write!(f, "relevance"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum CommentThreadsListModerationStatus {
+    Undefined,
+    /// The comment is available for public display.
+    #[serde(rename = "published")]
+    Published,
+    /// The comment is awaiting review by a moderator.
+    #[serde(rename = "heldForReview")]
+    HeldForReview,
+    ///
+    #[serde(rename = "likelySpam")]
+    LikelySpam,
+    /// The comment is unfit for display.
+    #[serde(rename = "rejected")]
+    Rejected,
+}
+
+impl std::default::Default for CommentThreadsListModerationStatus {
+    fn default() -> CommentThreadsListModerationStatus {
+        CommentThreadsListModerationStatus::Undefined
+    }
+}
+
+impl std::fmt::Display for CommentThreadsListModerationStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            CommentThreadsListModerationStatus::Undefined => write!(f, "undefined"),
+            CommentThreadsListModerationStatus::Published => write!(f, "published"),
+            CommentThreadsListModerationStatus::HeldForReview => write!(f, "heldForReview"),
+            CommentThreadsListModerationStatus::LikelySpam => write!(f, "likelySpam"),
+            CommentThreadsListModerationStatus::Rejected => write!(f, "rejected"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SubscriptionsListOrder {
+    Undefined,
+    ///
+    #[serde(rename = "subscriptionOrderUnspecified")]
+    SubscriptionOrderUnspecified,
+    /// Sort by relevance.
+    #[serde(rename = "relevance")]
+    Relevance,
+    /// Sort by order of activity.
+    #[serde(rename = "unread")]
+    Unread,
+    /// Sort alphabetically.
+    #[serde(rename = "alphabetical")]
+    Alphabetical,
+}
+
+impl std::default::Default for SubscriptionsListOrder {
+    fn default() -> SubscriptionsListOrder {
+        SubscriptionsListOrder::Undefined
+    }
+}
+
+impl std::fmt::Display for SubscriptionsListOrder {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SubscriptionsListOrder::Undefined => write!(f, "undefined"),
+            SubscriptionsListOrder::SubscriptionOrderUnspecified => {
+                write!(f, "subscriptionOrderUnspecified")
+            }
+            SubscriptionsListOrder::Relevance => write!(f, "relevance"),
+            SubscriptionsListOrder::Unread => write!(f, "unread"),
+            SubscriptionsListOrder::Alphabetical => write!(f, "alphabetical"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoDefinition {
+    Undefined,
+    /// Return all videos, regardless of their resolution.
+    #[serde(rename = "any")]
+    Any,
+    /// Only retrieve videos in standard definition.
+    #[serde(rename = "standard")]
+    Standard,
+    /// Only retrieve HD videos.
+    #[serde(rename = "high")]
+    High,
+}
+
+impl std::default::Default for SearchListVideoDefinition {
+    fn default() -> SearchListVideoDefinition {
+        SearchListVideoDefinition::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoDefinition {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoDefinition::Undefined => write!(f, "undefined"),
+            SearchListVideoDefinition::Any => write!(f, "any"),
+            SearchListVideoDefinition::Standard => write!(f, "standard"),
+            SearchListVideoDefinition::High => write!(f, "high"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoDuration {
+    Undefined,
+    ///
+    #[serde(rename = "videoDurationUnspecified")]
+    VideoDurationUnspecified,
+    /// Do not filter video search results based on their duration. This is the default value.
+    #[serde(rename = "any")]
+    Any,
+    /// Only include videos that are less than four minutes long.
+    #[serde(rename = "short")]
+    Short,
+    /// Only include videos that are between four and 20 minutes long (inclusive).
+    #[serde(rename = "medium")]
+    Medium,
+    /// Only include videos longer than 20 minutes.
+    #[serde(rename = "long")]
+    Long,
+}
+
+impl std::default::Default for SearchListVideoDuration {
+    fn default() -> SearchListVideoDuration {
+        SearchListVideoDuration::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoDuration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoDuration::Undefined => write!(f, "undefined"),
+            SearchListVideoDuration::VideoDurationUnspecified => {
+                write!(f, "videoDurationUnspecified")
+            }
+            SearchListVideoDuration::Any => write!(f, "any"),
+            SearchListVideoDuration::Short => write!(f, "short"),
+            SearchListVideoDuration::Medium => write!(f, "medium"),
+            SearchListVideoDuration::Long => write!(f, "long"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListEventType {
+    Undefined,
+    ///
+    #[serde(rename = "none")]
+    None,
+    /// The live broadcast is upcoming.
+    #[serde(rename = "upcoming")]
+    Upcoming,
+    /// The live broadcast is active.
+    #[serde(rename = "live")]
+    Live,
+    /// The live broadcast has been completed.
+    #[serde(rename = "completed")]
+    Completed,
+}
+
+impl std::default::Default for SearchListEventType {
+    fn default() -> SearchListEventType {
+        SearchListEventType::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListEventType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListEventType::Undefined => write!(f, "undefined"),
+            SearchListEventType::None => write!(f, "none"),
+            SearchListEventType::Upcoming => write!(f, "upcoming"),
+            SearchListEventType::Live => write!(f, "live"),
+            SearchListEventType::Completed => write!(f, "completed"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoEmbeddable {
+    Undefined,
+    ///
+    #[serde(rename = "videoEmbeddableUnspecified")]
+    VideoEmbeddableUnspecified,
+    /// Return all videos, embeddable or not.
+    #[serde(rename = "any")]
+    Any,
+    /// Only retrieve embeddable videos.
+    #[serde(rename = "true")]
+    True,
+}
+
+impl std::default::Default for SearchListVideoEmbeddable {
+    fn default() -> SearchListVideoEmbeddable {
+        SearchListVideoEmbeddable::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoEmbeddable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoEmbeddable::Undefined => write!(f, "undefined"),
+            SearchListVideoEmbeddable::VideoEmbeddableUnspecified => {
+                write!(f, "videoEmbeddableUnspecified")
+            }
+            SearchListVideoEmbeddable::Any => write!(f, "any"),
+            SearchListVideoEmbeddable::True => write!(f, "true"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoType {
+    Undefined,
+    ///
+    #[serde(rename = "videoTypeUnspecified")]
+    VideoTypeUnspecified,
+    /// Return all videos.
+    #[serde(rename = "any")]
+    Any,
+    /// Only retrieve movies.
+    #[serde(rename = "movie")]
+    Movie,
+    /// Only retrieve episodes of shows.
+    #[serde(rename = "episode")]
+    Episode,
+}
+
+impl std::default::Default for SearchListVideoType {
+    fn default() -> SearchListVideoType {
+        SearchListVideoType::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoType::Undefined => write!(f, "undefined"),
+            SearchListVideoType::VideoTypeUnspecified => write!(f, "videoTypeUnspecified"),
+            SearchListVideoType::Any => write!(f, "any"),
+            SearchListVideoType::Movie => write!(f, "movie"),
+            SearchListVideoType::Episode => write!(f, "episode"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoDimension {
+    Undefined,
+    ///
+    #[serde(rename = "any")]
+    Any,
+    /// Restrict search results to exclude 3D videos.
+    #[serde(rename = "2d")]
+    _2d,
+    /// Restrict search results to only include 3D videos.
+    #[serde(rename = "3d")]
+    _3d,
+}
+
+impl std::default::Default for SearchListVideoDimension {
+    fn default() -> SearchListVideoDimension {
+        SearchListVideoDimension::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoDimension {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoDimension::Undefined => write!(f, "undefined"),
+            SearchListVideoDimension::Any => write!(f, "any"),
+            SearchListVideoDimension::_2d => write!(f, "2d"),
+            SearchListVideoDimension::_3d => write!(f, "3d"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoSyndicated {
+    Undefined,
+    ///
+    #[serde(rename = "videoSyndicatedUnspecified")]
+    VideoSyndicatedUnspecified,
+    /// Return all videos, syndicated or not.
+    #[serde(rename = "any")]
+    Any,
+    /// Only retrieve syndicated videos.
+    #[serde(rename = "true")]
+    True,
+}
+
+impl std::default::Default for SearchListVideoSyndicated {
+    fn default() -> SearchListVideoSyndicated {
+        SearchListVideoSyndicated::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoSyndicated {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoSyndicated::Undefined => write!(f, "undefined"),
+            SearchListVideoSyndicated::VideoSyndicatedUnspecified => {
+                write!(f, "videoSyndicatedUnspecified")
+            }
+            SearchListVideoSyndicated::Any => write!(f, "any"),
+            SearchListVideoSyndicated::True => write!(f, "true"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListChannelType {
+    Undefined,
+    ///
+    #[serde(rename = "channelTypeUnspecified")]
+    ChannelTypeUnspecified,
+    /// Return all channels.
+    #[serde(rename = "any")]
+    Any,
+    /// Only retrieve shows.
+    #[serde(rename = "show")]
+    Show,
+}
+
+impl std::default::Default for SearchListChannelType {
+    fn default() -> SearchListChannelType {
+        SearchListChannelType::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListChannelType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListChannelType::Undefined => write!(f, "undefined"),
+            SearchListChannelType::ChannelTypeUnspecified => write!(f, "channelTypeUnspecified"),
+            SearchListChannelType::Any => write!(f, "any"),
+            SearchListChannelType::Show => write!(f, "show"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoLicense {
+    Undefined,
+    /// Return all videos, regardless of which license they have, that match the query parameters.
+    #[serde(rename = "any")]
+    Any,
+    /// Only return videos that have the standard YouTube license.
+    #[serde(rename = "youtube")]
+    Youtube,
+    /// Only return videos that have a Creative Commons license. Users can reuse videos with this license in other videos that they create. Learn more.
+    #[serde(rename = "creativeCommon")]
+    CreativeCommon,
+}
+
+impl std::default::Default for SearchListVideoLicense {
+    fn default() -> SearchListVideoLicense {
+        SearchListVideoLicense::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoLicense {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoLicense::Undefined => write!(f, "undefined"),
+            SearchListVideoLicense::Any => write!(f, "any"),
+            SearchListVideoLicense::Youtube => write!(f, "youtube"),
+            SearchListVideoLicense::CreativeCommon => write!(f, "creativeCommon"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListVideoCaption {
+    Undefined,
+    ///
+    #[serde(rename = "videoCaptionUnspecified")]
+    VideoCaptionUnspecified,
+    /// Do not filter results based on caption availability.
+    #[serde(rename = "any")]
+    Any,
+    /// Only include videos that have captions.
+    #[serde(rename = "closedCaption")]
+    ClosedCaption,
+    /// Only include videos that do not have captions.
+    #[serde(rename = "none")]
+    None,
+}
+
+impl std::default::Default for SearchListVideoCaption {
+    fn default() -> SearchListVideoCaption {
+        SearchListVideoCaption::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListVideoCaption {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListVideoCaption::Undefined => write!(f, "undefined"),
+            SearchListVideoCaption::VideoCaptionUnspecified => write!(f, "videoCaptionUnspecified"),
+            SearchListVideoCaption::Any => write!(f, "any"),
+            SearchListVideoCaption::ClosedCaption => write!(f, "closedCaption"),
+            SearchListVideoCaption::None => write!(f, "none"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListOrder {
+    Undefined,
+    ///
+    #[serde(rename = "searchSortUnspecified")]
+    SearchSortUnspecified,
+    /// Resources are sorted in reverse chronological order based on the date they were created.
+    #[serde(rename = "date")]
+    Date,
+    /// Resources are sorted from highest to lowest rating.
+    #[serde(rename = "rating")]
+    Rating,
+    /// Resources are sorted from highest to lowest number of views.
+    #[serde(rename = "viewCount")]
+    ViewCount,
+    /// Resources are sorted based on their relevance to the search query. This is the default value for this parameter.
+    #[serde(rename = "relevance")]
+    Relevance,
+    /// Resources are sorted alphabetically by title.
+    #[serde(rename = "title")]
+    Title,
+    /// Channels are sorted in descending order of their number of uploaded videos.
+    #[serde(rename = "videoCount")]
+    VideoCount,
+}
+
+impl std::default::Default for SearchListOrder {
+    fn default() -> SearchListOrder {
+        SearchListOrder::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListOrder {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListOrder::Undefined => write!(f, "undefined"),
+            SearchListOrder::SearchSortUnspecified => write!(f, "searchSortUnspecified"),
+            SearchListOrder::Date => write!(f, "date"),
+            SearchListOrder::Rating => write!(f, "rating"),
+            SearchListOrder::ViewCount => write!(f, "viewCount"),
+            SearchListOrder::Relevance => write!(f, "relevance"),
+            SearchListOrder::Title => write!(f, "title"),
+            SearchListOrder::VideoCount => write!(f, "videoCount"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SearchListSafeSearch {
+    Undefined,
+    ///
+    #[serde(rename = "safeSearchSettingUnspecified")]
+    SafeSearchSettingUnspecified,
+    /// YouTube will not filter the search result set.
+    #[serde(rename = "none")]
+    None,
+    /// YouTube will filter some content from search results and, at the least, will filter content that is restricted in your locale. Based on their content, search results could be removed from search results or demoted in search results. This is the default parameter value.
+    #[serde(rename = "moderate")]
+    Moderate,
+    /// YouTube will try to exclude all restricted content from the search result set. Based on their content, search results could be removed from search results or demoted in search results.
+    #[serde(rename = "strict")]
+    Strict,
+}
+
+impl std::default::Default for SearchListSafeSearch {
+    fn default() -> SearchListSafeSearch {
+        SearchListSafeSearch::Undefined
+    }
+}
+
+impl std::fmt::Display for SearchListSafeSearch {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SearchListSafeSearch::Undefined => write!(f, "undefined"),
+            SearchListSafeSearch::SafeSearchSettingUnspecified => {
+                write!(f, "safeSearchSettingUnspecified")
+            }
+            SearchListSafeSearch::None => write!(f, "none"),
+            SearchListSafeSearch::Moderate => write!(f, "moderate"),
+            SearchListSafeSearch::Strict => write!(f, "strict"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum SponsorsListFilter {
+    Undefined,
+    ///
+    #[serde(rename = "sponsorFilterUnknown")]
+    SponsorFilterUnknown,
+    /// Return the most recent sponsors, from newest to oldest.
+    #[serde(rename = "newest")]
+    Newest,
+    /// Return all sponsors, from newest to oldest.
+    #[serde(rename = "all")]
+    All,
+}
+
+impl std::default::Default for SponsorsListFilter {
+    fn default() -> SponsorsListFilter {
+        SponsorsListFilter::Undefined
+    }
+}
+
+impl std::fmt::Display for SponsorsListFilter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            SponsorsListFilter::Undefined => write!(f, "undefined"),
+            SponsorsListFilter::SponsorFilterUnknown => write!(f, "sponsorFilterUnknown"),
+            SponsorsListFilter::Newest => write!(f, "newest"),
+            SponsorsListFilter::All => write!(f, "all"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum LiveBroadcastsListBroadcastStatus {
+    Undefined,
+    ///
+    #[serde(rename = "broadcastStatusFilterUnspecified")]
+    BroadcastStatusFilterUnspecified,
+    /// Return all broadcasts.
+    #[serde(rename = "all")]
+    All,
+    /// Return current live broadcasts.
+    #[serde(rename = "active")]
+    Active,
+    /// Return broadcasts that have not yet started.
+    #[serde(rename = "upcoming")]
+    Upcoming,
+    /// Return broadcasts that have already ended.
+    #[serde(rename = "completed")]
+    Completed,
+}
+
+impl std::default::Default for LiveBroadcastsListBroadcastStatus {
+    fn default() -> LiveBroadcastsListBroadcastStatus {
+        LiveBroadcastsListBroadcastStatus::Undefined
+    }
+}
+
+impl std::fmt::Display for LiveBroadcastsListBroadcastStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            LiveBroadcastsListBroadcastStatus::Undefined => write!(f, "undefined"),
+            LiveBroadcastsListBroadcastStatus::BroadcastStatusFilterUnspecified => {
+                write!(f, "broadcastStatusFilterUnspecified")
+            }
+            LiveBroadcastsListBroadcastStatus::All => write!(f, "all"),
+            LiveBroadcastsListBroadcastStatus::Active => write!(f, "active"),
+            LiveBroadcastsListBroadcastStatus::Upcoming => write!(f, "upcoming"),
+            LiveBroadcastsListBroadcastStatus::Completed => write!(f, "completed"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum LiveBroadcastsListBroadcastType {
+    Undefined,
+    ///
+    #[serde(rename = "broadcastTypeFilterUnspecified")]
+    BroadcastTypeFilterUnspecified,
+    /// Return all broadcasts.
+    #[serde(rename = "all")]
+    All,
+    /// Return only scheduled event broadcasts.
+    #[serde(rename = "event")]
+    Event,
+    /// Return only persistent broadcasts.
+    #[serde(rename = "persistent")]
+    Persistent,
+}
+
+impl std::default::Default for LiveBroadcastsListBroadcastType {
+    fn default() -> LiveBroadcastsListBroadcastType {
+        LiveBroadcastsListBroadcastType::Undefined
+    }
+}
+
+impl std::fmt::Display for LiveBroadcastsListBroadcastType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            LiveBroadcastsListBroadcastType::Undefined => write!(f, "undefined"),
+            LiveBroadcastsListBroadcastType::BroadcastTypeFilterUnspecified => {
+                write!(f, "broadcastTypeFilterUnspecified")
+            }
+            LiveBroadcastsListBroadcastType::All => write!(f, "all"),
+            LiveBroadcastsListBroadcastType::Event => write!(f, "event"),
+            LiveBroadcastsListBroadcastType::Persistent => write!(f, "persistent"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum LiveBroadcastsTransitionBroadcastStatus {
+    Undefined,
+    ///
+    #[serde(rename = "statusUnspecified")]
+    StatusUnspecified,
+    /// Start testing the broadcast. YouTube transmits video to the broadcast's monitor stream. Note that you can only transition a broadcast to the testing state if its contentDetails.monitorStream.enableMonitorStream property is set to true.",
+    #[serde(rename = "testing")]
+    Testing,
+    /// Return only persistent broadcasts.
+    #[serde(rename = "live")]
+    Live,
+    /// The broadcast is over. YouTube stops transmitting video.
+    #[serde(rename = "complete")]
+    Complete,
+}
+
+impl std::default::Default for LiveBroadcastsTransitionBroadcastStatus {
+    fn default() -> LiveBroadcastsTransitionBroadcastStatus {
+        LiveBroadcastsTransitionBroadcastStatus::Undefined
+    }
+}
+
+impl std::fmt::Display for LiveBroadcastsTransitionBroadcastStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            LiveBroadcastsTransitionBroadcastStatus::Undefined => write!(f, "undefined"),
+            LiveBroadcastsTransitionBroadcastStatus::StatusUnspecified => {
+                write!(f, "statusUnspecified")
+            }
+            LiveBroadcastsTransitionBroadcastStatus::Testing => write!(f, "testing"),
+            LiveBroadcastsTransitionBroadcastStatus::Live => write!(f, "live"),
+            LiveBroadcastsTransitionBroadcastStatus::Complete => write!(f, "complete"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum MembersListMode {
+    Undefined,
+    ///
+    #[serde(rename = "listMembersModeUnknown")]
+    ListMembersModeUnknown,
+    /// Return only members that joined after the first call with this mode was made.
+    #[serde(rename = "updates")]
+    Updates,
+    /// Return all current members, from newest to oldest.
+    #[serde(rename = "all_current")]
+    All_current,
+}
+
+impl std::default::Default for MembersListMode {
+    fn default() -> MembersListMode {
+        MembersListMode::Undefined
+    }
+}
+
+impl std::fmt::Display for MembersListMode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            MembersListMode::Undefined => write!(f, "undefined"),
+            MembersListMode::ListMembersModeUnknown => write!(f, "listMembersModeUnknown"),
+            MembersListMode::Updates => write!(f, "updates"),
+            MembersListMode::All_current => write!(f, "all_current"),
+        };
+        Ok(())
+    }
+}
+
 /// Parameters for the `comments.list` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CommentsListParams {
@@ -10959,7 +11931,7 @@ pub struct CommentsListParams {
     pub parent_id: Option<String>,
     /// The requested text format for the returned comments.
     #[serde(rename = "textFormat")]
-    pub text_format: Option<String>,
+    pub text_format: Option<CommentsListTextFormat>,
     /// The *part* parameter specifies a comma-separated list of one or more comment resource properties that the API response will include.
     #[serde(rename = "part")]
     pub part: String,
@@ -11031,7 +12003,7 @@ pub struct CommentsSetModerationStatusParams {
     pub id: String,
     /// Specifies the requested moderation status. Note, comments can be in statuses, which are not available through this call. For example, this call does not allow to mark a comment as 'likely spam'. Valid values: MODERATION_STATUS_PUBLISHED, MODERATION_STATUS_HELD_FOR_REVIEW, MODERATION_STATUS_REJECTED.
     #[serde(rename = "moderationStatus")]
-    pub moderation_status: String,
+    pub moderation_status: CommentsSetModerationStatusModerationStatus,
     /// If set to true the author of the comment gets added to the ban list. This means all future comments of the author will autmomatically be rejected. Only valid in combination with STATUS_REJECTED.
     #[serde(rename = "banAuthor")]
     pub ban_author: Option<bool>,
@@ -11785,7 +12757,7 @@ pub struct VideosListParams {
     pub id: Option<String>,
     /// Return videos liked/disliked by the authenticated user. Does not support RateType.RATED_TYPE_NONE.
     #[serde(rename = "myRating")]
-    pub my_rating: Option<String>,
+    pub my_rating: Option<VideosListMyRating>,
     /// The *part* parameter specifies a comma-separated list of one or more video resource properties that the API response will include. If the parameter identifies a property that contains child properties, the child properties will be included in the response. For example, in a video resource, the snippet property contains the channelId, title, description, tags, and categoryId properties. As such, if you set *part=snippet*, the API response will contain all of those properties.
     #[serde(rename = "part")]
     pub part: String,
@@ -11794,7 +12766,7 @@ pub struct VideosListParams {
     pub on_behalf_of_content_owner: Option<String>,
     /// Return the videos that are in the specified chart.
     #[serde(rename = "chart")]
-    pub chart: Option<String>,
+    pub chart: Option<VideosListChart>,
     /// Return the player with maximum height specified in
     #[serde(rename = "maxWidth")]
     pub max_width: Option<i32>,
@@ -11907,7 +12879,7 @@ pub struct VideosRateParams {
     #[serde(rename = "id")]
     pub id: String,
     #[serde(rename = "rating")]
-    pub rating: String,
+    pub rating: VideosRateRating,
 }
 
 impl std::fmt::Display for VideosRateParams {
@@ -11990,7 +12962,7 @@ pub struct ThirdPartyLinksDeleteParams {
     pub youtube_params: Option<YoutubeParams>,
     /// Type of the link to be deleted.
     #[serde(rename = "type")]
-    pub typ: String,
+    pub typ: ThirdPartyLinksDeleteType,
     /// Do not use. Required for compatibility.
     #[serde(rename = "part")]
     pub part: Option<String>,
@@ -12081,7 +13053,7 @@ pub struct ThirdPartyLinksListParams {
     pub linking_token: Option<String>,
     /// Get a third party link of the given type.
     #[serde(rename = "type")]
-    pub typ: Option<String>,
+    pub typ: Option<ThirdPartyLinksListType>,
     /// The *part* parameter specifies the thirdPartyLink resource parts that the API response will include. Supported values are linkingToken, status, and snippet.
     #[serde(rename = "part")]
     pub part: String,
@@ -12657,9 +13629,9 @@ pub struct CommentThreadsListParams {
     pub channel_id: Option<String>,
     /// The requested text format for the returned comments.
     #[serde(rename = "textFormat")]
-    pub text_format: Option<String>,
+    pub text_format: Option<CommentThreadsListTextFormat>,
     #[serde(rename = "order")]
-    pub order: Option<String>,
+    pub order: Option<CommentThreadsListOrder>,
     /// Limits the returned comment threads to those matching the specified key words. Not compatible with the 'id' filter.
     #[serde(rename = "searchTerms")]
     pub search_terms: Option<String>,
@@ -12671,7 +13643,7 @@ pub struct CommentThreadsListParams {
     pub all_threads_related_to_channel_id: Option<String>,
     /// Limits the returned comment threads to those with the specified moderation status. Not compatible with the 'id' filter. Valid values: published, heldForReview, likelySpam.
     #[serde(rename = "moderationStatus")]
-    pub moderation_status: Option<String>,
+    pub moderation_status: Option<CommentThreadsListModerationStatus>,
     /// The *pageToken* parameter identifies a specific page in the result set that should be returned. In an API response, the nextPageToken and prevPageToken properties identify other pages that could be retrieved.
     #[serde(rename = "pageToken")]
     pub page_token: Option<String>,
@@ -13173,7 +14145,7 @@ pub struct SubscriptionsListParams {
     pub page_token: Option<String>,
     /// The order of the returned subscriptions
     #[serde(rename = "order")]
-    pub order: Option<String>,
+    pub order: Option<SubscriptionsListOrder>,
     /// The *maxResults* parameter specifies the maximum number of items that should be returned in the result set.
     #[serde(rename = "maxResults")]
     pub max_results: Option<u32>,
@@ -13330,28 +14302,28 @@ pub struct SearchListParams {
     pub youtube_params: Option<YoutubeParams>,
     /// Filter on the definition of the videos.
     #[serde(rename = "videoDefinition")]
-    pub video_definition: Option<String>,
+    pub video_definition: Option<SearchListVideoDefinition>,
     /// Return results relevant to this language.
     #[serde(rename = "relevanceLanguage")]
     pub relevance_language: Option<String>,
     /// Filter on the duration of the videos.
     #[serde(rename = "videoDuration")]
-    pub video_duration: Option<String>,
+    pub video_duration: Option<SearchListVideoDuration>,
     /// Filter on the livestream status of the videos.
     #[serde(rename = "eventType")]
-    pub event_type: Option<String>,
+    pub event_type: Option<SearchListEventType>,
     /// Filter on embeddable videos.
     #[serde(rename = "videoEmbeddable")]
-    pub video_embeddable: Option<String>,
+    pub video_embeddable: Option<SearchListVideoEmbeddable>,
     /// Search related to a resource.
     #[serde(rename = "relatedToVideoId")]
     pub related_to_video_id: Option<String>,
     /// Filter on videos of a specific type.
     #[serde(rename = "videoType")]
-    pub video_type: Option<String>,
+    pub video_type: Option<SearchListVideoType>,
     /// Filter on 3d videos.
     #[serde(rename = "videoDimension")]
-    pub video_dimension: Option<String>,
+    pub video_dimension: Option<SearchListVideoDimension>,
     /// *Note:* This parameter is intended exclusively for YouTube content partners. The *onBehalfOfContentOwner* parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
     #[serde(rename = "onBehalfOfContentOwner")]
     pub on_behalf_of_content_owner: Option<String>,
@@ -13360,16 +14332,16 @@ pub struct SearchListParams {
     pub typ: Option<String>,
     /// Filter on syndicated videos.
     #[serde(rename = "videoSyndicated")]
-    pub video_syndicated: Option<String>,
+    pub video_syndicated: Option<SearchListVideoSyndicated>,
     /// Restrict the search to only retrieve videos uploaded using the project id of the authenticated user.
     #[serde(rename = "forDeveloper")]
     pub for_developer: Option<bool>,
     /// Add a filter on the channel search.
     #[serde(rename = "channelType")]
-    pub channel_type: Option<String>,
+    pub channel_type: Option<SearchListChannelType>,
     /// Filter on the license of the videos.
     #[serde(rename = "videoLicense")]
-    pub video_license: Option<String>,
+    pub video_license: Option<SearchListVideoLicense>,
     /// The *maxResults* parameter specifies the maximum number of items that should be returned in the result set.
     #[serde(rename = "maxResults")]
     pub max_results: Option<u32>,
@@ -13387,7 +14359,7 @@ pub struct SearchListParams {
     pub video_category_id: Option<String>,
     /// Filter on the presence of captions on the videos.
     #[serde(rename = "videoCaption")]
-    pub video_caption: Option<String>,
+    pub video_caption: Option<SearchListVideoCaption>,
     /// Filter on resources published before this date.
     #[serde(rename = "publishedBefore")]
     pub published_before: Option<String>,
@@ -13399,10 +14371,10 @@ pub struct SearchListParams {
     pub part: String,
     /// Sort order of the results.
     #[serde(rename = "order")]
-    pub order: Option<String>,
+    pub order: Option<SearchListOrder>,
     /// Indicates whether the search results should include restricted content as well as standard content.
     #[serde(rename = "safeSearch")]
-    pub safe_search: Option<String>,
+    pub safe_search: Option<SearchListSafeSearch>,
     /// Restrict results to a particular topic.
     #[serde(rename = "topicId")]
     pub topic_id: Option<String>,
@@ -14035,7 +15007,7 @@ pub struct SponsorsListParams {
     pub youtube_params: Option<YoutubeParams>,
     /// Parameter that specifies which channel sponsors to return.
     #[serde(rename = "filter")]
-    pub filter: Option<String>,
+    pub filter: Option<SponsorsListFilter>,
     /// The *maxResults* parameter specifies the maximum number of items that should be returned in the result set.
     #[serde(rename = "maxResults")]
     pub max_results: Option<u32>,
@@ -14383,10 +15355,10 @@ pub struct LiveBroadcastsListParams {
     pub part: String,
     /// Return broadcasts with a certain status, e.g. active broadcasts.
     #[serde(rename = "broadcastStatus")]
-    pub broadcast_status: Option<String>,
+    pub broadcast_status: Option<LiveBroadcastsListBroadcastStatus>,
     /// Return only broadcasts with the selected type.
     #[serde(rename = "broadcastType")]
-    pub broadcast_type: Option<String>,
+    pub broadcast_type: Option<LiveBroadcastsListBroadcastType>,
     /// This parameter can only be used in a properly authorized request. *Note:* This parameter is intended exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel* parameter specifies the YouTube channel ID of the channel to which a video is being added. This parameter is required when a request specifies a value for the onBehalfOfContentOwner parameter, and it can only be used in conjunction with that parameter. In addition, the request must be authorized using a CMS account that is linked to the content owner that the onBehalfOfContentOwner parameter specifies. Finally, the channel that the onBehalfOfContentOwnerChannel parameter value specifies must be linked to the content owner that the onBehalfOfContentOwner parameter specifies. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and perform actions on behalf of the channel specified in the parameter value, without having to provide authentication credentials for each separate channel.
     #[serde(rename = "onBehalfOfContentOwnerChannel")]
     pub on_behalf_of_content_owner_channel: Option<String>,
@@ -14550,7 +15522,7 @@ pub struct LiveBroadcastsTransitionParams {
     pub id: String,
     /// The status to which the broadcast is going to transition.
     #[serde(rename = "broadcastStatus")]
-    pub broadcast_status: String,
+    pub broadcast_status: LiveBroadcastsTransitionBroadcastStatus,
 }
 
 impl std::fmt::Display for LiveBroadcastsTransitionParams {
@@ -14734,7 +15706,7 @@ pub struct MembersListParams {
     pub max_results: Option<u32>,
     /// Parameter that specifies which channel members to return.
     #[serde(rename = "mode")]
-    pub mode: Option<String>,
+    pub mode: Option<MembersListMode>,
     /// Filter members in the results set to the ones that have access to a level.
     #[serde(rename = "hasAccessToLevel")]
     pub has_access_to_level: Option<String>,

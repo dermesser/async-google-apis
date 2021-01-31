@@ -51,7 +51,7 @@ async fn main() {
         let mut p = yt::VideosListParams::default();
         p.youtube_params = Some(general_params);
         p.part = "id,contentDetails,snippet".into();
-        p.chart = Some("mostPopular".to_string());
+        p.chart = Some(yt::VideosListChart::MostPopular);
 
         let resp = cl.list(&p).await.expect("listing your yt failed!");
         if let Some(videos) = resp.items {

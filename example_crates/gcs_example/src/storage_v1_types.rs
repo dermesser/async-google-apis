@@ -1149,6 +1149,920 @@ impl std::fmt::Display for StorageParamsAlt {
     }
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsGetProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit owner, acl and defaultObjectAcl properties.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for BucketsGetProjection {
+    fn default() -> BucketsGetProjection {
+        BucketsGetProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsGetProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsGetProjection::Undefined => write!(f, "undefined"),
+            BucketsGetProjection::Full => write!(f, "full"),
+            BucketsGetProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsInsertPredefinedAcl {
+    Undefined,
+    /// Project team owners get OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Project team owners get OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Project team owners get OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+    /// Project team owners get OWNER access, and allUsers get WRITER access.
+    #[serde(rename = "publicReadWrite")]
+    PublicReadWrite,
+}
+
+impl std::default::Default for BucketsInsertPredefinedAcl {
+    fn default() -> BucketsInsertPredefinedAcl {
+        BucketsInsertPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsInsertPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsInsertPredefinedAcl::Undefined => write!(f, "undefined"),
+            BucketsInsertPredefinedAcl::AuthenticatedRead => write!(f, "authenticatedRead"),
+            BucketsInsertPredefinedAcl::Private => write!(f, "private"),
+            BucketsInsertPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            BucketsInsertPredefinedAcl::PublicRead => write!(f, "publicRead"),
+            BucketsInsertPredefinedAcl::PublicReadWrite => write!(f, "publicReadWrite"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsInsertPredefinedDefaultObjectAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for BucketsInsertPredefinedDefaultObjectAcl {
+    fn default() -> BucketsInsertPredefinedDefaultObjectAcl {
+        BucketsInsertPredefinedDefaultObjectAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsInsertPredefinedDefaultObjectAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsInsertPredefinedDefaultObjectAcl::Undefined => write!(f, "undefined"),
+            BucketsInsertPredefinedDefaultObjectAcl::AuthenticatedRead => {
+                write!(f, "authenticatedRead")
+            }
+            BucketsInsertPredefinedDefaultObjectAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            BucketsInsertPredefinedDefaultObjectAcl::BucketOwnerRead => {
+                write!(f, "bucketOwnerRead")
+            }
+            BucketsInsertPredefinedDefaultObjectAcl::Private => write!(f, "private"),
+            BucketsInsertPredefinedDefaultObjectAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            BucketsInsertPredefinedDefaultObjectAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsInsertProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit owner, acl and defaultObjectAcl properties.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for BucketsInsertProjection {
+    fn default() -> BucketsInsertProjection {
+        BucketsInsertProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsInsertProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsInsertProjection::Undefined => write!(f, "undefined"),
+            BucketsInsertProjection::Full => write!(f, "full"),
+            BucketsInsertProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsListProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit owner, acl and defaultObjectAcl properties.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for BucketsListProjection {
+    fn default() -> BucketsListProjection {
+        BucketsListProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsListProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsListProjection::Undefined => write!(f, "undefined"),
+            BucketsListProjection::Full => write!(f, "full"),
+            BucketsListProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsPatchPredefinedAcl {
+    Undefined,
+    /// Project team owners get OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Project team owners get OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Project team owners get OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+    /// Project team owners get OWNER access, and allUsers get WRITER access.
+    #[serde(rename = "publicReadWrite")]
+    PublicReadWrite,
+}
+
+impl std::default::Default for BucketsPatchPredefinedAcl {
+    fn default() -> BucketsPatchPredefinedAcl {
+        BucketsPatchPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsPatchPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsPatchPredefinedAcl::Undefined => write!(f, "undefined"),
+            BucketsPatchPredefinedAcl::AuthenticatedRead => write!(f, "authenticatedRead"),
+            BucketsPatchPredefinedAcl::Private => write!(f, "private"),
+            BucketsPatchPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            BucketsPatchPredefinedAcl::PublicRead => write!(f, "publicRead"),
+            BucketsPatchPredefinedAcl::PublicReadWrite => write!(f, "publicReadWrite"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsPatchPredefinedDefaultObjectAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for BucketsPatchPredefinedDefaultObjectAcl {
+    fn default() -> BucketsPatchPredefinedDefaultObjectAcl {
+        BucketsPatchPredefinedDefaultObjectAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsPatchPredefinedDefaultObjectAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsPatchPredefinedDefaultObjectAcl::Undefined => write!(f, "undefined"),
+            BucketsPatchPredefinedDefaultObjectAcl::AuthenticatedRead => {
+                write!(f, "authenticatedRead")
+            }
+            BucketsPatchPredefinedDefaultObjectAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            BucketsPatchPredefinedDefaultObjectAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            BucketsPatchPredefinedDefaultObjectAcl::Private => write!(f, "private"),
+            BucketsPatchPredefinedDefaultObjectAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            BucketsPatchPredefinedDefaultObjectAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsPatchProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit owner, acl and defaultObjectAcl properties.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for BucketsPatchProjection {
+    fn default() -> BucketsPatchProjection {
+        BucketsPatchProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsPatchProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsPatchProjection::Undefined => write!(f, "undefined"),
+            BucketsPatchProjection::Full => write!(f, "full"),
+            BucketsPatchProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsUpdatePredefinedAcl {
+    Undefined,
+    /// Project team owners get OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Project team owners get OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Project team owners get OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+    /// Project team owners get OWNER access, and allUsers get WRITER access.
+    #[serde(rename = "publicReadWrite")]
+    PublicReadWrite,
+}
+
+impl std::default::Default for BucketsUpdatePredefinedAcl {
+    fn default() -> BucketsUpdatePredefinedAcl {
+        BucketsUpdatePredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsUpdatePredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsUpdatePredefinedAcl::Undefined => write!(f, "undefined"),
+            BucketsUpdatePredefinedAcl::AuthenticatedRead => write!(f, "authenticatedRead"),
+            BucketsUpdatePredefinedAcl::Private => write!(f, "private"),
+            BucketsUpdatePredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            BucketsUpdatePredefinedAcl::PublicRead => write!(f, "publicRead"),
+            BucketsUpdatePredefinedAcl::PublicReadWrite => write!(f, "publicReadWrite"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsUpdatePredefinedDefaultObjectAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for BucketsUpdatePredefinedDefaultObjectAcl {
+    fn default() -> BucketsUpdatePredefinedDefaultObjectAcl {
+        BucketsUpdatePredefinedDefaultObjectAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsUpdatePredefinedDefaultObjectAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsUpdatePredefinedDefaultObjectAcl::Undefined => write!(f, "undefined"),
+            BucketsUpdatePredefinedDefaultObjectAcl::AuthenticatedRead => {
+                write!(f, "authenticatedRead")
+            }
+            BucketsUpdatePredefinedDefaultObjectAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            BucketsUpdatePredefinedDefaultObjectAcl::BucketOwnerRead => {
+                write!(f, "bucketOwnerRead")
+            }
+            BucketsUpdatePredefinedDefaultObjectAcl::Private => write!(f, "private"),
+            BucketsUpdatePredefinedDefaultObjectAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            BucketsUpdatePredefinedDefaultObjectAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum BucketsUpdateProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit owner, acl and defaultObjectAcl properties.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for BucketsUpdateProjection {
+    fn default() -> BucketsUpdateProjection {
+        BucketsUpdateProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for BucketsUpdateProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            BucketsUpdateProjection::Undefined => write!(f, "undefined"),
+            BucketsUpdateProjection::Full => write!(f, "full"),
+            BucketsUpdateProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsComposeDestinationPredefinedAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for ObjectsComposeDestinationPredefinedAcl {
+    fn default() -> ObjectsComposeDestinationPredefinedAcl {
+        ObjectsComposeDestinationPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsComposeDestinationPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsComposeDestinationPredefinedAcl::Undefined => write!(f, "undefined"),
+            ObjectsComposeDestinationPredefinedAcl::AuthenticatedRead => {
+                write!(f, "authenticatedRead")
+            }
+            ObjectsComposeDestinationPredefinedAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            ObjectsComposeDestinationPredefinedAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            ObjectsComposeDestinationPredefinedAcl::Private => write!(f, "private"),
+            ObjectsComposeDestinationPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            ObjectsComposeDestinationPredefinedAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsCopyDestinationPredefinedAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for ObjectsCopyDestinationPredefinedAcl {
+    fn default() -> ObjectsCopyDestinationPredefinedAcl {
+        ObjectsCopyDestinationPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsCopyDestinationPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsCopyDestinationPredefinedAcl::Undefined => write!(f, "undefined"),
+            ObjectsCopyDestinationPredefinedAcl::AuthenticatedRead => {
+                write!(f, "authenticatedRead")
+            }
+            ObjectsCopyDestinationPredefinedAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            ObjectsCopyDestinationPredefinedAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            ObjectsCopyDestinationPredefinedAcl::Private => write!(f, "private"),
+            ObjectsCopyDestinationPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            ObjectsCopyDestinationPredefinedAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsCopyProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsCopyProjection {
+    fn default() -> ObjectsCopyProjection {
+        ObjectsCopyProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsCopyProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsCopyProjection::Undefined => write!(f, "undefined"),
+            ObjectsCopyProjection::Full => write!(f, "full"),
+            ObjectsCopyProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsGetProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsGetProjection {
+    fn default() -> ObjectsGetProjection {
+        ObjectsGetProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsGetProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsGetProjection::Undefined => write!(f, "undefined"),
+            ObjectsGetProjection::Full => write!(f, "full"),
+            ObjectsGetProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsInsertPredefinedAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for ObjectsInsertPredefinedAcl {
+    fn default() -> ObjectsInsertPredefinedAcl {
+        ObjectsInsertPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsInsertPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsInsertPredefinedAcl::Undefined => write!(f, "undefined"),
+            ObjectsInsertPredefinedAcl::AuthenticatedRead => write!(f, "authenticatedRead"),
+            ObjectsInsertPredefinedAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            ObjectsInsertPredefinedAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            ObjectsInsertPredefinedAcl::Private => write!(f, "private"),
+            ObjectsInsertPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            ObjectsInsertPredefinedAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsInsertProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsInsertProjection {
+    fn default() -> ObjectsInsertProjection {
+        ObjectsInsertProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsInsertProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsInsertProjection::Undefined => write!(f, "undefined"),
+            ObjectsInsertProjection::Full => write!(f, "full"),
+            ObjectsInsertProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsListProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsListProjection {
+    fn default() -> ObjectsListProjection {
+        ObjectsListProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsListProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsListProjection::Undefined => write!(f, "undefined"),
+            ObjectsListProjection::Full => write!(f, "full"),
+            ObjectsListProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsPatchPredefinedAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for ObjectsPatchPredefinedAcl {
+    fn default() -> ObjectsPatchPredefinedAcl {
+        ObjectsPatchPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsPatchPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsPatchPredefinedAcl::Undefined => write!(f, "undefined"),
+            ObjectsPatchPredefinedAcl::AuthenticatedRead => write!(f, "authenticatedRead"),
+            ObjectsPatchPredefinedAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            ObjectsPatchPredefinedAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            ObjectsPatchPredefinedAcl::Private => write!(f, "private"),
+            ObjectsPatchPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            ObjectsPatchPredefinedAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsPatchProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsPatchProjection {
+    fn default() -> ObjectsPatchProjection {
+        ObjectsPatchProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsPatchProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsPatchProjection::Undefined => write!(f, "undefined"),
+            ObjectsPatchProjection::Full => write!(f, "full"),
+            ObjectsPatchProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsRewriteDestinationPredefinedAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for ObjectsRewriteDestinationPredefinedAcl {
+    fn default() -> ObjectsRewriteDestinationPredefinedAcl {
+        ObjectsRewriteDestinationPredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsRewriteDestinationPredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsRewriteDestinationPredefinedAcl::Undefined => write!(f, "undefined"),
+            ObjectsRewriteDestinationPredefinedAcl::AuthenticatedRead => {
+                write!(f, "authenticatedRead")
+            }
+            ObjectsRewriteDestinationPredefinedAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            ObjectsRewriteDestinationPredefinedAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            ObjectsRewriteDestinationPredefinedAcl::Private => write!(f, "private"),
+            ObjectsRewriteDestinationPredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            ObjectsRewriteDestinationPredefinedAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsRewriteProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsRewriteProjection {
+    fn default() -> ObjectsRewriteProjection {
+        ObjectsRewriteProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsRewriteProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsRewriteProjection::Undefined => write!(f, "undefined"),
+            ObjectsRewriteProjection::Full => write!(f, "full"),
+            ObjectsRewriteProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsUpdatePredefinedAcl {
+    Undefined,
+    /// Object owner gets OWNER access, and allAuthenticatedUsers get READER access.
+    #[serde(rename = "authenticatedRead")]
+    AuthenticatedRead,
+    /// Object owner gets OWNER access, and project team owners get OWNER access.
+    #[serde(rename = "bucketOwnerFullControl")]
+    BucketOwnerFullControl,
+    /// Object owner gets OWNER access, and project team owners get READER access.
+    #[serde(rename = "bucketOwnerRead")]
+    BucketOwnerRead,
+    /// Object owner gets OWNER access.
+    #[serde(rename = "private")]
+    Private,
+    /// Object owner gets OWNER access, and project team members get access according to their roles.
+    #[serde(rename = "projectPrivate")]
+    ProjectPrivate,
+    /// Object owner gets OWNER access, and allUsers get READER access.
+    #[serde(rename = "publicRead")]
+    PublicRead,
+}
+
+impl std::default::Default for ObjectsUpdatePredefinedAcl {
+    fn default() -> ObjectsUpdatePredefinedAcl {
+        ObjectsUpdatePredefinedAcl::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsUpdatePredefinedAcl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsUpdatePredefinedAcl::Undefined => write!(f, "undefined"),
+            ObjectsUpdatePredefinedAcl::AuthenticatedRead => write!(f, "authenticatedRead"),
+            ObjectsUpdatePredefinedAcl::BucketOwnerFullControl => {
+                write!(f, "bucketOwnerFullControl")
+            }
+            ObjectsUpdatePredefinedAcl::BucketOwnerRead => write!(f, "bucketOwnerRead"),
+            ObjectsUpdatePredefinedAcl::Private => write!(f, "private"),
+            ObjectsUpdatePredefinedAcl::ProjectPrivate => write!(f, "projectPrivate"),
+            ObjectsUpdatePredefinedAcl::PublicRead => write!(f, "publicRead"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsUpdateProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsUpdateProjection {
+    fn default() -> ObjectsUpdateProjection {
+        ObjectsUpdateProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsUpdateProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsUpdateProjection::Undefined => write!(f, "undefined"),
+            ObjectsUpdateProjection::Full => write!(f, "full"),
+            ObjectsUpdateProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum ObjectsWatchAllProjection {
+    Undefined,
+    /// Include all properties.
+    #[serde(rename = "full")]
+    Full,
+    /// Omit the owner, acl property.
+    #[serde(rename = "noAcl")]
+    NoAcl,
+}
+
+impl std::default::Default for ObjectsWatchAllProjection {
+    fn default() -> ObjectsWatchAllProjection {
+        ObjectsWatchAllProjection::Undefined
+    }
+}
+
+impl std::fmt::Display for ObjectsWatchAllProjection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            ObjectsWatchAllProjection::Undefined => write!(f, "undefined"),
+            ObjectsWatchAllProjection::Full => write!(f, "full"),
+            ObjectsWatchAllProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
 /// Parameters for the `bucketAccessControls.delete` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct BucketAccessControlsDeleteParams {
@@ -1457,7 +2371,7 @@ pub struct BucketsGetParams {
     pub if_metageneration_not_match: Option<String>,
     /// Set of properties to return. Defaults to noAcl.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<BucketsGetProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -1562,16 +2476,16 @@ pub struct BucketsInsertParams {
     pub storage_params: Option<StorageParams>,
     /// Apply a predefined set of access controls to this bucket.
     #[serde(rename = "predefinedAcl")]
-    pub predefined_acl: Option<String>,
+    pub predefined_acl: Option<BucketsInsertPredefinedAcl>,
     /// Apply a predefined set of default object access controls to this bucket.
     #[serde(rename = "predefinedDefaultObjectAcl")]
-    pub predefined_default_object_acl: Option<String>,
+    pub predefined_default_object_acl: Option<BucketsInsertPredefinedDefaultObjectAcl>,
     /// A valid API project identifier.
     #[serde(rename = "project")]
     pub project: String,
     /// Set of properties to return. Defaults to noAcl, unless the bucket resource specifies acl or defaultObjectAcl properties, when it defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<BucketsInsertProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -1646,7 +2560,7 @@ pub struct BucketsListParams {
     pub project: String,
     /// Set of properties to return. Defaults to noAcl.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<BucketsListProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -1774,13 +2688,13 @@ pub struct BucketsPatchParams {
     pub if_metageneration_not_match: Option<String>,
     /// Apply a predefined set of access controls to this bucket.
     #[serde(rename = "predefinedAcl")]
-    pub predefined_acl: Option<String>,
+    pub predefined_acl: Option<BucketsPatchPredefinedAcl>,
     /// Apply a predefined set of default object access controls to this bucket.
     #[serde(rename = "predefinedDefaultObjectAcl")]
-    pub predefined_default_object_acl: Option<String>,
+    pub predefined_default_object_acl: Option<BucketsPatchPredefinedDefaultObjectAcl>,
     /// Set of properties to return. Defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<BucketsPatchProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -1944,13 +2858,13 @@ pub struct BucketsUpdateParams {
     pub if_metageneration_not_match: Option<String>,
     /// Apply a predefined set of access controls to this bucket.
     #[serde(rename = "predefinedAcl")]
-    pub predefined_acl: Option<String>,
+    pub predefined_acl: Option<BucketsUpdatePredefinedAcl>,
     /// Apply a predefined set of default object access controls to this bucket.
     #[serde(rename = "predefinedDefaultObjectAcl")]
-    pub predefined_default_object_acl: Option<String>,
+    pub predefined_default_object_acl: Option<BucketsUpdatePredefinedDefaultObjectAcl>,
     /// Set of properties to return. Defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<BucketsUpdateProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -2762,7 +3676,7 @@ pub struct ObjectsComposeParams {
     pub destination_object: String,
     /// Apply a predefined set of access controls to the destination object.
     #[serde(rename = "destinationPredefinedAcl")]
-    pub destination_predefined_acl: Option<String>,
+    pub destination_predefined_acl: Option<ObjectsComposeDestinationPredefinedAcl>,
     /// i64: Makes the operation conditional on whether the object's current generation matches the given value. Setting to 0 makes the operation succeed only if there are no live versions of the object.
     #[serde(rename = "ifGenerationMatch")]
     pub if_generation_match: Option<String>,
@@ -2845,7 +3759,7 @@ pub struct ObjectsCopyParams {
     pub destination_object: String,
     /// Apply a predefined set of access controls to the destination object.
     #[serde(rename = "destinationPredefinedAcl")]
-    pub destination_predefined_acl: Option<String>,
+    pub destination_predefined_acl: Option<ObjectsCopyDestinationPredefinedAcl>,
     /// i64: Makes the operation conditional on whether the destination object's current generation matches the given value. Setting to 0 makes the operation succeed only if there are no live versions of the object.
     #[serde(rename = "ifGenerationMatch")]
     pub if_generation_match: Option<String>,
@@ -2872,7 +3786,7 @@ pub struct ObjectsCopyParams {
     pub if_source_metageneration_not_match: Option<String>,
     /// Set of properties to return. Defaults to noAcl, unless the object resource specifies the acl property, when it defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsCopyProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -3113,7 +4027,7 @@ pub struct ObjectsGetParams {
     pub object: String,
     /// Set of properties to return. Defaults to noAcl.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsGetProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -3266,10 +4180,10 @@ pub struct ObjectsInsertParams {
     pub name: Option<String>,
     /// Apply a predefined set of access controls to this object.
     #[serde(rename = "predefinedAcl")]
-    pub predefined_acl: Option<String>,
+    pub predefined_acl: Option<ObjectsInsertPredefinedAcl>,
     /// Set of properties to return. Defaults to noAcl, unless the object resource specifies the acl property, when it defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsInsertProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -3390,7 +4304,7 @@ pub struct ObjectsListParams {
     pub prefix: Option<String>,
     /// Set of properties to return. Defaults to noAcl.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsListProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -3517,10 +4431,10 @@ pub struct ObjectsPatchParams {
     pub object: String,
     /// Apply a predefined set of access controls to this object.
     #[serde(rename = "predefinedAcl")]
-    pub predefined_acl: Option<String>,
+    pub predefined_acl: Option<ObjectsPatchPredefinedAcl>,
     /// Set of properties to return. Defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsPatchProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -3615,7 +4529,7 @@ pub struct ObjectsRewriteParams {
     pub destination_object: String,
     /// Apply a predefined set of access controls to the destination object.
     #[serde(rename = "destinationPredefinedAcl")]
-    pub destination_predefined_acl: Option<String>,
+    pub destination_predefined_acl: Option<ObjectsRewriteDestinationPredefinedAcl>,
     /// i64: Makes the operation conditional on whether the object's current generation matches the given value. Setting to 0 makes the operation succeed only if there are no live versions of the object.
     #[serde(rename = "ifGenerationMatch")]
     pub if_generation_match: Option<String>,
@@ -3645,7 +4559,7 @@ pub struct ObjectsRewriteParams {
     pub max_bytes_rewritten_per_call: Option<String>,
     /// Set of properties to return. Defaults to noAcl, unless the object resource specifies the acl property, when it defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsRewriteProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -3922,10 +4836,10 @@ pub struct ObjectsUpdateParams {
     pub object: String,
     /// Apply a predefined set of access controls to this object.
     #[serde(rename = "predefinedAcl")]
-    pub predefined_acl: Option<String>,
+    pub predefined_acl: Option<ObjectsUpdatePredefinedAcl>,
     /// Set of properties to return. Defaults to full.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsUpdateProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,
@@ -4032,7 +4946,7 @@ pub struct ObjectsWatchAllParams {
     pub prefix: Option<String>,
     /// Set of properties to return. Defaults to noAcl.
     #[serde(rename = "projection")]
-    pub projection: Option<String>,
+    pub projection: Option<ObjectsWatchAllProjection>,
     /// The project to be billed for this request if the target bucket is requester-pays bucket.
     #[serde(rename = "provisionalUserProject")]
     pub provisional_user_project: Option<String>,

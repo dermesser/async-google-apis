@@ -1700,6 +1700,34 @@ impl std::fmt::Display for DriveParamsAlt {
     }
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum FilesListCorpus {
+    Undefined,
+    /// Files shared to the user's domain.
+    #[serde(rename = "domain")]
+    Domain,
+    /// Files owned by or shared to the user. If a user has permissions on a Shared Drive, the files inside it won't be retrieved unless the user has created, opened, or shared the file.
+    #[serde(rename = "user")]
+    User,
+}
+
+impl std::default::Default for FilesListCorpus {
+    fn default() -> FilesListCorpus {
+        FilesListCorpus::Undefined
+    }
+}
+
+impl std::fmt::Display for FilesListCorpus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            FilesListCorpus::Undefined => write!(f, "undefined"),
+            FilesListCorpus::Domain => write!(f, "domain"),
+            FilesListCorpus::User => write!(f, "user"),
+        };
+        Ok(())
+    }
+}
+
 /// Parameters for the `about.get` method.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutGetParams {
@@ -2770,7 +2798,7 @@ pub struct FilesListParams {
     pub corpora: Option<String>,
     /// The source of files to list. Deprecated: use 'corpora' instead.
     #[serde(rename = "corpus")]
-    pub corpus: Option<String>,
+    pub corpus: Option<FilesListCorpus>,
     /// ID of the shared drive to search.
     #[serde(rename = "driveId")]
     pub drive_id: Option<String>,
