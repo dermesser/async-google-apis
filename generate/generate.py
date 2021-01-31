@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 #
-# (c) 2020 Lewin Bormann <lbo@spheniscida.de>
+# (c) 2020, 2021 Lewin Bormann <lbo@spheniscida.de>
 #
 # Please let me know about your use case of this code!
+#
+# Warning: This code is relatively hacky. It prefers working output over clean internal
+# representation, partly due to the huge surface area of discovery documents.
+# It is very possible that your preferred API doesn't work right away. However,
+# despite its complications and recursions, the code is still somewhat hackable.
+# Reach out to me if you need help!
+
 
 import argparse
 import chevron
@@ -229,11 +236,23 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
 
 
 def generate_params_structs(resources, super_name='', global_params=None):
-    """Generate parameter structs from the resources list.
+    """Generate parameter structs and enums from the resources list.
 
-    Returns a list of source code strings.
+    Every resource usually has a set of parameters, which are translated into a
+    Rust struct by this function. Any enum types are extracted and represented
+    as enums.
+
+    Parameter types also come with a `Display` implementation.
+
+    Returns a tuple of (struct template dicts, enum template dicts).
+
+    The struct template dicts are to be rendered using the SchemaStructTmpl,
+    the enum template dicts need to be rendered with the SchemaEnumTmpl
+    template.
     """
     frags = []
+    structs = []
+    enums = []
     for resourcename, resource in resources.items():
         for methodname, method in resource.get('methods', {}).items():
             param_type_name = snake_to_camel(super_name + capitalize_first(resourcename) +
@@ -256,7 +275,9 @@ def generate_params_structs(resources, super_name='', global_params=None):
             # Build struct dict for rendering.
             if 'parameters' in method:
                 for paramname, param in method['parameters'].items():
-                    (typ, desc), substructs, enums = parse_schema_types('', param, optional=False, parents=[])
+                    (typ, desc), substructs, subenums = parse_schema_types(capitalize_first(resourcename)+capitalize_first(methodname)+capitalize_first(paramname),
+                            param, optional=False, parents=[])
+                    enums.extend(subenums)
                     field = {
                         'name': replace_keywords(rust_identifier(paramname)),
                         'original_name': paramname,
@@ -274,12 +295,15 @@ def generate_params_structs(resources, super_name='', global_params=None):
             struct['required_fields'] = req_query_parameters
             struct['optional_fields'] = opt_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
+            structs.append(struct)
         # Generate parameter types for subresources.
-        frags.extend(
-            generate_params_structs(resource.get('resources', {}),
-                                    super_name=super_name + '_' + resourcename,
-                                    global_params=global_params))
-    return frags
+        subfrags, subenums = generate_params_structs(resource.get('resources', {}),
+                super_name=super_name + '_' + resourcename,
+                global_params=global_params)
+        frags.extend(subfrags)
+        enums.extend(subenums)
+        structs.extend(subfrags)
+    return structs, enums
 
 
 def resolve_parameters(string, paramsname='params'):
@@ -519,7 +543,7 @@ def generate_all(discdoc):
 
     # Generate parameter types (*Params - those are used as "side inputs" to requests)
     params_struct_name = global_params_name(discdoc.get('name'))
-    parameter_types = generate_params_structs(resources, global_params=params_struct_name)
+    parameter_types, parameter_enums = generate_params_structs(resources, global_params=params_struct_name)
 
     # Generate service impls.
     services = []
@@ -543,9 +567,8 @@ def generate_all(discdoc):
         typ, substructs, subenums = parse_schema_types(name, schema)
         for s in substructs:
             s['optional_fields'] = s['fields']
-            parameter_types.append(chevron.render(SchemaDisplayTmpl, s))
-        structs.extend(substructs)
-        enums.extend(subenums)
+        parameter_types.extend(substructs)
+        parameter_enums.extend(subenums)
 
     # Assemble everything into a file.
     modname = (discdoc['id'] + '_types').replace(':', '_')
@@ -563,9 +586,12 @@ def generate_all(discdoc):
             f.write(chevron.render(SchemaStructTmpl, s))
         for e in enums:
             f.write(chevron.render(SchemaEnumTmpl, e))
+        for e in parameter_enums:
+            f.write(chevron.render(SchemaEnumTmpl, e))
         # Render *Params structs.
         for pt in parameter_types:
-            f.write(pt)
+            f.write(chevron.render(SchemaStructTmpl, pt))
+            f.write(chevron.render(SchemaDisplayTmpl, pt))
         # Render service impls.
         for s in services:
             f.write(s)

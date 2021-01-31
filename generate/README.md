@@ -21,3 +21,7 @@ Please read the `README` in that crate for further advice.
      generate.py --doc=https://www.googleapis.com/discovery/v1/apis/photoslibrary/v1/rest
   ```
 
+You can either include the code directly in your crate or generate a separate
+one. The latter approach has the upside of not requiring lengthy recompilation:
+Many Google APIs comprise one or several tens of thousands of lines of rust
+code, which rustc has a hard time keeping up with.
