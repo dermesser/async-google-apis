@@ -1640,37 +1640,32 @@ pub struct User {
     pub photo_link: Option<String>,
 }
 
-///
-#[derive(Serialize, Deserialize, Debug, Clone, Default)]
-pub struct DriveParams {
-    /// Data format for the response.
-    #[serde(rename = "alt")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub alt: Option<DriveParamsAlt>,
-    /// Selector specifying which fields to include in a partial response.
-    #[serde(rename = "fields")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub fields: Option<String>,
-    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    #[serde(rename = "key")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub key: Option<String>,
-    /// OAuth 2.0 token for the current user.
-    #[serde(rename = "oauth_token")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub oauth_token: Option<String>,
-    /// Returns response with indentations and line breaks.
-    #[serde(rename = "prettyPrint")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub pretty_print: Option<bool>,
-    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
-    #[serde(rename = "quotaUser")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub quota_user: Option<String>,
-    /// Deprecated. Please use quotaUser instead.
-    #[serde(rename = "userIp")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub user_ip: Option<String>,
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum FilesListCorpus {
+    Undefined,
+    /// Files shared to the user's domain.
+    #[serde(rename = "domain")]
+    Domain,
+    /// Files owned by or shared to the user. If a user has permissions on a Shared Drive, the files inside it won't be retrieved unless the user has created, opened, or shared the file.
+    #[serde(rename = "user")]
+    User,
+}
+
+impl std::default::Default for FilesListCorpus {
+    fn default() -> FilesListCorpus {
+        FilesListCorpus::Undefined
+    }
+}
+
+impl std::fmt::Display for FilesListCorpus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            FilesListCorpus::Undefined => write!(f, "undefined"),
+            FilesListCorpus::Domain => write!(f, "domain"),
+            FilesListCorpus::User => write!(f, "user"),
+        };
+        Ok(())
+    }
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
@@ -1695,34 +1690,6 @@ impl std::fmt::Display for DriveParamsAlt {
             DriveParamsAlt::Undefined => write!(f, "undefined"),
             DriveParamsAlt::Json => write!(f, "json"),
             DriveParamsAlt::Media => write!(f, "media"),
-        };
-        Ok(())
-    }
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub enum FilesListCorpus {
-    Undefined,
-    /// Files shared to the user's domain.
-    #[serde(rename = "domain")]
-    Domain,
-    /// Files owned by or shared to the user. If a user has permissions on a Shared Drive, the files inside it won't be retrieved unless the user has created, opened, or shared the file.
-    #[serde(rename = "user")]
-    User,
-}
-
-impl std::default::Default for FilesListCorpus {
-    fn default() -> FilesListCorpus {
-        FilesListCorpus::Undefined
-    }
-}
-
-impl std::fmt::Display for FilesListCorpus {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = match self {
-            FilesListCorpus::Undefined => write!(f, "undefined"),
-            FilesListCorpus::Domain => write!(f, "domain"),
-            FilesListCorpus::User => write!(f, "user"),
         };
         Ok(())
     }
@@ -3850,6 +3817,39 @@ impl std::fmt::Display for TeamdrivesUpdateParams {
         }
         Ok(())
     }
+}
+
+///
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+pub struct DriveParams {
+    /// Data format for the response.
+    #[serde(rename = "alt")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alt: Option<DriveParamsAlt>,
+    /// Selector specifying which fields to include in a partial response.
+    #[serde(rename = "fields")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    #[serde(rename = "key")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    #[serde(rename = "oauth_token")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    #[serde(rename = "prettyPrint")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    #[serde(rename = "quotaUser")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quota_user: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    #[serde(rename = "userIp")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_ip: Option<String>,
 }
 
 impl std::fmt::Display for DriveParams {

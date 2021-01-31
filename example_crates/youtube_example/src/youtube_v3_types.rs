@@ -4565,55 +4565,6 @@ pub struct ChannelSnippet {
     pub custom_url: Option<String>,
 }
 
-///
-#[derive(Serialize, Deserialize, Debug, Clone, Default)]
-pub struct YoutubeParams {
-    /// JSONP
-    #[serde(rename = "callback")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub callback: Option<String>,
-    /// OAuth access token.
-    #[serde(rename = "access_token")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub access_token: Option<String>,
-    /// Data format for response.
-    #[serde(rename = "alt")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub alt: Option<YoutubeParamsAlt>,
-    /// Upload protocol for media (e.g. "raw", "multipart").
-    #[serde(rename = "upload_protocol")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub upload_protocol: Option<String>,
-    /// Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    #[serde(rename = "quotaUser")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub quota_user: Option<String>,
-    /// Returns response with indentations and line breaks.
-    #[serde(rename = "prettyPrint")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub pretty_print: Option<bool>,
-    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    #[serde(rename = "key")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub key: Option<String>,
-    /// V1 error format.
-    #[serde(rename = "$.xgafv")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub dollar_xgafv: Option<YoutubeParamsdollar_xgafv>,
-    /// Legacy upload protocol for media (e.g. "media", "multipart").
-    #[serde(rename = "uploadType")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub upload_type: Option<String>,
-    /// Selector specifying which fields to include in a partial response.
-    #[serde(rename = "fields")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub fields: Option<String>,
-    /// OAuth 2.0 token for the current user.
-    #[serde(rename = "oauth_token")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub oauth_token: Option<String>,
-}
-
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum SubscriptionContentDetailsActivityType {
     Undefined,
@@ -10889,66 +10840,6 @@ impl std::fmt::Display for SearchResultSnippetLiveBroadcastContent {
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub enum YoutubeParamsAlt {
-    Undefined,
-    /// Responses with Content-Type of application/json
-    #[serde(rename = "json")]
-    Json,
-    /// Media download with context-dependent Content-Type
-    #[serde(rename = "media")]
-    Media,
-    /// Responses with Content-Type of application/x-protobuf
-    #[serde(rename = "proto")]
-    Proto,
-}
-
-impl std::default::Default for YoutubeParamsAlt {
-    fn default() -> YoutubeParamsAlt {
-        YoutubeParamsAlt::Undefined
-    }
-}
-
-impl std::fmt::Display for YoutubeParamsAlt {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = match self {
-            YoutubeParamsAlt::Undefined => write!(f, "undefined"),
-            YoutubeParamsAlt::Json => write!(f, "json"),
-            YoutubeParamsAlt::Media => write!(f, "media"),
-            YoutubeParamsAlt::Proto => write!(f, "proto"),
-        };
-        Ok(())
-    }
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub enum YoutubeParamsdollar_xgafv {
-    Undefined,
-    /// v1 error format
-    #[serde(rename = "1")]
-    _1,
-    /// v2 error format
-    #[serde(rename = "2")]
-    _2,
-}
-
-impl std::default::Default for YoutubeParamsdollar_xgafv {
-    fn default() -> YoutubeParamsdollar_xgafv {
-        YoutubeParamsdollar_xgafv::Undefined
-    }
-}
-
-impl std::fmt::Display for YoutubeParamsdollar_xgafv {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = match self {
-            YoutubeParamsdollar_xgafv::Undefined => write!(f, "undefined"),
-            YoutubeParamsdollar_xgafv::_1 => write!(f, "1"),
-            YoutubeParamsdollar_xgafv::_2 => write!(f, "2"),
-        };
-        Ok(())
-    }
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum CommentsListTextFormat {
     Undefined,
     ///
@@ -11915,6 +11806,66 @@ impl std::fmt::Display for MembersListMode {
             MembersListMode::ListMembersModeUnknown => write!(f, "listMembersModeUnknown"),
             MembersListMode::Updates => write!(f, "updates"),
             MembersListMode::All_current => write!(f, "all_current"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum YoutubeParamsAlt {
+    Undefined,
+    /// Responses with Content-Type of application/json
+    #[serde(rename = "json")]
+    Json,
+    /// Media download with context-dependent Content-Type
+    #[serde(rename = "media")]
+    Media,
+    /// Responses with Content-Type of application/x-protobuf
+    #[serde(rename = "proto")]
+    Proto,
+}
+
+impl std::default::Default for YoutubeParamsAlt {
+    fn default() -> YoutubeParamsAlt {
+        YoutubeParamsAlt::Undefined
+    }
+}
+
+impl std::fmt::Display for YoutubeParamsAlt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            YoutubeParamsAlt::Undefined => write!(f, "undefined"),
+            YoutubeParamsAlt::Json => write!(f, "json"),
+            YoutubeParamsAlt::Media => write!(f, "media"),
+            YoutubeParamsAlt::Proto => write!(f, "proto"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum YoutubeParamsdollar_xgafv {
+    Undefined,
+    /// v1 error format
+    #[serde(rename = "1")]
+    _1,
+    /// v2 error format
+    #[serde(rename = "2")]
+    _2,
+}
+
+impl std::default::Default for YoutubeParamsdollar_xgafv {
+    fn default() -> YoutubeParamsdollar_xgafv {
+        YoutubeParamsdollar_xgafv::Undefined
+    }
+}
+
+impl std::fmt::Display for YoutubeParamsdollar_xgafv {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            YoutubeParamsdollar_xgafv::Undefined => write!(f, "undefined"),
+            YoutubeParamsdollar_xgafv::_1 => write!(f, "1"),
+            YoutubeParamsdollar_xgafv::_2 => write!(f, "2"),
         };
         Ok(())
     }
@@ -15756,6 +15707,55 @@ impl std::fmt::Display for MembersListParams {
         }
         Ok(())
     }
+}
+
+///
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+pub struct YoutubeParams {
+    /// JSONP
+    #[serde(rename = "callback")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub callback: Option<String>,
+    /// OAuth access token.
+    #[serde(rename = "access_token")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub access_token: Option<String>,
+    /// Data format for response.
+    #[serde(rename = "alt")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alt: Option<YoutubeParamsAlt>,
+    /// Upload protocol for media (e.g. "raw", "multipart").
+    #[serde(rename = "upload_protocol")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub upload_protocol: Option<String>,
+    /// Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
+    #[serde(rename = "quotaUser")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quota_user: Option<String>,
+    /// Returns response with indentations and line breaks.
+    #[serde(rename = "prettyPrint")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pretty_print: Option<bool>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    #[serde(rename = "key")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    /// V1 error format.
+    #[serde(rename = "$.xgafv")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dollar_xgafv: Option<YoutubeParamsdollar_xgafv>,
+    /// Legacy upload protocol for media (e.g. "media", "multipart").
+    #[serde(rename = "uploadType")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub upload_type: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    #[serde(rename = "fields")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fields: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    #[serde(rename = "oauth_token")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub oauth_token: Option<String>,
 }
 
 impl std::fmt::Display for YoutubeParams {

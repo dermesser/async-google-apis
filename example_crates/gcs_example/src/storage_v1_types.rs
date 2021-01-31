@@ -1089,66 +1089,6 @@ pub struct TestIamPermissionsResponse {
     pub permissions: Option<Vec<String>>,
 }
 
-///
-#[derive(Serialize, Deserialize, Debug, Clone, Default)]
-pub struct StorageParams {
-    /// Data format for the response.
-    #[serde(rename = "alt")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub alt: Option<StorageParamsAlt>,
-    /// Selector specifying which fields to include in a partial response.
-    #[serde(rename = "fields")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub fields: Option<String>,
-    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    #[serde(rename = "key")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub key: Option<String>,
-    /// OAuth 2.0 token for the current user.
-    #[serde(rename = "oauth_token")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub oauth_token: Option<String>,
-    /// Returns response with indentations and line breaks.
-    #[serde(rename = "prettyPrint")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub pretty_print: Option<bool>,
-    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
-    #[serde(rename = "quotaUser")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub quota_user: Option<String>,
-    /// Deprecated. Please use quotaUser instead.
-    #[serde(rename = "userIp")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub user_ip: Option<String>,
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub enum StorageParamsAlt {
-    Undefined,
-    /// Responses with Content-Type of application/json
-    #[serde(rename = "json")]
-    Json,
-    #[serde(rename = "media")]
-    Media,
-}
-
-impl std::default::Default for StorageParamsAlt {
-    fn default() -> StorageParamsAlt {
-        StorageParamsAlt::Undefined
-    }
-}
-
-impl std::fmt::Display for StorageParamsAlt {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = match self {
-            StorageParamsAlt::Undefined => write!(f, "undefined"),
-            StorageParamsAlt::Json => write!(f, "json"),
-            StorageParamsAlt::Media => write!(f, "media"),
-        };
-        Ok(())
-    }
-}
-
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum BucketsGetProjection {
     Undefined,
@@ -2058,6 +1998,33 @@ impl std::fmt::Display for ObjectsWatchAllProjection {
             ObjectsWatchAllProjection::Undefined => write!(f, "undefined"),
             ObjectsWatchAllProjection::Full => write!(f, "full"),
             ObjectsWatchAllProjection::NoAcl => write!(f, "noAcl"),
+        };
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum StorageParamsAlt {
+    Undefined,
+    /// Responses with Content-Type of application/json
+    #[serde(rename = "json")]
+    Json,
+    #[serde(rename = "media")]
+    Media,
+}
+
+impl std::default::Default for StorageParamsAlt {
+    fn default() -> StorageParamsAlt {
+        StorageParamsAlt::Undefined
+    }
+}
+
+impl std::fmt::Display for StorageParamsAlt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            StorageParamsAlt::Undefined => write!(f, "undefined"),
+            StorageParamsAlt::Json => write!(f, "json"),
+            StorageParamsAlt::Media => write!(f, "media"),
         };
         Ok(())
     }
@@ -5275,6 +5242,39 @@ impl std::fmt::Display for ProjectsServiceAccountGetParams {
         }
         Ok(())
     }
+}
+
+///
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+pub struct StorageParams {
+    /// Data format for the response.
+    #[serde(rename = "alt")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alt: Option<StorageParamsAlt>,
+    /// Selector specifying which fields to include in a partial response.
+    #[serde(rename = "fields")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    #[serde(rename = "key")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    #[serde(rename = "oauth_token")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    #[serde(rename = "prettyPrint")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    #[serde(rename = "quotaUser")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quota_user: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    #[serde(rename = "userIp")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_ip: Option<String>,
 }
 
 impl std::fmt::Display for StorageParams {
