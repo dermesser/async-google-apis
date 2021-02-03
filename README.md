@@ -21,10 +21,6 @@ for Google Cloud Storage.
 
 ## Parts
 
-* `manual_demo` is just a demo crate with some code for developers (well, me) to
-experiment if the generated APIs work, and also to work manually with the Google
-APIs to gain insights on which code to generate.
-
 * `generate` contains a Python program fetching current Google Discovery documents
   (https://www.googleapis.com/discovery/v1/apis, see
    [documentation](https://developers.google.com/discovery/v1/reference)) and
@@ -51,7 +47,6 @@ APIs to gain insights on which code to generate.
   represented as enums -- may require small manual adjustments to the generated
   code. If possible, this should be solved automatically, but sometimes it isn't
   yet. Refer to the example crates for more details.
-
 
 ## To Do
 
