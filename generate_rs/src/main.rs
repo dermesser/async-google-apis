@@ -1,4 +1,5 @@
 mod discovery_v1_types;
+mod schema;
 
 use anyhow::{Error, Result};
 use clap::{App, Arg, SubCommand};
@@ -81,7 +82,7 @@ async fn fetch_doc_by_url(doc_url: &str) -> Result<discovery_v1_types::RestDescr
 
 async fn fetch_url<Out: serde::de::DeserializeOwned>(url: &str) -> Result<Out> {
     let doc = reqwest::get(url).await?.text().await?;
-    serde_json::from_reader(doc.as_bytes()).map_err(|e| e.into())
+    serde_json::from_reader(doc.as_bytes()).map_err(|e| anyhow::anyhow!(format!("Error parsing response '{}': {}", doc, e)))
 }
 
 #[tokio::main]
