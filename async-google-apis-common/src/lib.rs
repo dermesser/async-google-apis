@@ -1,5 +1,9 @@
 //! Common types, imports, and functions used by generated code, including HTTP requests and error
 //! types.
+//!
+//! This is not very useful on its own -- check out
+//! [async-google-apis](https://github.com/dermesser/async-google-apis) on github. It is a code
+//! generator, which generates code that utilizes this crate.
 
 mod error;
 pub use error::*;
