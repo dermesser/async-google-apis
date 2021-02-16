@@ -20,13 +20,14 @@ Google API.
 
   ```shell
   # install pipenv first
-  pip install --user pipenv`
+  pip install --user pipenv
 
   pipenv run ./generate.py --api=storage:v1
   ```
 
-  Generated code resides in the `src/gen` directory.
-  Use `cargo doc` to generate the documentation for generated code.
+  Generated code resides in the `src/gen` directory, you can run `cargo doc` to
+  generate the documentation for generated code.
+
   Use `--help` for script usage.
 * `example` directory contains simple but useful examples of
   using the generated codes.
