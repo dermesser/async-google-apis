@@ -12,26 +12,29 @@ Google API.
 
 ## Usage
 
-* `generate` contains a Python program fetching current Google Discovery documents
+* `generate` directory contains generator for current Google Discovery documents
   (https://www.googleapis.com/discovery/v1/apis, see
-   [documentation](https://developers.google.com/discovery/v1/reference)) and
-  generating Rust code in the `src/gen` directory.
+   [documentation](https://developers.google.com/discovery/v1/reference)).
   To generate an API stub for the API with ID `storage:v1` (Google Cloud Storage
   v1):
 
   ```shell
+  # install pipenv first
+  pip install --user pipenv`
+
   pipenv run ./generate.py --api=storage:v1
   ```
 
-  (install `pipenv` using `pip install --user pipenv` before, if you don't have it
-  yet). Use `--help` for more information.
-* Consult `drive_example` or `gcs_example` for simple but useful examples of
-  using the generated code. Use `cargo doc` to generate the documentation for
-  generated code.
-* NOTE: some parts of the API -- for example: URL query parameters that are not
-  represented as enums -- may require small manual adjustments to the generated
-  code. If possible, this should be solved automatically, but sometimes it isn't
-  yet. Refer to the example crates for more details.
+  Generated code resides in the `src/gen` directory.
+  Use `cargo doc` to generate the documentation for generated code.
+  Use `--help` for script usage.
+* `example` directory contains simple but useful examples of
+  using the generated codes.
+
+Note: Some parts of the API, for example: URL query parameters that are not
+documented as enums, may require small manual adjustments to the generated
+code. If possible, this should be solved automatically, but sometimes it isn't
+yet. Refer to the example crates for more details.
 
 ## To Do
 
