@@ -11,9 +11,9 @@ CURRENT_DIR=`pwd`
 cd "$CURRENT_DIR/../../generate"
 ./generate.py --apis=drive:v3
 
-# Apply missing Media field patch
+# Add missing Media enum variant
 cd "$CURRENT_DIR/../../"
-git apply example_crates/drive_example/media_download.patch
+git apply example/drive/media_download.patch
 
 # Update cargo repo
 cargo update
@@ -28,7 +28,7 @@ cargo run -- ~/some_file.txt
 
 Please note that you need a client secret to run this binary. Download it from
 [Developer Console](https://console.developers.google.com) and place it into the
-file `client_secret.json` in your working directory so that `drive_example` can
+file `client_secret.json` in your working directory so that `drive` can
 find it.
 
 Run with `RUST_LOG=debug` in order to see an accurate record of HTTP requests

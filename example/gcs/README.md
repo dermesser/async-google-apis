@@ -12,9 +12,9 @@ CURRENT_DIR=`pwd`
 cd "$CURRENT_DIR/../../generate"
 ./generate.py --apis=storage:v1
 
-# Apply missing Media field patch
+# Add missing Media enum variant
 cd "$CURRENT_DIR/../../"
-git apply example_crates/gcs_example/media_download.patch
+git apply example/gcs/media_download.patch
 
 # Update cargo repo
 cargo update
