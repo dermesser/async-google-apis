@@ -15,6 +15,8 @@ cd "$CURRENT_DIR/../../generate"
 cd "$CURRENT_DIR/../../"
 git apply example/drive/media_download.patch
 
+cd "$CURRENT_DIR"
+
 # Update cargo repo
 cargo update
 
