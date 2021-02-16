@@ -1,5 +1,5 @@
 [package]
-name = "async-google-apis-common"
+name = "async-google-apis"
 version = "0.2.1"
 authors = ["Lewin Bormann <lewin@lewin-bormann.info>"]
 edition = "2018"
@@ -8,22 +8,22 @@ description = "Shared code for the async-google-apis generated code."
 homepage = "https://github.com/dermesser/async-google-apis"
 repository = "https://github.com/dermesser/async-google-apis"
 license = "MIT"
-documentation = "https://docs.rs/async-google-apis-common"
+documentation = "https://docs.rs/async-google-apis"
 readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "~1.0"
-chrono = "~0.4"
-futures = "~0.3"
-hyper = { version = "~0.14", features = ["stream"] }
-hyper-rustls = "~0.22"
-log = "~0.4"
-percent-encoding = "~2.1"
-radix64 = "~0.6"
-serde = "~1.0"
-serde_json = "~1.0"
+anyhow = "1.0"
+chrono = "0.4"
+futures = "0.3"
+hyper = { version = "0.14", features = ["stream"] }
+hyper-rustls = "0.22"
+log = "0.4"
+percent-encoding = "2.1"
+radix64 = "0.6"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 tokio = { version = "1.0", features = ["fs"] }
-tokio-stream = "^0.1"
-yup-oauth2 = "~5"
+tokio-stream = "0.1"
+yup-oauth2 = "5.0"

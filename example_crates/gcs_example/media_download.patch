@@ -1,5 +1,5 @@
---- ../../generate/gen/storage_v1_types.rs	2021-01-29 11:49:42.176524408 +0100
-+++ src/storage_v1_types.rs	2021-01-29 13:25:13.281422576 +0100
+--- a/src/gen/storage_v1_types.rs	2021-01-29 11:49:42.176524408 +0100
++++ b/src/gen/storage_v1_types.rs	2021-01-29 13:25:13.281422576 +0100
 @@ -1125,6 +1125,8 @@
      /// Responses with Content-Type of application/json
      #[serde(rename = "json")]

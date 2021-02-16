@@ -19,6 +19,7 @@ import requests
 
 import os
 from os import path
+from os import walk
 import subprocess
 
 from templates import *
@@ -27,12 +28,16 @@ from templates import *
 def optionalize(name, optional=True):
     return 'Option<{}>'.format(name) if optional else name
 
+# Rust keywords
+keywords = {'as', 'break', 'const', 'continue', 'crate', 'else', 'enum', 'extern', 'false',
+            'fn', 'for', 'if', 'impl', 'in', 'let', 'loop', 'match', 'mod', 'move', 'mut',
+            'pub', 'ref', 'return', 'self', 'Self', 'static', 'struct', 'super', 'trait',
+            'true', 'type', 'unsafe', 'use', 'where', 'while', 'async', 'await', 'abstract',
+            'become', 'box', 'do', 'final', 'macro', 'override', 'priv', 'typeof', 'unsized',
+            'virtual', 'try', 'yield', 'dyn', 'union', 'dyn'}
 
 def replace_keywords(name):
-    return {
-        'type': 'typ',
-        'enum': 'enums',
-    }.get(name, name)
+    return name if name not in keywords else '_' + name
 
 
 def capitalize_first(name):
@@ -42,7 +47,7 @@ def capitalize_first(name):
 
 
 def sanitize_id(s):
-    return s.replace('$', 'dollar').replace('#', 'hash').replace('.', '_')
+    return s.replace('$', 'dollar').replace('#', 'hash').replace('.', '_').replace('@', 'at').replace('-', '_')
 
 
 def rust_identifier(name):
@@ -50,9 +55,7 @@ def rust_identifier(name):
         if not c.isupper():
             return c
         return '_' + c.lower()
-
-    return ''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize_id(name))])
-
+    return replace_keywords(''.join([(r(c) if i > 0 else c.lower()) for i, c in enumerate(sanitize_id(name))]))
 
 def snake_to_camel(name):
     dest = []
@@ -191,9 +194,10 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 name_ = (sanitize_id(name))
 
                 def sanitize_enum_value(v):
+                    v = replace_keywords(capitalize_first(sanitize_id(v)))
                     if v[0].isnumeric():
-                        return '_' + v
-                    return v[0].upper() + v[1:]
+                        v = '_' + v
+                    return v
 
                 values = [{
                     'line': sanitize_enum_value(ev),
@@ -267,7 +271,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
             opt_query_parameters = []
             if global_params:
                 struct['fields'].append({
-                    'name': replace_keywords(rust_identifier(global_params)),
+                    'name': rust_identifier(global_params),
                     'typ': optionalize(global_params, True),
                     'attr': '#[serde(flatten)]',
                     'comment': 'General attributes applying to any API call'
@@ -279,7 +283,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
                             param, optional=False, parents=[])
                     enums.extend(subenums)
                     field = {
-                        'name': replace_keywords(rust_identifier(paramname)),
+                        'name': rust_identifier(paramname),
                         'original_name': paramname,
                         'typ': optionalize(typ, not param.get('required', False)),
                         'comment': desc,
@@ -329,7 +333,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
 
     Returns a rendered string with source code.
     """
-    service = capitalize_first(resource)
+    service = capitalize_first(snake_to_camel(rust_identifier(resource)))
     # Source code fragments implementing the methods.
     method_fragments = []
     # Source code fragments for impls of subordinate resources.
@@ -420,7 +424,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                     'scope': scope_enum,
                 }],
                 'description':
-                method.get('description', ''),
+                method.get('description', '').replace('\n', '\n/// '),
                 'http_method':
                 http_method,
                 'wants_auth':
@@ -457,7 +461,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                     'scope': scope_enum,
                 }],
                 'description':
-                method.get('description', ''),
+                method.get('description', '').replace('\n', '\n/// '),
                 'http_method':
                 http_method,
                 'wants_auth':
@@ -488,7 +492,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             'scopes': [{
                 'scope': scope_enum,
             }],
-            'description': method.get('description', ''),
+            'description': method.get('description', '').replace('\n', '\n/// '),
             'http_method': http_method,
             'wants_auth': is_authd,
         }
@@ -500,7 +504,7 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
     return chevron.render(
         ServiceImplementationTmpl, {
             'service': service,
-            'name': capitalize_first(discdoc.get('name', '')),
+            'name': rust_identifier(capitalize_first(discdoc.get('name', ''))),
             'base_path': discdoc['baseUrl'],
             'root_path': discdoc['rootUrl'],
             'wants_auth': 'auth' in discdoc,
@@ -532,6 +536,23 @@ def generate_scopes_type(name, scopes):
         parameters['scopes'].append({'scope_name': fancy_name, 'desc': desc.get('description', ''), 'url': url})
     return chevron.render(OauthScopesType, parameters)
 
+
+def struct_inline_comments(s):
+    for field in s['fields']:
+        if field.get('comment', None):
+            field['comment'] = field.get('comment', '').replace('\n', '\n/// ')
+    if s.get('desc', None):
+        s['desc'] = s.get('desc', '').replace('\n', '\n/// ')
+    if s.get('description', None):
+        s['description'] = s.get('description', '').replace('\n', '\n/// ')
+
+def enum_inline_comments(e):
+    for value in e.get('values', {}):
+        if value.get('desc', None):
+            value['desc'] = value.get('desc', '').replace('\n', '\n/// ')
+    for value in e.get('scopes', {}):
+        if value.get('desc', None):
+            value['desc'] = value.get('desc', '').replace('\n', '\n/// ')
 
 def generate_all(discdoc):
     """Generate all structs and impls, and render them into a file."""
@@ -571,25 +592,26 @@ def generate_all(discdoc):
         parameter_enums.extend(subenums)
 
     # Assemble everything into a file.
-    modname = (discdoc['id'] + '_types').replace(':', '_')
-    out_path = path.join('gen', modname + '.rs')
+    modname = (discdoc['id'] + '_types').replace(':', '_').replace('.', '_')
+    out_path = path.join('../src/gen', modname + '.rs')
     with open(out_path, 'w') as f:
         f.write(RustHeader)
         f.write(scopes_type)
         # Render resource structs.
         for s in structs:
-            for field in s['fields']:
-                if field.get('comment', None):
-                    field['comment'] = field.get('comment', '').replace('\n', ' ')
+            struct_inline_comments(s)
             if not s['name']:
                 print('WARN', s)
             f.write(chevron.render(SchemaStructTmpl, s))
         for e in enums:
+            enum_inline_comments(e)
             f.write(chevron.render(SchemaEnumTmpl, e))
         for e in parameter_enums:
+            enum_inline_comments(e)
             f.write(chevron.render(SchemaEnumTmpl, e))
         # Render *Params structs.
         for pt in parameter_types:
+            struct_inline_comments(pt)
             f.write(chevron.render(SchemaStructTmpl, pt))
             f.write(chevron.render(SchemaDisplayTmpl, pt))
         # Render service impls.
@@ -599,6 +621,7 @@ def generate_all(discdoc):
         subprocess.run(['rustfmt', out_path, '--edition=2018'])
     except:
         return
+
 
 
 def from_cache(apiId):
@@ -656,14 +679,14 @@ def main():
     p.add_argument('--discovery_base',
                    default='https://www.googleapis.com/discovery/v1/apis',
                    help='Base Discovery document.')
-    p.add_argument('--only_apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
+    p.add_argument('--apis', default='drive:v3', help='Only process APIs with these IDs (comma-separated)')
     p.add_argument('--doc', default='', help='Directly process Discovery document from this URL')
     p.add_argument('--list', default=False, help='List available APIs', action='store_true')
 
     args = p.parse_args()
 
-    if args.only_apis:
-        apilist = args.only_apis.split(',')
+    if args.apis:
+        apilist = args.apis.split(',')
     else:
         apilist = []
 
@@ -697,8 +720,17 @@ def main():
             generate_all(discdoc)
         except Exception as e:
             print("Error while processing discovery doc")
-            raise e
+            # raise e
             continue
+
+    _, _, mods_name = next(walk('../src/gen'))
+    mod_rs_file = open('../src/gen/mod.rs', 'w+')
+    for mod in mods_name:
+        if mod == 'mod.rs' or re.match(".*\.rs", mod) == None:
+            continue
+        mod_name_line = 'pub mod ' + mod[:-3] + ';\n'
+        mod_rs_file.write(mod_name_line)
+    mod_rs_file.close()
 
 
 if __name__ == '__main__':

@@ -28,3 +28,6 @@ pub use tokio_stream::StreamExt;
 pub type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
 pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
 pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
+
+pub mod gen;
+pub use gen::*;

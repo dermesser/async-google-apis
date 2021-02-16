@@ -6,12 +6,11 @@
 //! When you specify a file name as command line argument, the given file is uploaded to your
 //! Google Drive.
 
-mod drive_v3_types;
-use drive_v3_types as drive;
-
 use env_logger;
 
-use async_google_apis_common as common;
+use async_google_apis as common;
+
+use common::drive_v3_types as drive;
 
 use std::path::Path;
 use std::rc::Rc;

@@ -1,3 +1,8 @@
 .txt
 .json
+.vim/
+Cargo.lock
 target/
+generate/cache/
+generate/Pipfile.lock
+generate/__pycache__/

@@ -1,5 +1,5 @@
---- ../../generate/gen/drive_v3_types.rs	2021-01-29 11:36:40.915194494 +0100
-+++ src/drive_v3_types.rs	2021-01-29 11:42:27.374665228 +0100
+--- a/src/gen/drive_v3_types.rs	2021-01-29 11:36:40.915194494 +0100
++++ b/src/gen/drive_v3_types.rs	2021-01-29 11:42:27.374665228 +0100
 @@ -1676,6 +1676,8 @@
      /// Responses with Content-Type of application/json
      #[serde(rename = "json")]

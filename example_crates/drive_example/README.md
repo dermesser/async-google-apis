@@ -1,15 +1,29 @@
-# `drive_example`
+# `Google Drive Example`
 
 List your Google Drive root directory, or upload a file.
 
+## `Usage`
+
 ```shell
-$ cargo run
+CURRENT_DIR=`pwd`
+
+# Generate Drive APIs
+cd "$CURRENT_DIR/../../generate"
+./generate.py --apis=drive:v3
+
+# Apply missing Media field patch
+cd "$CURRENT_DIR/../../"
+git apply example_crates/drive_example/media_download.patch
+
+# Update cargo repo
+cargo update
+
 # Lists all objects in your root folder of Drive.
-...
-$ cargo run -- ~/some_file.txt
+cargo run
+
 # Uploads the given file to your root folder, and prints the involved File
 # objects and the used request parameters.
-...
+cargo run -- ~/some_file.txt
 ```
 
 Please note that you need a client secret to run this binary. Download it from

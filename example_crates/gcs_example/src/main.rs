@@ -1,8 +1,8 @@
-mod storage_v1_types;
-
 use anyhow::Context;
-use async_google_apis_common as common;
+use async_google_apis as common;
 use env_logger;
+
+use common::storage_v1_types;
 
 use std::path::Path;
 

@@ -2,12 +2,12 @@
 //!
 //! When run with no arguments, the top 5 videos id, title and duration will be shown
 //!
-mod youtube_v3_types;
-use youtube_v3_types as yt;
 
 use env_logger;
 
-use async_google_apis_common as common;
+use async_google_apis as common;
+
+use common::youtube_v3_types as yt;
 
 use std::rc::Rc;
 
