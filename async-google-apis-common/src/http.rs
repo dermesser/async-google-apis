@@ -181,7 +181,7 @@ impl<'a, Request: Serialize + std::fmt::Debug, Response: DeserializeOwned + std:
     /// indicate that a download is expected.
     pub async fn do_it(
         &mut self,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin)>,
+        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin + Send + Sync)>,
     ) -> Result<DownloadResult<Response>> {
         use std::str::FromStr;
 
