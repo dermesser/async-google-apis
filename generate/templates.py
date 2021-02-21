@@ -19,6 +19,21 @@ RustHeader = '''
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
 
 use async_google_apis_common::*;
+
+#[cfg(feature = "multi-thread")]
+pub trait DerefAuth: std::ops::Deref<Target=Authenticator> + Send + Sync {}
+
+#[cfg(feature = "multi-thread")]
+impl<T> DerefAuth for T
+where T: std::ops::Deref<Target=Authenticator> + Send + Sync {}
+
+#[cfg(not(feature = "multi-thread"))]
+pub trait DerefAuth: std::ops::Deref<Target=Authenticator> {}
+
+#[cfg(not(feature = "multi-thread"))]
+impl<T> DerefAuth for T
+where T: std::ops::Deref<Target=Authenticator> {}
+
 '''
 
 # Dict contents --
@@ -128,7 +143,7 @@ ServiceImplementationTmpl = '''
 pub struct {{{service}}}Service {
     client: TlsClient,
     {{#wants_auth}}
-    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    authenticator: Box<dyn 'static + DerefAuth>,
     scopes: Vec<String>,
     {{/wants_auth}}
 
@@ -141,7 +156,7 @@ impl {{{service}}}Service {
     /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new
-    {{#wants_auth}}<A: 'static + std::ops::Deref<Target=Authenticator>>
+    {{#wants_auth}}<A: 'static + DerefAuth>
     {{/wants_auth}}(client: TlsClient{{#wants_auth}}, auth: A{{/wants_auth}}) -> {{service}}Service {
         {{{service}}}Service { client: client
             {{#wants_auth}}, authenticator: Box::new(auth), scopes: vec![]{{/wants_auth}},
