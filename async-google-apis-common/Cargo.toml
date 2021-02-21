@@ -27,3 +27,7 @@ serde_json = "~1.0"
 tokio = { version = "1.0", features = ["fs"] }
 tokio-stream = "^0.1"
 yup-oauth2 = "~5"
+
+[features]
+default = []
+multi-thread = []

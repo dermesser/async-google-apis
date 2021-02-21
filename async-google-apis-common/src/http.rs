@@ -2,6 +2,20 @@ use crate::*;
 use anyhow::Context;
 use tokio::io::AsyncSeekExt;
 
+#[cfg(feature = "multi-thread")]
+pub trait AsyncWriteUnpin: tokio::io::AsyncWrite + std::marker::Unpin + Send + Sync {}
+
+#[cfg(feature = "multi-thread")]
+impl<T> AsyncWriteUnpin for T
+where T: tokio::io::AsyncWrite + std::marker::Unpin + Send + Sync {}
+
+#[cfg(not(feature = "multi-thread"))]
+pub trait AsyncWriteUnpin: tokio::io::AsyncWrite + std::marker::Unpin {}
+
+#[cfg(not(feature = "multi-thread"))]
+impl<T> AsyncWriteUnpin for T
+where T: tokio::io::AsyncWrite + std::marker::Unpin {}
+
 fn body_to_str(b: hyper::body::Bytes) -> String {
     String::from_utf8(b.to_vec()).unwrap_or("[UTF-8 decode failed]".into())
 }
@@ -181,7 +195,7 @@ impl<'a, Request: Serialize + std::fmt::Debug, Response: DeserializeOwned + std:
     /// indicate that a download is expected.
     pub async fn do_it(
         &mut self,
-        dst: Option<&mut (dyn tokio::io::AsyncWrite + std::marker::Unpin + Send + Sync)>,
+        dst: Option<&mut (dyn AsyncWriteUnpin)>,
     ) -> Result<DownloadResult<Response>> {
         use std::str::FromStr;
 
