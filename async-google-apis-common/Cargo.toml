@@ -29,5 +29,5 @@ tokio-stream = "^0.1"
 yup-oauth2 = "~5"
 
 [features]
-default = []
+default = ["multi-thread"]
 multi-thread = []
