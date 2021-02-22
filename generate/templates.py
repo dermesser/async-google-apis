@@ -20,20 +20,6 @@ RustHeader = '''
 
 use async_google_apis_common::*;
 
-#[cfg(feature = "multi-thread")]
-pub trait DerefAuth: std::ops::Deref<Target=Authenticator> + Send + Sync {}
-
-#[cfg(feature = "multi-thread")]
-impl<T> DerefAuth for T
-where T: std::ops::Deref<Target=Authenticator> + Send + Sync {}
-
-#[cfg(not(feature = "multi-thread"))]
-pub trait DerefAuth: std::ops::Deref<Target=Authenticator> {}
-
-#[cfg(not(feature = "multi-thread"))]
-impl<T> DerefAuth for T
-where T: std::ops::Deref<Target=Authenticator> {}
-
 '''
 
 # Dict contents --
@@ -218,7 +204,7 @@ impl {{{service}}}Service {
 NormalMethodTmpl = '''
 /// {{{description}}}
 pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}
+    &self, params: &{{{param_type}}}
     {{#in_type}}, req: &{{{in_type}}}{{/in_type}}) -> Result<{{{out_type}}}> {
 
     let rel_path = {{{rel_path_expr}}};
@@ -266,7 +252,7 @@ UploadMethodTmpl = '''
 ///
 /// This method is a variant of `{{{name}}}()`, taking data for upload. It performs a multipart upload.
 pub async fn {{{name}}}_upload(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
+    &self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
     let rel_path = {{{simple_rel_path_expr}}};
     let path = self.format_path(rel_path.as_str());
 
@@ -316,7 +302,7 @@ ResumableUploadMethodTmpl = '''
 /// of data to the API. The result of this call will be returned by the `ResumableUpload` method
 /// you choose for the upload.
 pub async fn {{{name}}}_resumable_upload<'client>(
-    &'client mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
+    &'client self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
 
     let rel_path = {{{resumable_rel_path_expr}}};
     let path = self.format_path(rel_path.as_str());
@@ -369,7 +355,7 @@ DownloadMethodTmpl = '''
 ///
 /// This method potentially downloads data. See documentation of `Download`.
 pub async fn {{{name}}}<'a>(
-    &'a mut self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
+    &'a self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
     -> Result<Download<'a, {{{download_in_type}}}, {{{out_type}}}>> {
 
     let rel_path = {{{rel_path_expr}}};
