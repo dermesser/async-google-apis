@@ -9,7 +9,7 @@ use env_logger;
 
 use async_google_apis_common as common;
 
-use std::rc::Rc;
+use std::sync::Arc;
 
 /// Create a new HTTPS client.
 fn https_client() -> common::TlsClient {
@@ -41,7 +41,7 @@ async fn main() {
         yt::YoutubeScopes::YoutubeUpload,
         yt::YoutubeScopes::YoutubeForceSsl,
     ];
-    let mut cl = yt::VideosService::new(https, Rc::new(auth));
+    let mut cl = yt::VideosService::new(https, Arc::new(auth));
     cl.set_scopes(&scopes);
 
     {

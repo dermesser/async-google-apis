@@ -14,7 +14,7 @@ use env_logger;
 use async_google_apis_common as common;
 
 use std::path::Path;
-use std::rc::Rc;
+use std::sync::Arc;
 
 /// Create a new HTTPS client.
 fn https_client() -> common::TlsClient {
@@ -115,7 +115,7 @@ async fn main() {
     .expect("InstalledFlowAuthenticator failed to build");
 
     let scopes = vec![drive::DriveScopes::Drive];
-    let mut cl = drive::FilesService::new(https, Rc::new(auth));
+    let mut cl = drive::FilesService::new(https, Arc::new(auth));
     cl.set_scopes(&scopes);
 
     let arg = std::env::args().skip(1).next();
