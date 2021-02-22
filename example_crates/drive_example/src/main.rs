@@ -24,7 +24,7 @@ fn https_client() -> common::TlsClient {
 }
 
 /// Upload a local file `f` to your drive.
-async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()> {
+async fn upload_file(cl: &drive::FilesService, f: &Path) -> anyhow::Result<()> {
     let fname = f.file_name().unwrap().to_str().unwrap();
 
     let mut general_params = drive::DriveParams::default();
@@ -120,7 +120,7 @@ async fn main() {
 
     let arg = std::env::args().skip(1).next();
     if let Some(fp) = arg {
-        upload_file(cl, Path::new(&fp))
+        upload_file(&cl, Path::new(&fp))
             .await
             .expect("Upload failed :(");
     } else {
