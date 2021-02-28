@@ -282,7 +282,7 @@ def generate_params_structs(resources, super_name='', global_params=None):
                         'name': replace_keywords(rust_identifier(paramname)),
                         'original_name': paramname,
                         'typ': optionalize(typ, not param.get('required', False)),
-                        'comment': desc,
+                        'comment': desc.replace('\n', ' '),
                         'attr': '#[serde(rename = "{}")]'.format(paramname),
                     }
                     struct['fields'].append(field)
@@ -387,6 +387,9 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         # Guess default scope.
         scopetype, scopeval = scopes_url_to_enum_val(discdoc['name'], method.get('scopes', [''])[-1])
         scope_enum = scopetype + '::' + scopeval
+
+        if methodname == 'move':
+            methodname = 'move_'
 
         if is_download:
             data_download = {
@@ -581,6 +584,8 @@ def generate_all(discdoc):
             for field in s['fields']:
                 if field.get('comment', None):
                     field['comment'] = field.get('comment', '').replace('\n', ' ')
+                if field['name'] == 'self':
+                    field['name'] = 'self_'
             if not s['name']:
                 print('WARN', s)
             f.write(chevron.render(SchemaStructTmpl, s))
