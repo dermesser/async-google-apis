@@ -14,7 +14,7 @@ use env_logger;
 use async_google_apis_common as common;
 
 use std::path::Path;
-use std::rc::Rc;
+use std::sync::Arc;
 
 /// Create a new HTTPS client.
 fn https_client() -> common::TlsClient {
@@ -24,7 +24,7 @@ fn https_client() -> common::TlsClient {
 }
 
 /// Upload a local file `f` to your drive.
-async fn upload_file(mut cl: drive::FilesService, f: &Path) -> anyhow::Result<()> {
+async fn upload_file(cl: &drive::FilesService, f: &Path) -> anyhow::Result<()> {
     let fname = f.file_name().unwrap().to_str().unwrap();
 
     let mut general_params = drive::DriveParams::default();
@@ -115,12 +115,12 @@ async fn main() {
     .expect("InstalledFlowAuthenticator failed to build");
 
     let scopes = vec![drive::DriveScopes::Drive];
-    let mut cl = drive::FilesService::new(https, Rc::new(auth));
+    let mut cl = drive::FilesService::new(https, Arc::new(auth));
     cl.set_scopes(&scopes);
 
     let arg = std::env::args().skip(1).next();
     if let Some(fp) = arg {
-        upload_file(cl, Path::new(&fp))
+        upload_file(&cl, Path::new(&fp))
             .await
             .expect("Upload failed :(");
     } else {

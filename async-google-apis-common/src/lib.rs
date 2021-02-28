@@ -28,3 +28,8 @@ pub use tokio_stream::StreamExt;
 pub type Authenticator = yup_oauth2::authenticator::Authenticator<TlsConnr>;
 pub type TlsClient = hyper::Client<TlsConnr, hyper::Body>;
 pub type TlsConnr = hyper_rustls::HttpsConnector<hyper::client::HttpConnector>;
+
+pub trait DerefAuth: std::ops::Deref<Target=Authenticator> + Send + Sync {}
+
+impl<T> DerefAuth for T
+where T: std::ops::Deref<Target=Authenticator> + Send + Sync {}

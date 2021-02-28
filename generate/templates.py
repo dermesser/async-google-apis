@@ -19,6 +19,7 @@ RustHeader = '''
 //! THIS FILE HAS BEEN GENERATED -- SAVE ANY MODIFICATIONS BEFORE REPLACING.
 
 use async_google_apis_common::*;
+
 '''
 
 # Dict contents --
@@ -128,7 +129,7 @@ ServiceImplementationTmpl = '''
 pub struct {{{service}}}Service {
     client: TlsClient,
     {{#wants_auth}}
-    authenticator: Box<dyn 'static + std::ops::Deref<Target=Authenticator>>,
+    authenticator: Box<dyn 'static + DerefAuth>,
     scopes: Vec<String>,
     {{/wants_auth}}
 
@@ -141,7 +142,7 @@ impl {{{service}}}Service {
     /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new
-    {{#wants_auth}}<A: 'static + std::ops::Deref<Target=Authenticator>>
+    {{#wants_auth}}<A: 'static + DerefAuth>
     {{/wants_auth}}(client: TlsClient{{#wants_auth}}, auth: A{{/wants_auth}}) -> {{service}}Service {
         {{{service}}}Service { client: client
             {{#wants_auth}}, authenticator: Box::new(auth), scopes: vec![]{{/wants_auth}},
@@ -203,7 +204,7 @@ impl {{{service}}}Service {
 NormalMethodTmpl = '''
 /// {{{description}}}
 pub async fn {{{name}}}(
-    &mut self, params: &{{{param_type}}}
+    &self, params: &{{{param_type}}}
     {{#in_type}}, req: &{{{in_type}}}{{/in_type}}) -> Result<{{{out_type}}}> {
 
     let rel_path = {{{rel_path_expr}}};
@@ -251,7 +252,7 @@ UploadMethodTmpl = '''
 ///
 /// This method is a variant of `{{{name}}}()`, taking data for upload. It performs a multipart upload.
 pub async fn {{{name}}}_upload(
-    &mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
+    &self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
     let rel_path = {{{simple_rel_path_expr}}};
     let path = self.format_path(rel_path.as_str());
 
@@ -301,7 +302,7 @@ ResumableUploadMethodTmpl = '''
 /// of data to the API. The result of this call will be returned by the `ResumableUpload` method
 /// you choose for the upload.
 pub async fn {{{name}}}_resumable_upload<'client>(
-    &'client mut self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
+    &'client self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}}{{/in_type}}) -> Result<ResumableUpload<'client, {{{out_type}}}>> {
 
     let rel_path = {{{resumable_rel_path_expr}}};
     let path = self.format_path(rel_path.as_str());
@@ -354,7 +355,7 @@ DownloadMethodTmpl = '''
 ///
 /// This method potentially downloads data. See documentation of `Download`.
 pub async fn {{{name}}}<'a>(
-    &'a mut self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
+    &'a self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
     -> Result<Download<'a, {{{download_in_type}}}, {{{out_type}}}>> {
 
     let rel_path = {{{rel_path_expr}}};

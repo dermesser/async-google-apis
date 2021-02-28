@@ -14,7 +14,7 @@ fn https_client() -> common::TlsClient {
 }
 
 async fn upload_file(
-    mut cl: storage_v1_types::ObjectsService,
+    cl: &storage_v1_types::ObjectsService,
     bucket: &str,
     p: &Path,
     prefix: &str,
@@ -39,7 +39,7 @@ async fn upload_file(
 }
 
 async fn download_file(
-    mut cl: storage_v1_types::ObjectsService,
+    cl: &storage_v1_types::ObjectsService,
     bucket: &str,
     id: &str,
 ) -> common::Result<()> {
@@ -96,7 +96,7 @@ fn print_objects(objs: &storage_v1_types::Objects) {
 }
 
 async fn list_objects(
-    mut cl: storage_v1_types::ObjectsService,
+    cl: &storage_v1_types::ObjectsService,
     bucket: &str,
     prefix: &str,
 ) -> common::Result<()> {
@@ -121,7 +121,7 @@ async fn list_objects(
 }
 
 async fn rm_object(
-    mut cl: storage_v1_types::ObjectsService,
+    cl: &storage_v1_types::ObjectsService,
     bucket: &str,
     id: &str,
 ) -> common::Result<()> {
@@ -183,7 +183,7 @@ async fn main() {
             .build()
             .await
             .expect("ServiceAccount authenticator failed.");
-    let authenticator = std::rc::Rc::new(authenticator);
+    let authenticator = std::sync::Arc::new(authenticator);
 
     let action = matches.value_of("ACTION").expect("--action is required.");
     let buck = matches
@@ -196,7 +196,7 @@ async fn main() {
         let obj = matches
             .value_of("FILE_OR_OBJECT")
             .expect("OBJECT is a mandatory argument.");
-        download_file(cl, buck, obj)
+        download_file(&cl, buck, obj)
             .await
             .expect("Download failed :(");
     } else if action == "put" {
@@ -207,13 +207,13 @@ async fn main() {
         if !pre.ends_with("/") && !pre.is_empty() {
             pre = pre.to_string() + "/";
         }
-        upload_file(cl, buck, Path::new(&fp), &pre)
+        upload_file(&cl, buck, Path::new(&fp), &pre)
             .await
             .expect("Upload failed :(");
         return;
     } else if action == "list" {
         let prefix = matches.value_of("PREFIX").unwrap_or("");
-        list_objects(cl, buck, prefix)
+        list_objects(&cl, buck, prefix)
             .await
             .expect("List failed :(");
         return;
@@ -221,7 +221,7 @@ async fn main() {
         let obj = matches
             .value_of("FILE_OR_OBJECT")
             .expect("OBJECT is a mandatory argument.");
-        rm_object(cl, buck, obj).await.expect("rm failed :(");
+        rm_object(&cl, buck, obj).await.expect("rm failed :(");
         return;
     }
 }
