@@ -59,7 +59,6 @@ impl std::convert::AsRef<str> for CalendarScopes {
     }
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Setting {
     /// Type of the resource ("calendar#setting").
@@ -80,7 +79,6 @@ pub struct Setting {
     pub id: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct EventAttachment {
     /// Attachment title.
@@ -91,7 +89,9 @@ pub struct EventAttachment {
     #[serde(rename = "mimeType")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mime_type: Option<String>,
-    /// URL link to the attachment. For adding Google Drive file attachments use the same format as in alternateLink property of the Files resource in the Drive API. Required when adding an attachment.
+    /// URL link to the attachment.
+    /// For adding Google Drive file attachments use the same format as in alternateLink property of the Files resource in the Drive API.
+    /// Required when adding an attachment.
     #[serde(rename = "fileUrl")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_url: Option<String>,
@@ -99,13 +99,13 @@ pub struct EventAttachment {
     #[serde(rename = "iconLink")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub icon_link: Option<String>,
-    /// ID of the attached file. Read-only. For Google Drive files, this is the ID of the corresponding Files resource entry in the Drive API.
+    /// ID of the attached file. Read-only.
+    /// For Google Drive files, this is the ID of the corresponding Files resource entry in the Drive API.
     #[serde(rename = "fileId")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_id: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FreeBusyRequest {
     /// DateTime: The start of the interval for the query formatted as per RFC3339.
@@ -134,7 +134,6 @@ pub struct FreeBusyRequest {
     pub calendar_expansion_max: Option<i32>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FreeBusyResponse {
     /// DateTime: The start of the interval.
@@ -159,7 +158,6 @@ pub struct FreeBusyResponse {
     pub groups: Option<HashMap<String, FreeBusyGroup>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Colors {
     /// A global palette of calendar colors, mapping from the color ID to its definition. A calendarListEntry resource refers to one of these color IDs in its color field. Read-only.
@@ -180,7 +178,6 @@ pub struct Colors {
     pub kind: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceParameters {
     #[serde(rename = "addOnParameters")]
@@ -188,7 +185,6 @@ pub struct ConferenceParameters {
     pub add_on_parameters: Option<ConferenceParametersAddOnParameters>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Calendar {
     /// Identifier of the calendar. To retrieve IDs call the calendarList.list() method.
@@ -224,7 +220,6 @@ pub struct Calendar {
     pub conference_properties: Option<ConferenceProperties>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CalendarList {
     /// ETag of the collection.
@@ -249,7 +244,6 @@ pub struct CalendarList {
     pub kind: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Acl {
     /// List of rules on the access control list.
@@ -274,7 +268,6 @@ pub struct Acl {
     pub next_sync_token: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Events {
     /// DateTime: Last modification time of the calendar (as a RFC3339 timestamp). Read-only.
@@ -289,7 +282,12 @@ pub struct Events {
     #[serde(rename = "nextSyncToken")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub next_sync_token: Option<String>,
-    /// The user's access role for this calendar. Read-only. Possible values are:   - "none" - The user has no access.  - "freeBusyReader" - The user has read access to free/busy information.  - "reader" - The user has read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.  - "writer" - The user has read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.  - "owner" - The user has ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
+    /// The user's access role for this calendar. Read-only. Possible values are:  
+    /// - "none" - The user has no access.
+    /// - "freeBusyReader" - The user has read access to free/busy information.
+    /// - "reader" - The user has read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.
+    /// - "writer" - The user has read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.
+    /// - "owner" - The user has ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
     #[serde(rename = "accessRole")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub access_role: Option<String>,
@@ -330,13 +328,16 @@ pub struct AclRuleScope {
     #[serde(rename = "value")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
-    /// The type of the scope. Possible values are:   - "default" - The public scope. This is the default value.  - "user" - Limits the scope to a single user.  - "group" - Limits the scope to a group.  - "domain" - Limits the scope to a domain.  Note: The permissions granted to the "default", or public, scope apply to any user, authenticated or not.
+    /// The type of the scope. Possible values are:  
+    /// - "default" - The public scope. This is the default value.
+    /// - "user" - Limits the scope to a single user.
+    /// - "group" - Limits the scope to a group.
+    /// - "domain" - Limits the scope to a domain.  Note: The permissions granted to the "default", or public, scope apply to any user, authenticated or not.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AclRule {
     /// ETag of the resource.
@@ -347,7 +348,12 @@ pub struct AclRule {
     #[serde(rename = "kind")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub kind: Option<String>,
-    /// The role assigned to the scope. Possible values are:   - "none" - Provides no access.  - "freeBusyReader" - Provides read access to free/busy information.  - "reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.  - "writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.  - "owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
+    /// The role assigned to the scope. Possible values are:  
+    /// - "none" - Provides no access.
+    /// - "freeBusyReader" - Provides read access to free/busy information.
+    /// - "reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.
+    /// - "writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.
+    /// - "owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
     #[serde(rename = "role")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
@@ -361,7 +367,6 @@ pub struct AclRule {
     pub id: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TimePeriod {
     /// DateTime: The (inclusive) start of the time period.
@@ -374,16 +379,18 @@ pub struct TimePeriod {
     pub end: Option<DateTime<Utc>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceRequestStatus {
-    /// The current status of the conference create request. Read-only. The possible values are:   - "pending": the conference create request is still being processed. - "success": the conference create request succeeded, the entry points are populated. - "failure": the conference create request failed, there are no entry points.
+    /// The current status of the conference create request. Read-only.
+    /// The possible values are:  
+    /// - "pending": the conference create request is still being processed.
+    /// - "success": the conference create request succeeded, the entry points are populated.
+    /// - "failure": the conference create request failed, there are no entry points.
     #[serde(rename = "statusCode")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status_code: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceSolution {
     #[serde(rename = "key")]
@@ -408,7 +415,6 @@ pub struct CalendarListEntryNotificationSettings {
     pub notifications: Option<Vec<CalendarNotification>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CalendarListEntry {
     /// The color of the calendar. This is an ID referring to an entry in the calendar section of the colors definition (see the colors endpoint). This property is superseded by the backgroundColor and foregroundColor properties and can be ignored when using these properties. Optional.
@@ -435,7 +441,11 @@ pub struct CalendarListEntry {
     #[serde(rename = "timeZone")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
-    /// The effective access role that the authenticated user has on the calendar. Read-only. Possible values are:   - "freeBusyReader" - Provides read access to free/busy information.  - "reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.  - "writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.  - "owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
+    /// The effective access role that the authenticated user has on the calendar. Read-only. Possible values are:  
+    /// - "freeBusyReader" - Provides read access to free/busy information.
+    /// - "reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.
+    /// - "writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.
+    /// - "owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
     #[serde(rename = "accessRole")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub access_role: Option<String>,
@@ -488,7 +498,6 @@ pub struct CalendarListEntry {
     pub background_color: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FreeBusyGroup {
     /// List of calendars' identifiers within a group.
@@ -501,29 +510,36 @@ pub struct FreeBusyGroup {
     pub errors: Option<Vec<Error>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct EventReminder {
-    /// The method used by this reminder. Possible values are:   - "email" - Reminders are sent via email.  - "popup" - Reminders are sent via a UI popup.   Required when adding a reminder.
+    /// The method used by this reminder. Possible values are:  
+    /// - "email" - Reminders are sent via email.
+    /// - "popup" - Reminders are sent via a UI popup.  
+    /// Required when adding a reminder.
     #[serde(rename = "method")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub method: Option<String>,
-    /// Number of minutes before the start of the event when the reminder should trigger. Valid values are between 0 and 40320 (4 weeks in minutes). Required when adding a reminder.
+    /// Number of minutes before the start of the event when the reminder should trigger. Valid values are between 0 and 40320 (4 weeks in minutes).
+    /// Required when adding a reminder.
     #[serde(rename = "minutes")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub minutes: Option<i32>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceSolutionKey {
-    /// The conference solution type. If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications. The possible values are:   - "eventHangout" for Hangouts for consumers (http://hangouts.google.com) - "eventNamedHangout" for classic Hangouts for Google Workspace users (http://hangouts.google.com) - "hangoutsMeet" for Google Meet (http://meet.google.com) - "addOn" for 3P conference providers
+    /// The conference solution type.
+    /// If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
+    /// The possible values are:  
+    /// - "eventHangout" for Hangouts for consumers (http://hangouts.google.com)
+    /// - "eventNamedHangout" for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+    /// - "hangoutsMeet" for Google Meet (http://meet.google.com)
+    /// - "addOn" for 3P conference providers
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ColorDefinition {
     /// The background color associated with this color definition.
@@ -536,7 +552,6 @@ pub struct ColorDefinition {
     pub foreground: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FreeBusyRequestItem {
     /// The identifier of a calendar or a group.
@@ -545,10 +560,13 @@ pub struct FreeBusyRequestItem {
     pub id: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Error {
-    /// Specific reason for the error. Some of the possible values are:   - "groupTooBig" - The group of users requested is too large for a single query.  - "tooManyCalendarsRequested" - The number of calendars requested is too large for a single query.  - "notFound" - The requested resource was not found.  - "internalError" - The API service has encountered an internal error.  Additional error types may be added in the future, so clients should gracefully handle additional error statuses not included in this list.
+    /// Specific reason for the error. Some of the possible values are:  
+    /// - "groupTooBig" - The group of users requested is too large for a single query.
+    /// - "tooManyCalendarsRequested" - The number of calendars requested is too large for a single query.
+    /// - "notFound" - The requested resource was not found.
+    /// - "internalError" - The API service has encountered an internal error.  Additional error types may be added in the future, so clients should gracefully handle additional error statuses not included in this list.
     #[serde(rename = "reason")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
@@ -558,7 +576,6 @@ pub struct Error {
     pub domain: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Settings {
     /// Etag of the collection.
@@ -583,7 +600,6 @@ pub struct Settings {
     pub next_sync_token: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct EventAttendee {
     /// Whether the attendee is the organizer of the event. Read-only. The default is False.
@@ -614,7 +630,11 @@ pub struct EventAttendee {
     #[serde(rename = "self")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub self_: Option<bool>,
-    /// The attendee's response status. Possible values are:   - "needsAction" - The attendee has not responded to the invitation.  - "declined" - The attendee has declined the invitation.  - "tentative" - The attendee has tentatively accepted the invitation.  - "accepted" - The attendee has accepted the invitation.
+    /// The attendee's response status. Possible values are:  
+    /// - "needsAction" - The attendee has not responded to the invitation.
+    /// - "declined" - The attendee has declined the invitation.
+    /// - "tentative" - The attendee has tentatively accepted the invitation.
+    /// - "accepted" - The attendee has accepted the invitation.
     #[serde(rename = "responseStatus")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub response_status: Option<String>,
@@ -622,13 +642,13 @@ pub struct EventAttendee {
     #[serde(rename = "additionalGuests")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub additional_guests: Option<i32>,
-    /// The attendee's email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322. Required when adding an attendee.
+    /// The attendee's email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
+    /// Required when adding an attendee.
     #[serde(rename = "email")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct EventDateTime {
     /// The time zone in which the time is specified. (Formatted as an IANA Time Zone Database name, e.g. "Europe/Zurich".) For recurring events this field is required and specifies the time zone in which the recurrence is expanded. For single events this field is optional and indicates a custom time zone for the event start/end.
@@ -645,38 +665,58 @@ pub struct EventDateTime {
     pub date_time: Option<DateTime<Utc>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct EntryPoint {
-    /// The access code to access the conference. The maximum length is 128 characters. When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed. Optional.
+    /// The access code to access the conference. The maximum length is 128 characters.
+    /// When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
+    /// Optional.
     #[serde(rename = "accessCode")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub access_code: Option<String>,
-    /// The meeting code to access the conference. The maximum length is 128 characters. When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed. Optional.
+    /// The meeting code to access the conference. The maximum length is 128 characters.
+    /// When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
+    /// Optional.
     #[serde(rename = "meetingCode")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub meeting_code: Option<String>,
-    /// The PIN to access the conference. The maximum length is 128 characters. When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed. Optional.
+    /// The PIN to access the conference. The maximum length is 128 characters.
+    /// When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
+    /// Optional.
     #[serde(rename = "pin")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub pin: Option<String>,
-    /// The password to access the conference. The maximum length is 128 characters. When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed. Optional.
+    /// The password to access the conference. The maximum length is 128 characters.
+    /// When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
+    /// Optional.
     #[serde(rename = "password")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub password: Option<String>,
-    /// The passcode to access the conference. The maximum length is 128 characters. When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
+    /// The passcode to access the conference. The maximum length is 128 characters.
+    /// When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
     #[serde(rename = "passcode")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub passcode: Option<String>,
-    /// The type of the conference entry point. Possible values are:   - "video" - joining a conference over HTTP. A conference can have zero or one video entry point. - "phone" - joining a conference by dialing a phone number. A conference can have zero or more phone entry points. - "sip" - joining a conference over SIP. A conference can have zero or one sip entry point. - "more" - further conference joining instructions, for example additional phone numbers. A conference can have zero or one more entry point. A conference with only a more entry point is not a valid conference.
+    /// The type of the conference entry point.
+    /// Possible values are:  
+    /// - "video" - joining a conference over HTTP. A conference can have zero or one video entry point.
+    /// - "phone" - joining a conference by dialing a phone number. A conference can have zero or more phone entry points.
+    /// - "sip" - joining a conference over SIP. A conference can have zero or one sip entry point.
+    /// - "more" - further conference joining instructions, for example additional phone numbers. A conference can have zero or one more entry point. A conference with only a more entry point is not a valid conference.
     #[serde(rename = "entryPointType")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entry_point_type: Option<String>,
-    /// The label for the URI. Visible to end users. Not localized. The maximum length is 512 characters. Examples:   - for video: meet.google.com/aaa-bbbb-ccc - for phone: +1 123 268 2601 - for sip: 12345678@altostrat.com - for more: should not be filled   Optional.
+    /// The label for the URI. Visible to end users. Not localized. The maximum length is 512 characters.
+    /// Examples:  
+    /// - for video: meet.google.com/aaa-bbbb-ccc
+    /// - for phone: +1 123 268 2601
+    /// - for sip: 12345678@altostrat.com
+    /// - for more: should not be filled  
+    /// Optional.
     #[serde(rename = "label")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    /// The CLDR/ISO 3166 region code for the country associated with this phone access. Example: "SE" for Sweden. Calendar backend will populate this field only for EntryPointType.PHONE.
+    /// The CLDR/ISO 3166 region code for the country associated with this phone access. Example: "SE" for Sweden.
+    /// Calendar backend will populate this field only for EntryPointType.PHONE.
     #[serde(rename = "regionCode")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub region_code: Option<String>,
@@ -684,7 +724,12 @@ pub struct EntryPoint {
     #[serde(rename = "entryPointFeatures")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entry_point_features: Option<Vec<String>>,
-    /// The URI of the entry point. The maximum length is 1300 characters. Format:   - for video, http: or https: schema is required. - for phone, tel: schema is required. The URI should include the entire dial sequence (e.g., tel:+12345678900,,,123456789;1234). - for sip, sip: schema is required, e.g., sip:12345678@myprovider.com. - for more, http: or https: schema is required.
+    /// The URI of the entry point. The maximum length is 1300 characters.
+    /// Format:  
+    /// - for video, http: or https: schema is required.
+    /// - for phone, tel: schema is required. The URI should include the entire dial sequence (e.g., tel:+12345678900,,,123456789;1234).
+    /// - for sip, sip: schema is required, e.g., sip:12345678@myprovider.com.
+    /// - for more, http: or https: schema is required.
     #[serde(rename = "uri")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub uri: Option<String>,
@@ -717,8 +762,10 @@ pub struct EventGadget {
     /// The gadget's type. Deprecated.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
-    /// The gadget's display mode. Deprecated. Possible values are:   - "icon" - The gadget displays next to the event's title in the calendar view.  - "chip" - The gadget displays when the event is clicked.
+    pub type_: Option<String>,
+    /// The gadget's display mode. Deprecated. Possible values are:  
+    /// - "icon" - The gadget displays next to the event's title in the calendar view.
+    /// - "chip" - The gadget displays when the event is clicked.
     #[serde(rename = "display")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub display: Option<String>,
@@ -808,7 +855,6 @@ pub struct EventExtendedProperties {
     pub shared: Option<HashMap<String, String>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Event {
     /// Description of the event. Can contain HTML. Optional.
@@ -843,7 +889,16 @@ pub struct Event {
     #[serde(rename = "source")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub source: Option<EventSource>,
-    /// Status of the event. Optional. Possible values are:   - "confirmed" - The event is confirmed. This is the default status.  - "tentative" - The event is tentatively confirmed.  - "cancelled" - The event is cancelled (deleted). The list method returns cancelled events only on incremental sync (when syncToken or updatedMin are specified) or if the showDeleted flag is set to true. The get method always returns them. A cancelled status represents two different states depending on the event type:   - Cancelled exceptions of an uncancelled recurring event indicate that this instance should no longer be presented to the user. Clients should store these events for the lifetime of the parent recurring event. Cancelled exceptions are only guaranteed to have values for the id, recurringEventId and originalStartTime fields populated. The other fields might be empty.   - All other cancelled events represent deleted events. Clients should remove their locally synced copies. Such cancelled events will eventually disappear, so do not rely on them being available indefinitely. Deleted events are only guaranteed to have the id field populated.   On the organizer's calendar, cancelled events continue to expose event details (summary, location, etc.) so that they can be restored (undeleted). Similarly, the events to which the user was invited and that they manually removed continue to provide details. However, incremental sync requests with showDeleted set to false will not return these details. If an event changes its organizer (for example via the move operation) and the original organizer is not on the attendee list, it will leave behind a cancelled event where only the id field is guaranteed to be populated.
+    /// Status of the event. Optional. Possible values are:  
+    /// - "confirmed" - The event is confirmed. This is the default status.
+    /// - "tentative" - The event is tentatively confirmed.
+    /// - "cancelled" - The event is cancelled (deleted). The list method returns cancelled events only on incremental sync (when syncToken or updatedMin are specified) or if the showDeleted flag is set to true. The get method always returns them.
+    /// A cancelled status represents two different states depending on the event type:  
+    /// - Cancelled exceptions of an uncancelled recurring event indicate that this instance should no longer be presented to the user. Clients should store these events for the lifetime of the parent recurring event.
+    /// Cancelled exceptions are only guaranteed to have values for the id, recurringEventId and originalStartTime fields populated. The other fields might be empty.  
+    /// - All other cancelled events represent deleted events. Clients should remove their locally synced copies. Such cancelled events will eventually disappear, so do not rely on them being available indefinitely.
+    /// Deleted events are only guaranteed to have the id field populated.   On the organizer's calendar, cancelled events continue to expose event details (summary, location, etc.) so that they can be restored (undeleted). Similarly, the events to which the user was invited and that they manually removed continue to provide details. However, incremental sync requests with showDeleted set to false will not return these details.
+    /// If an event changes its organizer (for example via the move operation) and the original organizer is not on the attendee list, it will leave behind a cancelled event where only the id field is guaranteed to be populated.
     #[serde(rename = "status")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<String>,
@@ -863,7 +918,11 @@ pub struct Event {
     #[serde(rename = "kind")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub kind: Option<String>,
-    /// Visibility of the event. Optional. Possible values are:   - "default" - Uses the default visibility for events on the calendar. This is the default value.  - "public" - The event is public and event details are visible to all readers of the calendar.  - "private" - The event is private and only event attendees may view event details.  - "confidential" - The event is private. This value is provided for compatibility reasons.
+    /// Visibility of the event. Optional. Possible values are:  
+    /// - "default" - Uses the default visibility for events on the calendar. This is the default value.
+    /// - "public" - The event is public and event details are visible to all readers of the calendar.
+    /// - "private" - The event is private and only event attendees may view event details.
+    /// - "confidential" - The event is private. This value is provided for compatibility reasons.
     #[serde(rename = "visibility")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub visibility: Option<String>,
@@ -879,11 +938,18 @@ pub struct Event {
     #[serde(rename = "attendeesOmitted")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attendees_omitted: Option<bool>,
-    /// File attachments for the event. Currently only Google Drive attachments are supported. In order to modify attachments the supportsAttachments request parameter should be set to true. There can be at most 25 attachments per event,
+    /// File attachments for the event. Currently only Google Drive attachments are supported.
+    /// In order to modify attachments the supportsAttachments request parameter should be set to true.
+    /// There can be at most 25 attachments per event,
     #[serde(rename = "attachments")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attachments: Option<Vec<EventAttachment>>,
-    /// Opaque identifier of the event. When creating new single or recurring events, you can specify their IDs. Provided IDs must follow these rules:   - characters allowed in the ID are those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9, see section 3.1.2 in RFC2938  - the length of the ID must be between 5 and 1024 characters  - the ID must be unique per calendar  Due to the globally distributed nature of the system, we cannot guarantee that ID collisions will be detected at event creation time. To minimize the risk of collisions we recommend using an established UUID algorithm such as one described in RFC4122. If you do not specify an ID, it will be automatically generated by the server. Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
+    /// Opaque identifier of the event. When creating new single or recurring events, you can specify their IDs. Provided IDs must follow these rules:  
+    /// - characters allowed in the ID are those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9, see section 3.1.2 in RFC2938
+    /// - the length of the ID must be between 5 and 1024 characters
+    /// - the ID must be unique per calendar  Due to the globally distributed nature of the system, we cannot guarantee that ID collisions will be detected at event creation time. To minimize the risk of collisions we recommend using an established UUID algorithm such as one described in RFC4122.
+    /// If you do not specify an ID, it will be automatically generated by the server.
+    /// Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
     #[serde(rename = "id")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -891,7 +957,9 @@ pub struct Event {
     #[serde(rename = "created")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created: Option<DateTime<Utc>>,
-    /// Specific type of the event. Read-only. Possible values are:   - "default" - A regular event or not further specified.  - "outOfOffice" - An out-of-office event.
+    /// Specific type of the event. Read-only. Possible values are:  
+    /// - "default" - A regular event or not further specified.
+    /// - "outOfOffice" - An out-of-office event.
     #[serde(rename = "eventType")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub event_type: Option<String>,
@@ -918,7 +986,9 @@ pub struct Event {
     #[serde(rename = "updated")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub updated: Option<DateTime<Utc>>,
-    /// Whether the event blocks time on the calendar. Optional. Possible values are:   - "opaque" - Default value. The event does block time on the calendar. This is equivalent to setting Show me as to Busy in the Calendar UI.  - "transparent" - The event does not block time on the calendar. This is equivalent to setting Show me as to Available in the Calendar UI.
+    /// Whether the event blocks time on the calendar. Optional. Possible values are:  
+    /// - "opaque" - Default value. The event does block time on the calendar. This is equivalent to setting Show me as to Busy in the Calendar UI.
+    /// - "transparent" - The event does not block time on the calendar. This is equivalent to setting Show me as to Available in the Calendar UI.
     #[serde(rename = "transparency")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub transparency: Option<String>,
@@ -932,7 +1002,8 @@ pub struct Event {
     #[serde(rename = "summary")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub summary: Option<String>,
-    /// Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method. Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
+    /// Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
+    /// Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
     #[serde(rename = "iCalUID")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub i_cal_u_i_d: Option<String>,
@@ -965,20 +1036,26 @@ pub struct Event {
     pub extended_properties: Option<EventExtendedProperties>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CalendarNotification {
-    /// The method used to deliver the notification. The possible value is:   - "email" - Notifications are sent via email.   Required when adding a notification.
+    /// The method used to deliver the notification. The possible value is:  
+    /// - "email" - Notifications are sent via email.  
+    /// Required when adding a notification.
     #[serde(rename = "method")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub method: Option<String>,
-    /// The type of notification. Possible values are:   - "eventCreation" - Notification sent when a new event is put on the calendar.  - "eventChange" - Notification sent when an event is changed.  - "eventCancellation" - Notification sent when an event is cancelled.  - "eventResponse" - Notification sent when an attendee responds to the event invitation.  - "agenda" - An agenda with the events of the day (sent out in the morning).   Required when adding a notification.
+    /// The type of notification. Possible values are:  
+    /// - "eventCreation" - Notification sent when a new event is put on the calendar.
+    /// - "eventChange" - Notification sent when an event is changed.
+    /// - "eventCancellation" - Notification sent when an event is cancelled.
+    /// - "eventResponse" - Notification sent when an attendee responds to the event invitation.
+    /// - "agenda" - An agenda with the events of the day (sent out in the morning).  
+    /// Required when adding a notification.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceParametersAddOnParameters {
     #[serde(rename = "parameters")]
@@ -986,13 +1063,13 @@ pub struct ConferenceParametersAddOnParameters {
     pub parameters: Option<HashMap<String, String>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CreateConferenceRequest {
     #[serde(rename = "status")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<ConferenceRequestStatus>,
-    /// The client-generated unique ID for this request. Clients should regenerate this ID for every new request. If an ID provided is the same as for the previous request, the request is ignored.
+    /// The client-generated unique ID for this request.
+    /// Clients should regenerate this ID for every new request. If an ID provided is the same as for the previous request, the request is ignored.
     #[serde(rename = "requestId")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub request_id: Option<String>,
@@ -1001,7 +1078,6 @@ pub struct CreateConferenceRequest {
     pub conference_solution_key: Option<ConferenceSolutionKey>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Channel {
     /// A Boolean value to indicate whether payload is wanted. Optional.
@@ -1019,7 +1095,7 @@ pub struct Channel {
     /// The type of delivery mechanism used for this channel. Valid values are "web_hook" (or "webhook"). Both values refer to a channel where Http requests are used to deliver messages.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
     /// A UUID or similar unique string that identifies this channel.
     #[serde(rename = "id")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1046,7 +1122,6 @@ pub struct Channel {
     pub resource_id: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct FreeBusyCalendar {
     /// Optional error(s) (if computation for the calendar failed).
@@ -1059,18 +1134,28 @@ pub struct FreeBusyCalendar {
     pub busy: Option<Vec<TimePeriod>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceData {
-    /// The signature of the conference data. Generated on server side. Must be preserved while copying the conference data between events, otherwise the conference data will not be copied. Unset for a conference with a failed create request. Optional for a conference with a pending create request.
+    /// The signature of the conference data.
+    /// Generated on server side. Must be preserved while copying the conference data between events, otherwise the conference data will not be copied.
+    /// Unset for a conference with a failed create request.
+    /// Optional for a conference with a pending create request.
     #[serde(rename = "signature")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub signature: Option<String>,
-    /// The ID of the conference. Can be used by developers to keep track of conferences, should not be displayed to users. Values for solution types:   - "eventHangout": unset. - "eventNamedHangout": the name of the Hangout. - "hangoutsMeet": the 10-letter meeting code, for example "aaa-bbbb-ccc". - "addOn": defined by 3P conference provider.  Optional.
+    /// The ID of the conference.
+    /// Can be used by developers to keep track of conferences, should not be displayed to users.
+    /// Values for solution types:  
+    /// - "eventHangout": unset.
+    /// - "eventNamedHangout": the name of the Hangout.
+    /// - "hangoutsMeet": the 10-letter meeting code, for example "aaa-bbbb-ccc".
+    /// - "addOn": defined by 3P conference provider.  Optional.
     #[serde(rename = "conferenceId")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub conference_id: Option<String>,
-    /// Information about individual conference entry points, such as URLs or phone numbers. All of them must belong to the same conference. Either conferenceSolution and at least one entryPoint, or createRequest is required.
+    /// Information about individual conference entry points, such as URLs or phone numbers.
+    /// All of them must belong to the same conference.
+    /// Either conferenceSolution and at least one entryPoint, or createRequest is required.
     #[serde(rename = "entryPoints")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entry_points: Option<Vec<EntryPoint>>,
@@ -1089,10 +1174,13 @@ pub struct ConferenceData {
     pub create_request: Option<CreateConferenceRequest>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ConferenceProperties {
-    /// The types of conference solutions that are supported for this calendar. The possible values are:   - "eventHangout"  - "eventNamedHangout"  - "hangoutsMeet"  Optional.
+    /// The types of conference solutions that are supported for this calendar.
+    /// The possible values are:  
+    /// - "eventHangout"
+    /// - "eventNamedHangout"
+    /// - "hangoutsMeet"  Optional.
     #[serde(rename = "allowedConferenceSolutionTypes")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allowed_conference_solution_types: Option<Vec<String>>,
@@ -2239,13 +2327,6 @@ impl std::fmt::Display for EventsInstancesParams {
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
-        if let Some(ref v) = self.time_max {
-            write!(
-                f,
-                "&timeMax={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
         if let Some(ref v) = self.original_start {
             write!(
                 f,
@@ -2288,11 +2369,18 @@ impl std::fmt::Display for EventsInstancesParams {
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
+        if let Some(ref v) = self.time_max {
+            write!(
+                f,
+                "&timeMax={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
         if let Some(ref v) = self.time_min {
             write!(
                 f,
                 "&timeMin={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
         Ok(())
@@ -2454,20 +2542,6 @@ impl std::fmt::Display for EventsWatchParams {
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
-        if let Some(ref v) = self.time_max {
-            write!(
-                f,
-                "&timeMax={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
-        if let Some(ref v) = self.updated_min {
-            write!(
-                f,
-                "&updatedMin={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
         if let Some(ref v) = self.show_hidden_invitations {
             write!(
                 f,
@@ -2503,13 +2577,6 @@ impl std::fmt::Display for EventsWatchParams {
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
-        if let Some(ref v) = self.time_min {
-            write!(
-                f,
-                "&timeMin={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
         if let Some(ref v) = self.sync_token {
             write!(
                 f,
@@ -2529,6 +2596,27 @@ impl std::fmt::Display for EventsWatchParams {
                 f,
                 "&privateExtendedProperty={}",
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
+        if let Some(ref v) = self.time_max {
+            write!(
+                f,
+                "&timeMax={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
+        if let Some(ref v) = self.updated_min {
+            write!(
+                f,
+                "&updatedMin={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
+        if let Some(ref v) = self.time_min {
+            write!(
+                f,
+                "&timeMin={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
         Ok(())
@@ -2627,24 +2715,10 @@ impl std::fmt::Display for EventsListParams {
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
-        if let Some(ref v) = self.time_min {
-            write!(
-                f,
-                "&timeMin={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
         if let Some(ref v) = self.i_cal_u_i_d {
             write!(
                 f,
                 "&iCalUID={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
-        if let Some(ref v) = self.time_max {
-            write!(
-                f,
-                "&timeMax={}",
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
@@ -2683,13 +2757,6 @@ impl std::fmt::Display for EventsListParams {
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
-        if let Some(ref v) = self.updated_min {
-            write!(
-                f,
-                "&updatedMin={}",
-                percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
-            )?;
-        }
         if let Some(ref v) = self.max_attendees {
             write!(
                 f,
@@ -2716,6 +2783,27 @@ impl std::fmt::Display for EventsListParams {
                 f,
                 "&alwaysIncludeEmail={}",
                 percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
+        if let Some(ref v) = self.time_min {
+            write!(
+                f,
+                "&timeMin={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
+        if let Some(ref v) = self.time_max {
+            write!(
+                f,
+                "&timeMax={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
+            )?;
+        }
+        if let Some(ref v) = self.updated_min {
+            write!(
+                f,
+                "&updatedMin={}",
+                percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string()
             )?;
         }
         Ok(())
@@ -3121,7 +3209,6 @@ impl std::fmt::Display for EventsDeleteParams {
     }
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct CalendarParams {
     /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -3221,7 +3308,7 @@ pub struct ChannelsService {
 
 impl ChannelsService {
     /// Create a new ChannelsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ChannelsService {
         ChannelsService {
@@ -3321,7 +3408,7 @@ pub struct FreebusyService {
 
 impl FreebusyService {
     /// Create a new FreebusyService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> FreebusyService {
         FreebusyService {
@@ -3423,7 +3510,7 @@ pub struct ColorsService {
 
 impl ColorsService {
     /// Create a new ColorsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ColorsService {
         ColorsService {
@@ -3520,7 +3607,7 @@ pub struct AclService {
 
 impl AclService {
     /// Create a new AclService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> AclService {
         AclService {
@@ -3841,7 +3928,7 @@ pub struct CalendarsService {
 
 impl CalendarsService {
     /// Create a new CalendarsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> CalendarsService {
         CalendarsService {
@@ -4116,7 +4203,7 @@ pub struct CalendarListService {
 
 impl CalendarListService {
     /// Create a new CalendarListService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> CalendarListService {
         CalendarListService {
@@ -4427,7 +4514,7 @@ pub struct SettingsService {
 
 impl SettingsService {
     /// Create a new SettingsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> SettingsService {
         SettingsService {
@@ -4592,7 +4679,7 @@ pub struct EventsService {
 
 impl EventsService {
     /// Create a new EventsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> EventsService {
         EventsService {
