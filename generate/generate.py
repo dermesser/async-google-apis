@@ -286,7 +286,7 @@ def generate_params_structs(resources, super_name="", global_params=None):
                         "name": rust_identifier(paramname),
                         "original_name": paramname,
                         "typ": optionalize(typ, not param.get("required", False)),
-                        "comment": desc.replace('\n', ' '),
+                        "comment": desc,
                         "attr": "#[serde(rename = \"{}\")]".format(paramname),
                     }
                     struct["fields"].append(field)
@@ -395,9 +395,6 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         # Guess default scope.
         scopetype, scopeval = scopes_url_to_enum_val(discdoc["name"], method.get("scopes", [""])[-1])
         scope_enum = scopetype + "::" + scopeval
-
-        if methodname == 'move':
-            methodname = 'move_'
 
         if is_download:
             data_download = {
