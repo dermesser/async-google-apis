@@ -30,7 +30,7 @@ for Google Cloud Storage.
   generate an API stub for the API with ID `storage:v1` (Google Cloud Storage v1),
   run
   ```shell
-  $ pipenv run ./generate.py --only_apis=storage:v1
+  $ pipenv run ./generate.py --apis=storage:v1
   ```
   (install `pipenv` using `pip install --user pipenv` before, if you don't have it
   yet). See more details in that directory.
