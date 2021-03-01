@@ -74,7 +74,6 @@ impl std::convert::AsRef<str> for DriveScopes {
     }
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutDriveThemes {
     /// A link to this theme's background image.
@@ -112,7 +111,6 @@ pub struct AboutStorageQuota {
     pub usage_in_drive_trash: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct AboutTeamDriveThemes {
     /// Deprecated - use driveThemes/backgroundImageLink instead.
@@ -228,7 +226,7 @@ pub struct Change {
     /// Deprecated - use changeType instead.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
 /// A list of changes for a user.
@@ -294,7 +292,7 @@ pub struct Channel {
     /// The type of delivery mechanism used for this channel.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
 /// The file content to which the comment refers, typically within the anchor region. For a text file, for example, this would be the text at the location of the comment.
@@ -400,7 +398,7 @@ pub struct ContentRestriction {
     /// The type of the content restriction. Currently the only possible value is globalContentRestriction.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
 /// An image file and cropping parameters from which a background image for this shared drive is set. This is a write only field; it can only be set on drive.drives.update requests that don't set themeId. When specified, all fields of the backgroundImageFile must be set.
@@ -894,7 +892,8 @@ pub struct FileVideoMediaMetadata {
 /// The metadata for a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct File {
-    /// A collection of arbitrary key-value pairs which are private to the requesting app. Entries with null values are cleared in update and copy requests. These properties can only be retrieved using an authenticated request. An authenticated request uses an access token obtained with a OAuth 2 client ID. You cannot use an API key to retrieve private properties.
+    /// A collection of arbitrary key-value pairs which are private to the requesting app.
+    /// Entries with null values are cleared in update and copy requests. These properties can only be retrieved using an authenticated request. An authenticated request uses an access token obtained with a OAuth 2 client ID. You cannot use an API key to retrieve private properties.
     #[serde(rename = "appProperties")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub app_properties: Option<HashMap<String, String>>,
@@ -938,11 +937,13 @@ pub struct File {
     #[serde(rename = "fileExtension")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_extension: Option<String>,
-    /// The color for a folder as an RGB hex string. The supported colors are published in the folderColorPalette field of the About resource. If an unsupported color is specified, the closest color in the palette will be used instead.
+    /// The color for a folder as an RGB hex string. The supported colors are published in the folderColorPalette field of the About resource.
+    /// If an unsupported color is specified, the closest color in the palette will be used instead.
     #[serde(rename = "folderColorRgb")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub folder_color_rgb: Option<String>,
-    /// The full file extension extracted from the name field. May contain multiple concatenated extensions, such as "tar.gz". This is only available for files with binary content in Google Drive. This is automatically updated when the name field changes, however it is not cleared if the new name does not contain a valid extension.
+    /// The full file extension extracted from the name field. May contain multiple concatenated extensions, such as "tar.gz". This is only available for files with binary content in Google Drive.
+    /// This is automatically updated when the name field changes, however it is not cleared if the new name does not contain a valid extension.
     #[serde(rename = "fullFileExtension")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub full_file_extension: Option<String>,
@@ -985,7 +986,9 @@ pub struct File {
     #[serde(rename = "md5Checksum")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub md5_checksum: Option<String>,
-    /// The MIME type of the file. Google Drive will attempt to automatically detect an appropriate value from uploaded content if no value is provided. The value cannot be changed unless a new revision is uploaded. If a file is created with a Google Doc MIME type, the uploaded content will be imported if possible. The supported import formats are published in the About resource.
+    /// The MIME type of the file.
+    /// Google Drive will attempt to automatically detect an appropriate value from uploaded content if no value is provided. The value cannot be changed unless a new revision is uploaded.
+    /// If a file is created with a Google Doc MIME type, the uploaded content will be imported if possible. The supported import formats are published in the About resource.
     #[serde(rename = "mimeType")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mime_type: Option<String>,
@@ -997,7 +1000,8 @@ pub struct File {
     #[serde(rename = "modifiedByMeTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_by_me_time: Option<DateTime<Utc>>,
-    /// DateTime: The last time the file was modified by anyone (RFC 3339 date-time). Note that setting modifiedTime will also update modifiedByMeTime for the user.
+    /// DateTime: The last time the file was modified by anyone (RFC 3339 date-time).
+    /// Note that setting modifiedTime will also update modifiedByMeTime for the user.
     #[serde(rename = "modifiedTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modified_time: Option<DateTime<Utc>>,
@@ -1017,7 +1021,8 @@ pub struct File {
     #[serde(rename = "owners")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub owners: Option<Vec<User>>,
-    /// The IDs of the parent folders which contain the file. If not specified as part of a create request, the file will be placed directly in the user's My Drive folder. If not specified as part of a copy request, the file will inherit any discoverable parents of the source file. Update requests must use the addParents and removeParents parameters to modify the parents list.
+    /// The IDs of the parent folders which contain the file.
+    /// If not specified as part of a create request, the file will be placed directly in the user's My Drive folder. If not specified as part of a copy request, the file will inherit any discoverable parents of the source file. Update requests must use the addParents and removeParents parameters to modify the parents list.
     #[serde(rename = "parents")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parents: Option<Vec<String>>,
@@ -1029,7 +1034,8 @@ pub struct File {
     #[serde(rename = "permissions")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub permissions: Option<Vec<Permission>>,
-    /// A collection of arbitrary key-value pairs which are visible to all apps. Entries with null values are cleared in update and copy requests.
+    /// A collection of arbitrary key-value pairs which are visible to all apps.
+    /// Entries with null values are cleared in update and copy requests.
     #[serde(rename = "properties")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub properties: Option<HashMap<String, String>>,
@@ -1159,7 +1165,6 @@ pub struct GeneratedIds {
     pub space: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionPermissionDetails {
     /// Whether this permission is inherited. This field is always populated. This is an output-only field.
@@ -1170,17 +1175,23 @@ pub struct PermissionPermissionDetails {
     #[serde(rename = "inheritedFrom")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inherited_from: Option<String>,
-    /// The permission type for this user. While new values may be added in future, the following are currently possible:   - file  - member
+    /// The permission type for this user. While new values may be added in future, the following are currently possible:  
+    /// - file
+    /// - member
     #[serde(rename = "permissionType")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub permission_type: Option<String>,
-    /// The primary role for this user. While new values may be added in the future, the following are currently possible:   - organizer  - fileOrganizer  - writer  - commenter  - reader
+    /// The primary role for this user. While new values may be added in the future, the following are currently possible:  
+    /// - organizer
+    /// - fileOrganizer
+    /// - writer
+    /// - commenter
+    /// - reader
     #[serde(rename = "role")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PermissionTeamDrivePermissionDetails {
     /// Deprecated - use permissionDetails/inherited instead.
@@ -1212,7 +1223,11 @@ pub struct Permission {
     #[serde(rename = "deleted")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub deleted: Option<bool>,
-    /// The "pretty" name of the value of the permission. The following is a list of examples for each type of permission:   - user - User's full name, as defined for their Google account, such as "Joe Smith."  - group - Name of the Google Group, such as "The Company Administrators."  - domain - String domain name, such as "thecompany.com."  - anyone - No displayName is present.
+    /// The "pretty" name of the value of the permission. The following is a list of examples for each type of permission:  
+    /// - user - User's full name, as defined for their Google account, such as "Joe Smith."
+    /// - group - Name of the Google Group, such as "The Company Administrators."
+    /// - domain - String domain name, such as "thecompany.com."
+    /// - anyone - No displayName is present.
     #[serde(rename = "displayName")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub display_name: Option<String>,
@@ -1224,7 +1239,10 @@ pub struct Permission {
     #[serde(rename = "emailAddress")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email_address: Option<String>,
-    /// DateTime: The time at which this permission will expire (RFC 3339 date-time). Expiration times have the following restrictions:   - They can only be set on user and group permissions  - The time must be in the future  - The time cannot be more than a year in the future
+    /// DateTime: The time at which this permission will expire (RFC 3339 date-time). Expiration times have the following restrictions:  
+    /// - They can only be set on user and group permissions
+    /// - The time must be in the future
+    /// - The time cannot be more than a year in the future
     #[serde(rename = "expirationTime")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub expiration_time: Option<DateTime<Utc>>,
@@ -1244,7 +1262,13 @@ pub struct Permission {
     #[serde(rename = "photoLink")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub photo_link: Option<String>,
-    /// The role granted by this permission. While new values may be supported in the future, the following are currently allowed:   - owner  - organizer  - fileOrganizer  - writer  - commenter  - reader
+    /// The role granted by this permission. While new values may be supported in the future, the following are currently allowed:  
+    /// - owner
+    /// - organizer
+    /// - fileOrganizer
+    /// - writer
+    /// - commenter
+    /// - reader
     #[serde(rename = "role")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
@@ -1252,10 +1276,14 @@ pub struct Permission {
     #[serde(rename = "teamDrivePermissionDetails")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub team_drive_permission_details: Option<Vec<PermissionTeamDrivePermissionDetails>>,
-    /// The type of the grantee. Valid values are:   - user  - group  - domain  - anyone  When creating a permission, if type is user or group, you must provide an emailAddress for the user or group. When type is domain, you must provide a domain. There isn't extra information required for a anyone type.
+    /// The type of the grantee. Valid values are:  
+    /// - user
+    /// - group
+    /// - domain
+    /// - anyone  When creating a permission, if type is user or group, you must provide an emailAddress for the user or group. When type is domain, you must provide a domain. There isn't extra information required for a anyone type.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
     /// Indicates the view for this permission. Only populated for permissions that belong to a view. published is the only supported value.
     #[serde(rename = "view")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1282,7 +1310,9 @@ pub struct PermissionList {
 /// A reply to a comment on a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Reply {
-    /// The action the reply performed to the parent comment. Valid values are:   - resolve  - reopen
+    /// The action the reply performed to the parent comment. Valid values are:  
+    /// - resolve
+    /// - reopen
     #[serde(rename = "action")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub action: Option<String>,
@@ -1347,7 +1377,8 @@ pub struct Revision {
     #[serde(rename = "id")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    /// Whether to keep this revision forever, even if it is no longer the head revision. If not set, the revision will be automatically purged 30 days after newer content is uploaded. This can be set on a maximum of 200 revisions for a file. This field is only applicable to files with binary content in Drive.
+    /// Whether to keep this revision forever, even if it is no longer the head revision. If not set, the revision will be automatically purged 30 days after newer content is uploaded. This can be set on a maximum of 200 revisions for a file.
+    /// This field is only applicable to files with binary content in Drive.
     #[serde(rename = "keepForever")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub keep_forever: Option<bool>,
@@ -1413,7 +1444,6 @@ pub struct RevisionList {
     pub revisions: Option<Vec<Revision>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct StartPageToken {
     /// Identifies what kind of resource this is. Value: the fixed string "drive#startPageToken".
@@ -3819,7 +3849,6 @@ impl std::fmt::Display for TeamdrivesUpdateParams {
     }
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct DriveParams {
     /// Data format for the response.
@@ -3919,7 +3948,7 @@ pub struct AboutService {
 
 impl AboutService {
     /// Create a new AboutService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> AboutService {
         AboutService {
@@ -4016,7 +4045,7 @@ pub struct ChangesService {
 
 impl ChangesService {
     /// Create a new ChangesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ChangesService {
         ChangesService {
@@ -4175,7 +4204,7 @@ pub struct ChannelsService {
 
 impl ChannelsService {
     /// Create a new ChannelsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ChannelsService {
         ChannelsService {
@@ -4273,7 +4302,7 @@ pub struct CommentsService {
 
 impl CommentsService {
     /// Create a new CommentsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> CommentsService {
         CommentsService {
@@ -4515,7 +4544,7 @@ pub struct DrivesService {
 
 impl DrivesService {
     /// Create a new DrivesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> DrivesService {
         DrivesService {
@@ -4803,7 +4832,7 @@ pub struct FilesService {
 
 impl FilesService {
     /// Create a new FilesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> FilesService {
         FilesService {
@@ -5398,7 +5427,7 @@ pub struct PermissionsService {
 
 impl PermissionsService {
     /// Create a new PermissionsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> PermissionsService {
         PermissionsService {
@@ -5648,7 +5677,7 @@ pub struct RepliesService {
 
 impl RepliesService {
     /// Create a new RepliesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> RepliesService {
         RepliesService {
@@ -5901,7 +5930,7 @@ pub struct RevisionsService {
 
 impl RevisionsService {
     /// Create a new RevisionsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> RevisionsService {
         RevisionsService {
@@ -6115,7 +6144,7 @@ pub struct TeamdrivesService {
 
 impl TeamdrivesService {
     /// Create a new TeamdrivesService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> TeamdrivesService {
         TeamdrivesService {

@@ -72,7 +72,6 @@ pub struct BucketBilling {
     pub requester_pays: Option<bool>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct BucketCors {
     /// The value, in seconds, to return in the  Access-Control-Max-Age header used in preflight responses.
@@ -155,7 +154,7 @@ pub struct BucketLifecycleRuleAction {
     /// Type of the action. Currently, only Delete and SetStorageClass are supported.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
 /// The condition(s) under which the action will be taken.
@@ -203,7 +202,6 @@ pub struct BucketLifecycleRuleCondition {
     pub num_newer_versions: Option<i32>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct BucketLifecycleRule {
     /// The action to take.
@@ -435,7 +433,18 @@ pub struct BucketAccessControl {
     #[serde(rename = "email")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
-    /// The entity holding the permission, in one of the following forms:  - user-userId  - user-email  - group-groupId  - group-email  - domain-domain  - project-team-projectId  - allUsers  - allAuthenticatedUsers Examples:  - The user liz@example.com would be user-liz@example.com.  - The group example@googlegroups.com would be group-example@googlegroups.com.  - To refer to all members of the Google Apps for Business domain example.com, the entity would be domain-example.com.
+    /// The entity holding the permission, in one of the following forms:
+    /// - user-userId
+    /// - user-email
+    /// - group-groupId
+    /// - group-email
+    /// - domain-domain
+    /// - project-team-projectId
+    /// - allUsers
+    /// - allAuthenticatedUsers Examples:
+    /// - The user liz@example.com would be user-liz@example.com.
+    /// - The group example@googlegroups.com would be group-example@googlegroups.com.
+    /// - To refer to all members of the Google Apps for Business domain example.com, the entity would be domain-example.com.
     #[serde(rename = "entity")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entity: Option<String>,
@@ -541,7 +550,7 @@ pub struct Channel {
     /// The type of delivery mechanism used for this channel.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub typ: Option<String>,
+    pub type_: Option<String>,
 }
 
 /// Conditions that must be met for this operation to execute.
@@ -553,7 +562,6 @@ pub struct ComposeRequestSourceObjectsObjectPreconditions {
     pub if_generation_match: Option<String>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct ComposeRequestSourceObjects {
     /// i64: The generation of this object to use as the source.
@@ -926,7 +934,18 @@ pub struct ObjectAccessControl {
     #[serde(rename = "email")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
-    /// The entity holding the permission, in one of the following forms:  - user-userId  - user-email  - group-groupId  - group-email  - domain-domain  - project-team-projectId  - allUsers  - allAuthenticatedUsers Examples:  - The user liz@example.com would be user-liz@example.com.  - The group example@googlegroups.com would be group-example@googlegroups.com.  - To refer to all members of the Google Apps for Business domain example.com, the entity would be domain-example.com.
+    /// The entity holding the permission, in one of the following forms:
+    /// - user-userId
+    /// - user-email
+    /// - group-groupId
+    /// - group-email
+    /// - domain-domain
+    /// - project-team-projectId
+    /// - allUsers
+    /// - allAuthenticatedUsers Examples:
+    /// - The user liz@example.com would be user-liz@example.com.
+    /// - The group example@googlegroups.com would be group-example@googlegroups.com.
+    /// - To refer to all members of the Google Apps for Business domain example.com, the entity would be domain-example.com.
     #[serde(rename = "entity")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entity: Option<String>,
@@ -1002,17 +1021,35 @@ pub struct Objects {
     pub prefixes: Option<Vec<String>>,
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct PolicyBindings {
     #[serde(rename = "condition")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub condition: Option<Expr>,
-    /// A collection of identifiers for members who may assume the provided role. Recognized identifiers are as follows:   - allUsers — A special identifier that represents anyone on the internet; with or without a Google account.   - allAuthenticatedUsers — A special identifier that represents anyone who is authenticated with a Google account or a service account.   - user:emailid — An email address that represents a specific account. For example, user:alice@gmail.com or user:joe@example.com.   - serviceAccount:emailid — An email address that represents a service account. For example,  serviceAccount:my-other-app@appspot.gserviceaccount.com .   - group:emailid — An email address that represents a Google group. For example, group:admins@example.com.   - domain:domain — A Google Apps domain name that represents all the users of that domain. For example, domain:google.com or domain:example.com.   - projectOwner:projectid — Owners of the given project. For example, projectOwner:my-example-project   - projectEditor:projectid — Editors of the given project. For example, projectEditor:my-example-project   - projectViewer:projectid — Viewers of the given project. For example, projectViewer:my-example-project
+    /// A collection of identifiers for members who may assume the provided role. Recognized identifiers are as follows:  
+    /// - allUsers — A special identifier that represents anyone on the internet; with or without a Google account.  
+    /// - allAuthenticatedUsers — A special identifier that represents anyone who is authenticated with a Google account or a service account.  
+    /// - user:emailid — An email address that represents a specific account. For example, user:alice@gmail.com or user:joe@example.com.  
+    /// - serviceAccount:emailid — An email address that represents a service account. For example,  serviceAccount:my-other-app@appspot.gserviceaccount.com .  
+    /// - group:emailid — An email address that represents a Google group. For example, group:admins@example.com.  
+    /// - domain:domain — A Google Apps domain name that represents all the users of that domain. For example, domain:google.com or domain:example.com.  
+    /// - projectOwner:projectid — Owners of the given project. For example, projectOwner:my-example-project  
+    /// - projectEditor:projectid — Editors of the given project. For example, projectEditor:my-example-project  
+    /// - projectViewer:projectid — Viewers of the given project. For example, projectViewer:my-example-project
     #[serde(rename = "members")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub members: Option<Vec<String>>,
-    /// The role to which members belong. Two types of roles are supported: new IAM roles, which grant permissions that do not map directly to those provided by ACLs, and legacy IAM roles, which do map directly to ACL permissions. All roles are of the format roles/storage.specificRole. The new IAM roles are:   - roles/storage.admin — Full control of Google Cloud Storage resources.   - roles/storage.objectViewer — Read-Only access to Google Cloud Storage objects.   - roles/storage.objectCreator — Access to create objects in Google Cloud Storage.   - roles/storage.objectAdmin — Full control of Google Cloud Storage objects.   The legacy IAM roles are:   - roles/storage.legacyObjectReader — Read-only access to objects without listing. Equivalent to an ACL entry on an object with the READER role.   - roles/storage.legacyObjectOwner — Read/write access to existing objects without listing. Equivalent to an ACL entry on an object with the OWNER role.   - roles/storage.legacyBucketReader — Read access to buckets with object listing. Equivalent to an ACL entry on a bucket with the READER role.   - roles/storage.legacyBucketWriter — Read access to buckets with object listing/creation/deletion. Equivalent to an ACL entry on a bucket with the WRITER role.   - roles/storage.legacyBucketOwner — Read and write access to existing buckets with object listing/creation/deletion. Equivalent to an ACL entry on a bucket with the OWNER role.
+    /// The role to which members belong. Two types of roles are supported: new IAM roles, which grant permissions that do not map directly to those provided by ACLs, and legacy IAM roles, which do map directly to ACL permissions. All roles are of the format roles/storage.specificRole.
+    /// The new IAM roles are:  
+    /// - roles/storage.admin — Full control of Google Cloud Storage resources.  
+    /// - roles/storage.objectViewer — Read-Only access to Google Cloud Storage objects.  
+    /// - roles/storage.objectCreator — Access to create objects in Google Cloud Storage.  
+    /// - roles/storage.objectAdmin — Full control of Google Cloud Storage objects.   The legacy IAM roles are:  
+    /// - roles/storage.legacyObjectReader — Read-only access to objects without listing. Equivalent to an ACL entry on an object with the READER role.  
+    /// - roles/storage.legacyObjectOwner — Read/write access to existing objects without listing. Equivalent to an ACL entry on an object with the OWNER role.  
+    /// - roles/storage.legacyBucketReader — Read access to buckets with object listing. Equivalent to an ACL entry on a bucket with the READER role.  
+    /// - roles/storage.legacyBucketWriter — Read access to buckets with object listing/creation/deletion. Equivalent to an ACL entry on a bucket with the WRITER role.  
+    /// - roles/storage.legacyBucketOwner — Read and write access to existing buckets with object listing/creation/deletion. Equivalent to an ACL entry on a bucket with the OWNER role.
     #[serde(rename = "role")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
@@ -1091,7 +1128,21 @@ pub struct TestIamPermissionsResponse {
     #[serde(rename = "kind")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub kind: Option<String>,
-    /// The permissions held by the caller. Permissions are always of the format storage.resource.capability, where resource is one of buckets or objects. The supported permissions are as follows:   - storage.buckets.delete — Delete bucket.   - storage.buckets.get — Read bucket metadata.   - storage.buckets.getIamPolicy — Read bucket IAM policy.   - storage.buckets.create — Create bucket.   - storage.buckets.list — List buckets.   - storage.buckets.setIamPolicy — Update bucket IAM policy.   - storage.buckets.update — Update bucket metadata.   - storage.objects.delete — Delete object.   - storage.objects.get — Read object data and metadata.   - storage.objects.getIamPolicy — Read object IAM policy.   - storage.objects.create — Create object.   - storage.objects.list — List objects.   - storage.objects.setIamPolicy — Update object IAM policy.   - storage.objects.update — Update object metadata.
+    /// The permissions held by the caller. Permissions are always of the format storage.resource.capability, where resource is one of buckets or objects. The supported permissions are as follows:  
+    /// - storage.buckets.delete — Delete bucket.  
+    /// - storage.buckets.get — Read bucket metadata.  
+    /// - storage.buckets.getIamPolicy — Read bucket IAM policy.  
+    /// - storage.buckets.create — Create bucket.  
+    /// - storage.buckets.list — List buckets.  
+    /// - storage.buckets.setIamPolicy — Update bucket IAM policy.  
+    /// - storage.buckets.update — Update bucket metadata.  
+    /// - storage.objects.delete — Delete object.  
+    /// - storage.objects.get — Read object data and metadata.  
+    /// - storage.objects.getIamPolicy — Read object IAM policy.  
+    /// - storage.objects.create — Create object.  
+    /// - storage.objects.list — List objects.  
+    /// - storage.objects.setIamPolicy — Update object IAM policy.  
+    /// - storage.objects.update — Update object metadata.
     #[serde(rename = "permissions")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub permissions: Option<Vec<String>>,
@@ -5252,7 +5303,6 @@ impl std::fmt::Display for ProjectsServiceAccountGetParams {
     }
 }
 
-///
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct StorageParams {
     /// Data format for the response.
@@ -5352,7 +5402,7 @@ pub struct BucketAccessControlsService {
 
 impl BucketAccessControlsService {
     /// Create a new BucketAccessControlsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> BucketAccessControlsService {
         BucketAccessControlsService {
@@ -5634,7 +5684,7 @@ pub struct BucketsService {
 
 impl BucketsService {
     /// Create a new BucketsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> BucketsService {
         BucketsService {
@@ -6030,7 +6080,7 @@ pub struct ChannelsService {
 
 impl ChannelsService {
     /// Create a new ChannelsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ChannelsService {
         ChannelsService {
@@ -6128,7 +6178,7 @@ pub struct DefaultObjectAccessControlsService {
 
 impl DefaultObjectAccessControlsService {
     /// Create a new DefaultObjectAccessControlsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(
         client: TlsClient,
@@ -6416,7 +6466,7 @@ pub struct NotificationsService {
 
 impl NotificationsService {
     /// Create a new NotificationsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> NotificationsService {
         NotificationsService {
@@ -6625,7 +6675,7 @@ pub struct ObjectAccessControlsService {
 
 impl ObjectAccessControlsService {
     /// Create a new ObjectAccessControlsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ObjectAccessControlsService {
         ObjectAccessControlsService {
@@ -6913,7 +6963,7 @@ pub struct ObjectsService {
 
 impl ObjectsService {
     /// Create a new ObjectsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ObjectsService {
         ObjectsService {
@@ -7553,7 +7603,7 @@ pub struct ProjectsService {
 
 impl ProjectsService {
     /// Create a new ProjectsService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ProjectsService {
         ProjectsService {
@@ -7621,7 +7671,7 @@ pub struct ProjectsHmacKeysService {
 
 impl ProjectsHmacKeysService {
     /// Create a new ProjectsHmacKeysService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(client: TlsClient, auth: A) -> ProjectsHmacKeysService {
         ProjectsHmacKeysService {
@@ -7872,7 +7922,7 @@ pub struct ProjectsServiceAccountService {
 
 impl ProjectsServiceAccountService {
     /// Create a new ProjectsServiceAccountService object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new<A: 'static + DerefAuth>(
         client: TlsClient,

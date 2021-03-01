@@ -1,6 +1,6 @@
---- ../../generate/gen/drive_v3_types.rs	2021-01-29 11:36:40.915194494 +0100
-+++ src/drive_v3_types.rs	2021-01-29 11:42:27.374665228 +0100
-@@ -1676,6 +1676,8 @@
+--- a/src/drive_v3_types.rs
++++ b/src/drive_v3_types.rs
+@@ -1706,6 +1706,8 @@
      /// Responses with Content-Type of application/json
      #[serde(rename = "json")]
      Json,
@@ -9,7 +9,7 @@
  }
  
  impl std::default::Default for DriveParamsAlt {
-@@ -1689,6 +1691,7 @@
+@@ -1719,6 +1721,7 @@
          let s = match self {
              DriveParamsAlt::Undefined => write!(f, "undefined"),
              DriveParamsAlt::Json => write!(f, "json"),

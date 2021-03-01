@@ -6,7 +6,7 @@ RustHeader = '''
 //! (c) 2020 Lewin Bormann <lbo@spheniscida.de>
 //!
 //! ## Getting started
-//! 
+//!
 //! **Tip**: Take a look at those types ending in `...Service`. These represent API resources
 //! and contain methods to interact with an API. The remaining types are used by those methods
 //! and can be explored starting from a method you want to use.
@@ -30,8 +30,10 @@ OauthScopesType = '''
 #[derive(Debug, Clone, Copy)]
 pub enum {{{name}}} {
     {{#scopes}}
+    {{#desc}}
     /// {{{desc}}}
     ///
+    {{/desc}}
     /// URL: {{{url}}}
     {{{scope_name}}},
     {{/scopes}}
@@ -57,7 +59,9 @@ SchemaEnumTmpl = '''
 pub enum {{{name}}} {
     Undefined,
     {{#values}}
+    {{#desc}}
     /// {{{desc}}}
+    {{/desc}}
     #[serde(rename = "{{{jsonvalue}}}")]
     {{{line}}},
     {{/values}}
@@ -87,7 +91,9 @@ impl std::fmt::Display for {{{name}}} {
 # name
 # fields: [{name, comment, attr, typ}]
 SchemaStructTmpl = '''
+{{#description}}
 /// {{{description}}}
+{{/description}}
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct {{{name}}} {
 {{#fields}}
@@ -143,12 +149,12 @@ pub struct {{{service}}}Service {
 }
 
 impl {{{service}}}Service {
-    /// Create a new {{service}}Service object. The easiest way to call this is wrapping the Authenticator
-    /// into an `Rc`: `new(client.clone(), Rc::new(authenticator))`.
+    /// Create a new {{{service}}}Service object. The easiest way to call this is wrapping the Authenticator
+    /// into an `Arc`: `new(client.clone(), Arc::new(authenticator))`.
     /// This way, one authenticator can be shared among several services.
     pub fn new
     {{#wants_auth}}<A: 'static + DerefAuth>
-    {{/wants_auth}}(client: TlsClient{{#wants_auth}}, auth: A{{/wants_auth}}) -> {{service}}Service {
+    {{/wants_auth}}(client: TlsClient{{#wants_auth}}, auth: A{{/wants_auth}}) -> {{{service}}}Service {
         {{{service}}}Service { client: client
             {{#wants_auth}}, authenticator: Box::new(auth), scopes: vec![]{{/wants_auth}},
             base_url: "{{{base_path}}}".into(), root_url: "{{{root_path}}}".into() }
@@ -207,7 +213,9 @@ impl {{{service}}}Service {
 # params: [{param, snake_param}]
 # http_method
 NormalMethodTmpl = '''
+{{#description}}
 /// {{{description}}}
+{{/description}}
 pub async fn {{{name}}}(
     &self, params: &{{{param_type}}}
     {{#in_type}}, req: &{{{in_type}}}{{/in_type}}) -> Result<{{{out_type}}}> {
@@ -253,11 +261,13 @@ pub async fn {{{name}}}(
 # params: [{param, snake_param}]
 # http_method
 UploadMethodTmpl = '''
+{{#description}}
 /// {{{description}}}
 ///
+{{/description}}
 /// This method is a variant of `{{{name}}}()`, taking data for upload. It performs a multipart upload.
 pub async fn {{{name}}}_upload(
-    &self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{out_type}}> {
+    &self, params: &{{{param_type}}}, {{#in_type}}req: &{{{in_type}}},{{/in_type}} data: hyper::body::Bytes) -> Result<{{{out_type}}}> {
     let rel_path = {{{simple_rel_path_expr}}};
     let path = self.format_path(rel_path.as_str());
 
@@ -300,8 +310,10 @@ pub async fn {{{name}}}_upload(
 # params: [{param, snake_param}]
 # http_method
 ResumableUploadMethodTmpl = '''
+{{#description}}
 /// {{{description}}}
 ///
+{{/description}}
 /// This method is a variant of `{{{name}}}()`, taking data for upload.
 /// It returns a `ResumableUpload` upload manager which you can use to stream larger amounts
 /// of data to the API. The result of this call will be returned by the `ResumableUpload` method
@@ -356,8 +368,10 @@ pub async fn {{{name}}}_resumable_upload<'client>(
 # params: [{param, snake_param}]
 # http_method
 DownloadMethodTmpl = '''
+{{#description}}
 /// {{{description}}}
 ///
+{{/description}}
 /// This method potentially downloads data. See documentation of `Download`.
 pub async fn {{{name}}}<'a>(
     &'a self, params: &{{{param_type}}}, {{#in_type}}req: &'a {{{in_type}}}{{/in_type}})
