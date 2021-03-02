@@ -294,14 +294,14 @@ def generate_params_structs(resources, super_name="", global_params=None):
                         if param.get("required", False):
                             req_query_parameters.append(field)
                         else:
-                            if 'DateTime' in field['typ']:
+                            if "DateTime" in field["typ"]:
                                 opt_time_query_parameters.append(field)
                             else:
                                 opt_query_parameters.append(field)
             frags.append(chevron.render(SchemaStructTmpl, struct))
-            struct['required_fields'] = req_query_parameters
-            struct['optional_fields'] = opt_query_parameters
-            struct['datetime_fields'] = opt_time_query_parameters
+            struct["required_fields"] = req_query_parameters
+            struct["optional_fields"] = opt_query_parameters
+            struct["datetime_fields"] = opt_time_query_parameters
             frags.append(chevron.render(SchemaDisplayTmpl, struct))
             structs.append(struct)
         # Generate parameter types for subresources.
