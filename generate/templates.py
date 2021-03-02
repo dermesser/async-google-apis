@@ -120,6 +120,11 @@ impl std::fmt::Display for {{{name}}} {
             write!(f, "&{{{original_name}}}={}", percent_encode(format!("{}", v).as_bytes(), NON_ALPHANUMERIC).to_string())?;
         }
         {{/optional_fields}}
+        {{#datetime_fields}}
+        if let Some(ref v) = self.{{{name}}} {
+            write!(f, "&{{{original_name}}}={}", percent_encode(v.to_rfc3339().as_bytes(), NON_ALPHANUMERIC).to_string())?;
+        }
+        {{/datetime_fields}}
         Ok(())
     }
 }
