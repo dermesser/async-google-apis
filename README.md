@@ -14,10 +14,11 @@ Google API.
 
 Consider the documentation of two exemplary APIs:
 
+* [`calendar:v3`](https://borgac.net/~lbo/doc/target/doc/calendar_example/calendar_v3_types/) for Google Calendar.
 * [`drive:v3`](https://borgac.net/~lbo/doc/target/doc/drive_example/drive_v3_types/) for Google Drive.
-* [`youtube:v3`](https://borgac.net/~lbo/doc/target/doc/youtube_example/youtube_v3_types/) for Youtube.
 * [`storage:v1`](https://borgac.net/~lbo/doc/target/doc/gcs_example/storage_v1_types/)
 for Google Cloud Storage.
+* [`youtube:v3`](https://borgac.net/~lbo/doc/target/doc/youtube_example/youtube_v3_types/) for Youtube.
 
 ## Parts
 
