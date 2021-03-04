@@ -138,10 +138,6 @@ pub struct BucketIamConfiguration {
     #[serde(rename = "uniformBucketLevelAccess")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub uniform_bucket_level_access: Option<BucketIamConfigurationUniformBucketLevelAccess>,
-    /// The bucket's Public Access Prevention configuration. Currently, 'unspecified' and 'enforced' are supported.
-    #[serde(rename = "publicAccessPrevention")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub public_access_prevention: Option<String>,
 }
 
 /// The action to take.
@@ -399,10 +395,6 @@ pub struct Bucket {
     #[serde(rename = "zoneAffinity")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub zone_affinity: Option<Vec<String>>,
-    /// Reserved for future use.
-    #[serde(rename = "satisfiesPZS")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub satisfies_p_z_s: Option<bool>,
 }
 
 /// The project team associated with the entity, if any.

@@ -25,7 +25,7 @@ pub enum DriveScopes {
     ///
     /// URL: https://www.googleapis.com/auth/drive
     Drive,
-    /// See, create, and delete its own configuration data in your Google Drive
+    /// View and manage its own configuration data in your Google Drive
     ///
     /// URL: https://www.googleapis.com/auth/drive.appdata
     DriveAppdata,
@@ -37,7 +37,7 @@ pub enum DriveScopes {
     ///
     /// URL: https://www.googleapis.com/auth/drive.metadata
     DriveMetadata,
-    /// See information about your Google Drive files
+    /// View metadata for files in your Google Drive
     ///
     /// URL: https://www.googleapis.com/auth/drive.metadata.readonly
     DriveMetadataReadonly,
@@ -893,7 +893,7 @@ pub struct FileVideoMediaMetadata {
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct File {
     /// A collection of arbitrary key-value pairs which are private to the requesting app.
-    /// Entries with null values are cleared in update and copy requests. These properties can only be retrieved using an authenticated request. An authenticated request uses an access token obtained with a OAuth 2 client ID. You cannot use an API key to retrieve private properties.
+    /// Entries with null values are cleared in update and copy requests.
     #[serde(rename = "appProperties")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub app_properties: Option<HashMap<String, String>>,
@@ -929,7 +929,7 @@ pub struct File {
     #[serde(rename = "explicitlyTrashed")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub explicitly_trashed: Option<bool>,
-    /// Links for exporting Docs Editors files to specific formats.
+    /// Links for exporting Google Docs to specific formats.
     #[serde(rename = "exportLinks")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub export_links: Option<HashMap<String, String>>,
@@ -1058,7 +1058,7 @@ pub struct File {
     #[serde(rename = "shortcutDetails")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub shortcut_details: Option<FileShortcutDetails>,
-    /// i64: The size of the file's content in bytes. This is applicable to binary files in Google Drive and Google Docs files.
+    /// i64: The size of the file's content in bytes. This is only applicable to files with binary content in Google Drive.
     #[serde(rename = "size")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub size: Option<String>,
@@ -1369,7 +1369,7 @@ pub struct ReplyList {
 /// The metadata for a revision to a file.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct Revision {
-    /// Links for exporting Docs Editors files to specific formats.
+    /// Links for exporting Google Docs to specific formats.
     #[serde(rename = "exportLinks")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub export_links: Option<HashMap<String, String>>,
@@ -1405,11 +1405,11 @@ pub struct Revision {
     #[serde(rename = "originalFilename")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub original_filename: Option<String>,
-    /// Whether subsequent revisions will be automatically republished. This is only applicable to Docs Editors files.
+    /// Whether subsequent revisions will be automatically republished. This is only applicable to Google Docs.
     #[serde(rename = "publishAuto")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub publish_auto: Option<bool>,
-    /// Whether this revision is published. This is only applicable to Docs Editors files.
+    /// Whether this revision is published. This is only applicable to Google Docs.
     #[serde(rename = "published")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub published: Option<bool>,
@@ -1417,7 +1417,7 @@ pub struct Revision {
     #[serde(rename = "publishedLink")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub published_link: Option<String>,
-    /// Whether this revision is published outside the domain. This is only applicable to Docs Editors files.
+    /// Whether this revision is published outside the domain. This is only applicable to Google Docs.
     #[serde(rename = "publishedOutsideDomain")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub published_outside_domain: Option<bool>,
@@ -2422,7 +2422,7 @@ pub struct FilesCopyParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
     pub drive_params: Option<DriveParams>,
-    /// Deprecated. Copying files into multiple folders is no longer supported. Use shortcuts instead.
+    /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. Requests that specify more than one parent fail.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
     /// The ID of the file.
@@ -2509,7 +2509,7 @@ pub struct FilesCreateParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
     pub drive_params: Option<DriveParams>,
-    /// Deprecated. Creating files in multiple folders is no longer supported.
+    /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. Requests that specify more than one parent fail.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
     /// Whether to ignore the domain's default visibility settings for the created file. Domain administrators can choose to make all uploaded files visible to the domain by default; this parameter bypasses that behavior for the request. Permissions are still inherited from parent folders.
@@ -2603,7 +2603,7 @@ pub struct FilesDeleteParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
     pub drive_params: Option<DriveParams>,
-    /// Deprecated. If an item is not in a shared drive and its last parent is deleted but the item itself is not, the item will be placed under its owner's root.
+    /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
     /// The ID of the file.
@@ -2650,7 +2650,7 @@ pub struct FilesEmptyTrashParams {
     /// General attributes applying to any API call
     #[serde(flatten)]
     pub drive_params: Option<DriveParams>,
-    /// Deprecated. If an item is not in a shared drive and its last parent is deleted but the item itself is not, the item will be placed under its owner's root.
+    /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter will only take effect if the item is not in a shared drive. If an item's last parent is deleted but the item itself is not, the item will be placed under its owner's root.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
 }
@@ -2947,7 +2947,7 @@ pub struct FilesUpdateParams {
     /// A comma-separated list of parent IDs to add.
     #[serde(rename = "addParents")]
     pub add_parents: Option<String>,
-    /// Deprecated. Adding files to multiple folders is no longer supported. Use shortcuts instead.
+    /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. If the item's owner makes a request to add a single parent, the item is removed from all current folders and placed in the requested folder. Other requests that increase the number of parents fail, except when the canAddMyDriveParent file capability is true and a single parent is being added.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
     /// The ID of the file.
@@ -3111,13 +3111,13 @@ pub struct PermissionsCreateParams {
     /// A plain text custom message to include in the notification email.
     #[serde(rename = "emailMessage")]
     pub email_message: Option<String>,
-    /// Deprecated. See moveToNewOwnersRoot for details.
+    /// Set to true to opt in to API behavior that aims for all items to have exactly one parent. This parameter only takes effect if the item is not in a shared drive. See moveToNewOwnersRoot for details.
     #[serde(rename = "enforceSingleParent")]
     pub enforce_single_parent: Option<bool>,
     /// The ID of the file or shared drive.
     #[serde(rename = "fileId")]
     pub file_id: String,
-    /// This parameter will only take effect if the item is not in a shared drive and the request is attempting to transfer the ownership of the item. If set to true, the item will be moved to the new owner's My Drive root folder and all prior parents removed. If set to false, parents are not changed.
+    /// This parameter only takes effect if the item is not in a shared drive and the request is attempting to transfer the ownership of the item. When set to true, the item is moved to the new owner's My Drive root folder and all prior parents removed. If set to false, when enforceSingleParent=true, parents are not changed. If set to false, when enforceSingleParent=false, existing parents are not changed; however, the file will be added to the new owner's My Drive root folder, unless it is already in the new owner's My Drive.
     #[serde(rename = "moveToNewOwnersRoot")]
     pub move_to_new_owners_root: Option<bool>,
     /// Whether to send a notification email when sharing to users or groups. This defaults to true for users and groups, and is not allowed for other requests. It must not be disabled for ownership transfers.
