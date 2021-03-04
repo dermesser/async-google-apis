@@ -113,7 +113,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                 name = replace_keywords(name)
                 typ = name
                 struct = {"name": name, "description": schema.get("description", ""), "fields": []}
-                for pn, pp in schema["properties"].items():
+                for pn, pp in sorted(schema["properties"].items()):
                     subtyp, substructs, subenums = parse_schema_types(name + capitalize_first(pn),
                                                                       pp,
                                                                       optional=True,
@@ -202,7 +202,7 @@ def parse_schema_types(name, schema, optional=True, parents=[]):
                     "line": sanitize_enum_value(ev),
                     "jsonvalue": ev,
                     "desc": schema.get("enumDescriptions", [""] * (i))[i]
-                } for (i, ev) in enumerate(schema.get("enum", []))]
+                } for (i, ev) in enumerate(sorted(schema.get("enum", [])))]
                 templ_params = {"name": name_, "values": values}
                 return (optionalize(name_, optional), schema.get("description", "")), structs, [templ_params]
 
@@ -256,8 +256,8 @@ def generate_params_structs(resources, super_name="", global_params=None):
     frags = []
     structs = []
     enums = []
-    for resourcename, resource in resources.items():
-        for methodname, method in resource.get("methods", {}).items():
+    for resourcename, resource in sorted(resources.items()):
+        for methodname, method in sorted(resource.get("methods", {}).items()):
             param_type_name = snake_to_camel(super_name + capitalize_first(resourcename) +
                                              capitalize_first(methodname) + "Params")
             print("processed:", resourcename, methodname, param_type_name)
@@ -278,7 +278,7 @@ def generate_params_structs(resources, super_name="", global_params=None):
                 })
             # Build struct dict for rendering.
             if "parameters" in method:
-                for paramname, param in method["parameters"].items():
+                for paramname, param in sorted(method["parameters"].items()):
                     (typ, desc), substructs, subenums = parse_schema_types(capitalize_first(resourcename)+capitalize_first(methodname)+capitalize_first(paramname),
                             param, optional=False, parents=[])
                     enums.extend(subenums)
@@ -345,10 +345,10 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
 
     # Generate methods for subresources.
     if generate_subresources:
-        for subresname, subresource in methods.get("resources", {}).items():
+        for subresname, subresource in sorted(methods.get("resources", {}).items()):
             subresource_fragments.append(generate_service(service + capitalize_first(subresname), subresource, discdoc))
 
-    for methodname, method in methods.get("methods", {}).items():
+    for methodname, method in sorted(methods.get("methods", {}).items()):
         # Goal: Instantiate the templates for upload and non-upload methods.
 
         # e.g. FilesGetParams
@@ -356,12 +356,12 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
         # All parameters that are optional (as URL parameters)
         parameters = {
             p: rust_identifier(p)
-            for p, pp in method.get("parameters", {}).items() if ("required" not in pp and pp["location"] != "path")
+            for p, pp in sorted(method.get("parameters", {}).items()) if ("required" not in pp and pp["location"] != "path")
         }
         # All required parameters not represented in the path.
         required_parameters = {
             p: rust_identifier(p)
-            for p, pp in method.get("parameters", {}).items() if ("required" in pp and pp["location"] != "path")
+            for p, pp in sorted(method.get("parameters", {}).items()) if ("required" in pp and pp["location"] != "path")
         }
         # Types of the function
         in_type = method["request"]["$ref"] if "request" in method else None
@@ -417,11 +417,11 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 "params": [{
                     "param": p,
                     "snake_param": sp
-                } for (p, sp) in parameters.items()],
+                } for (p, sp) in sorted(parameters.items())],
                 "required_params": [{
                     "param": p,
                     "snake_param": sp
-                } for (p, sp) in required_parameters.items()],
+                } for (p, sp) in sorted(required_parameters.items())],
                 "global_params_name":
                 rust_identifier(global_params_name(discdoc.get("name", ""))) if has_global_params else None,
                 "scopes": [{
@@ -454,13 +454,13 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
                 "params": [{
                     "param": p,
                     "snake_param": sp
-                } for (p, sp) in parameters.items()],
+                } for (p, sp) in sorted(parameters.items())],
                 "global_params_name":
                 rust_identifier(global_params_name(discdoc.get("name", ""))) if has_global_params else None,
                 "required_params": [{
                     "param": p,
                     "snake_param": sp
-                } for (p, sp) in required_parameters.items()],
+                } for (p, sp) in sorted(required_parameters.items())],
                 "scopes": [{
                     "scope": scope_enum,
                 }],
@@ -488,11 +488,11 @@ def generate_service(resource, methods, discdoc, generate_subresources=True):
             "params": [{
                 "param": p,
                 "snake_param": sp
-            } for (p, sp) in parameters.items()],
+            } for (p, sp) in sorted(parameters.items())],
             "required_params": [{
                 "param": p,
                 "snake_param": sp
-            } for (p, sp) in required_parameters.items()],
+            } for (p, sp) in sorted(required_parameters.items())],
             "scopes": [{
                 "scope": scope_enum,
             }],
@@ -534,7 +534,7 @@ def generate_scopes_type(name, scopes):
     if len(scopes) == 0:
         return ""
     parameters = {"scopes": []}
-    for url, desc in scopes.items():
+    for url, desc in sorted(scopes.items()):
         enum_type_name, fancy_name = scopes_url_to_enum_val(name, url)
         parameters["name"] = enum_type_name
         parameters["scopes"].append({"scope_name": fancy_name, "desc": desc.get("description", ""), "url": url})
@@ -572,7 +572,7 @@ def generate_all(discdoc):
 
     # Generate service impls.
     services = []
-    for resource, methods in resources.items():
+    for resource, methods in sorted(resources.items()):
         services.append(generate_service(resource, methods, discdoc))
     if "methods" in discdoc:
         services.append(generate_service("Global", discdoc, discdoc, generate_subresources=False))
@@ -580,7 +580,7 @@ def generate_all(discdoc):
     # Generate schema types.
     structs = []
     enums = []
-    for name, desc in schemas.items():
+    for name, desc in sorted(schemas.items()):
         typ, substructs, subenums = parse_schema_types(name, desc)
         structs.extend(substructs)
         enums.extend(subenums)
