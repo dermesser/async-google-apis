@@ -12,7 +12,18 @@ Google API.
 
 ## What it looks like
 
-Consider the documentation of these exemplary APIs:
+There are examples in this repository:
+
+* [`for Google
+Calendar`](https://github.com/dermesser/async-google-apis/blob/master/example_crates/calendar_example/src/main.rs)
+* [`for
+YouTube`](https://github.com/dermesser/async-google-apis/blob/master/example_crates/youtube_example/src/main.rs)
+* [`for Google Cloud
+Storage`](https://github.com/dermesser/async-google-apis/blob/master/example_crates/gcs_example/src/main.rs)
+* [`for Google
+Drive`](https://github.com/dermesser/async-google-apis/blob/master/example_crates/drive_example/src/main.rs)
+
+Also consider the documentation of these exemplary APIs:
 
 * [`calendar:v3`](https://borgac.net/~lbo/doc/target/doc/calendar_example/calendar_v3_types/) for Google Calendar.
 * [`drive:v3`](https://borgac.net/~lbo/doc/target/doc/drive_example/drive_v3_types/) for Google Drive.
