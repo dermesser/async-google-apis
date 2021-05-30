@@ -12,7 +12,7 @@ Google API.
 
 ## What it looks like
 
-Consider the documentation of two exemplary APIs:
+Consider the documentation of these exemplary APIs:
 
 * [`calendar:v3`](https://borgac.net/~lbo/doc/target/doc/calendar_example/calendar_v3_types/) for Google Calendar.
 * [`drive:v3`](https://borgac.net/~lbo/doc/target/doc/drive_example/drive_v3_types/) for Google Drive.
