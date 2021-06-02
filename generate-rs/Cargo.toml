@@ -1,0 +1,13 @@
+[package]
+name = "generate-rs"
+version = "0.1.0"
+authors = ["chris <chris@chrisbruce.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.34"
+clap = "2.33.3"
+ramhorns = "0.10.2"
+reqwest = "0.10.9"
