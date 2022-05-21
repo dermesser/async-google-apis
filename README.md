@@ -44,8 +44,8 @@ for Google Cloud Storage.
   ```shell
   $ pipenv run ./generate.py --apis=storage:v1
   ```
-  (install `pipenv` using `pip install --user pipenv` before, if you don't have it
-  yet). See more details in that directory.
+  (install `pipenv` using `pip install --user pipenv && pipenv sync` before, if
+  you don't have it yet). See more details in that directory.
 * Consult `drive_example` or `gcs_example` for simple but useful examples of
   using the generated code. As you can see, it is reasonably easy! Use `cargo doc`
   to generate the documentation for generated code, as the API comments is
