@@ -18,7 +18,7 @@ use std::sync::Arc;
 
 /// Create a new HTTPS client.
 fn https_client() -> common::TlsClient {
-    let conn = hyper_rustls::HttpsConnector::with_native_roots();
+    let conn = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http2().build();
     let cl = hyper::Client::builder().build(conn);
     cl
 }
