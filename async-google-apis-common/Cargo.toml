@@ -21,9 +21,10 @@ hyper = { version = "~0.14", features = ["stream"] }
 hyper-rustls = "~0.22"
 log = "~0.4"
 percent-encoding = "~2.1"
+pin-project = "~1.0"
 radix64 = "~0.6"
 serde = "~1.0"
 serde_json = "~1.0"
 tokio = { version = "1.0", features = ["fs"] }
 tokio-stream = "^0.1"
-yup-oauth2 = "~5"
+yup-oauth2 = "~8"
