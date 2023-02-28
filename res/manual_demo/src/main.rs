@@ -13,7 +13,7 @@ use drive_v3_types as drive;
 use yup_oauth2::InstalledFlowAuthenticator;
 
 fn https_client() -> agac::TlsClient {
-    let conn = hyper_rustls::HttpsConnector::new();
+    let conn = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http2().build();
     let cl = hyper::Client::builder().build(conn);
     cl
 }
